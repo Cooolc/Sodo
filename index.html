@@ -2151,8 +2151,11 @@
     // ==========================================
     // KẾT NỐI & ĐỒNG BỘ GOOGLE SHEETS
     // ==========================================
+    // Điền link Web App Google Apps Script vào đây để mọi thiết bị (Điện thoại, Vercel, PC) tự động kết nối:
+    const DEFAULT_GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbzOpYUmBF0tc0K5eftQjTpZvnK29CvsoO1Q9bc0ZGNdCh6NhfjeJoBiJL7_SFrSKeyllQ/exec";
+
     function getGoogleSheetUrl() {
-      return (localStorage.getItem('sodo_google_sheet_url') || '').trim();
+      return (localStorage.getItem('sodo_google_sheet_url') || DEFAULT_GOOGLE_SHEET_URL || '').trim();
     }
 
     function updateGoogleSheetStatusBadge() {
