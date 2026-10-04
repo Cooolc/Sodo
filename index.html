@@ -94,6 +94,10 @@
           <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
           <span class="hidden sm:inline">In Sơ Đồ</span>
         </button>
+        <button onclick="openSyncModal()" class="px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-950/70 hover:bg-emerald-900 text-emerald-300 border border-emerald-700/80 transition flex items-center gap-1.5 shadow" title="Xuất / Nhập dữ liệu hoặc đồng bộ lên Vercel & Điện thoại">
+          <span>🔄</span>
+          <span class="hidden sm:inline">Đồng Bộ Dữ Liệu</span>
+        </button>
         <button id="btn-view-toggle" onclick="toggleListView()" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 transition flex items-center gap-1.5 shadow-lg shadow-amber-500/20">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"></path></svg>
           <span id="btn-toggle-label">Xem Dạng Bảng</span>
@@ -325,6 +329,105 @@
     </div>
 
   </main>
+
+  <!-- MODAL ĐỒNG BỘ & XUẤT NHẬP DỮ LIỆU -->
+  <div id="sync-data-modal" class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-sm hidden transition-opacity duration-200">
+    <div class="bg-slate-900 border border-slate-700 rounded-2xl max-w-2xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
+      <!-- Modal Header -->
+      <div class="p-4 border-b border-slate-800 flex items-center justify-between bg-slate-900/90">
+        <div class="flex items-center gap-2">
+          <span class="text-xl">🔄</span>
+          <div>
+            <h3 class="text-base font-bold text-white">Đồng Bộ & Xuất / Nhập Dữ Liệu</h3>
+            <p class="text-xs text-slate-400">Đưa danh sách khách đã chỉnh sửa từ máy tính lên Vercel & Điện thoại</p>
+          </div>
+        </div>
+        <button onclick="closeSyncModal()" class="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition">
+          ✕
+        </button>
+      </div>
+
+      <!-- Modal Body -->
+      <div class="p-4 sm:p-5 overflow-y-auto space-y-4 custom-scrollbar text-xs">
+        
+        <!-- Giải thích vì sao Vercel chưa hiện -->
+        <div class="bg-amber-500/10 border border-amber-500/30 rounded-xl p-3 text-amber-200 space-y-1">
+          <div class="font-bold flex items-center gap-1 text-amber-300">
+            <span>💡</span> <span>Vì sao chỉnh sửa trên máy tính mà Vercel chưa cập nhật?</span>
+          </div>
+          <p class="text-slate-300 leading-relaxed text-[11px]">
+            Khi bạn sửa bàn hoặc thêm khách qua giao diện web, dữ liệu được lưu trong bộ nhớ riêng (LocalStorage) của trình duyệt trên máy tính đó. 
+            Để Vercel và điện thoại hiển thị đúng, bạn có thể chọn 1 trong 2 cách đơn giản dưới đây:
+          </p>
+        </div>
+
+        <!-- Cách 1: Xuất / Nhập File JSON (Dành cho điện thoại & Vercel ngay lập tức) -->
+        <div class="bg-slate-950/80 border border-slate-800 rounded-xl p-3.5 space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-emerald-400 text-sm flex items-center gap-1.5">
+              <span>Cách 1:</span> <span>Xuất / Nhập File Dữ Liệu (Không cần đụng code)</span>
+            </span>
+            <span class="text-[10px] bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 px-2 py-0.5 rounded-full font-semibold">Khuyên dùng</span>
+          </div>
+          <p class="text-slate-400 text-[11px] leading-relaxed">
+            1. Bấm <strong>"📥 Tải File Dữ Liệu"</strong> trên máy tính đang có danh sách chuẩn.<br>
+            2. Mở link trang web trên Vercel (hoặc trên điện thoại), vào mục này và bấm <strong>"📤 Nhập File Dữ Liệu"</strong> là toàn bộ sơ đồ sẽ đồng bộ 100%!
+          </p>
+          <div class="flex flex-wrap items-center gap-2 pt-1">
+            <button onclick="exportDataFile()" class="px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold flex items-center gap-1.5 shadow transition">
+              <span>📥</span> <span>Tải File Dữ Liệu (.json)</span>
+            </button>
+            <label class="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-bold flex items-center gap-1.5 cursor-pointer shadow transition">
+              <span>📤</span> <span>Nhập File Dữ Liệu</span>
+              <input type="file" accept=".json" class="hidden" onchange="importDataFile(event)" />
+            </label>
+          </div>
+        </div>
+
+        <!-- Cách 2: Đồng bộ thẳng vào file index.html để Vercel tự động load vĩnh viễn -->
+        <div class="bg-slate-950/80 border border-slate-800 rounded-xl p-3.5 space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-amber-400 text-sm flex items-center gap-1.5">
+              <span>Cách 2:</span> <span>Đồng bộ vào mã nguồn để Commit lên GitHub</span>
+            </span>
+            <span class="text-[10px] bg-amber-500/20 text-amber-300 border border-amber-500/40 px-2 py-0.5 rounded-full font-semibold">Tự động cho tất cả mọi người</span>
+          </div>
+          <p class="text-slate-400 text-[11px] leading-relaxed">
+            1. Bấm nút <strong>"📋 Sao Chép Mã allTablesData"</strong> bên dưới.<br>
+            2. Mở file <code class="text-amber-300">index.html</code> trong VS Code, tìm đoạn <code class="text-amber-300">const allTablesData = [ ... ];</code> và Paste đè lên.<br>
+            3. Commit & Push lên GitHub. Khi đó Vercel sẽ tự động có dữ liệu này làm mặc định gốc cho mọi thiết bị!
+          </p>
+          <div>
+            <button onclick="copySourceCodeArray()" class="px-3.5 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold flex items-center gap-1.5 shadow transition">
+              <span>📋</span> <span>Sao Chép Mã allTablesData Hiện Tại</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Dán mã JSON trực tiếp -->
+        <div class="bg-slate-950/80 border border-slate-800 rounded-xl p-3.5 space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-slate-200 text-xs">Hoặc Dán Chuỗi Dữ Liệu JSON:</span>
+            <button onclick="copyRawJson()" class="text-xs text-amber-400 hover:underline">Sao chép mã JSON</button>
+          </div>
+          <textarea id="sync-json-textarea" rows="4" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-[11px] font-mono text-slate-300 focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400 custom-scrollbar" placeholder="Dán mã JSON dữ liệu tại đây..."></textarea>
+          <div class="flex justify-end pt-1">
+            <button onclick="applyDataFromTextarea()" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs border border-slate-700 transition">
+              Áp Dụng Dữ Liệu Từ Ô Trên
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="p-3 border-t border-slate-800 bg-slate-900 flex justify-end">
+        <button onclick="closeSyncModal()" class="px-4 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs transition">
+          Đóng
+        </button>
+      </div>
+    </div>
+  </div>
 
   <!-- MOBILE POPUP MODAL (Popup danh sách khách & chế độ chỉnh sửa trên điện thoại) -->
   <div id="mobile-table-modal" class="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/80 backdrop-blur-sm hidden transition-opacity duration-200">
@@ -2543,6 +2646,163 @@
     function jumpFromListToTable(id) {
       toggleListView();
       selectTable(id);
+    }
+
+    // TÍNH NĂNG ĐỒNG BỘ DỮ LIỆU SƠ ĐỒ (SYNC / EXPORT / IMPORT)
+    function openSyncModal() {
+      const modal = document.getElementById('sync-data-modal');
+      const textarea = document.getElementById('sync-json-textarea');
+      if (modal) {
+        modal.classList.remove('hidden');
+        if (textarea) {
+          const exportData = allTablesData.map(t => ({
+            id: t.id,
+            tableNo: t.tableNo,
+            side: t.side,
+            sideName: t.sideName,
+            customLabel: t.customLabel || '',
+            displayCategory: t.displayCategory,
+            customColor: t.customColor || '',
+            group: t.group,
+            groupName: t.groupName,
+            position: t.position,
+            guestCount: t.guestCount,
+            status: t.status,
+            highlight: t.highlight,
+            guests: t.guests || []
+          }));
+          textarea.value = JSON.stringify(exportData, null, 2);
+        }
+      }
+    }
+
+    function closeSyncModal() {
+      const modal = document.getElementById('sync-data-modal');
+      if (modal) modal.classList.add('hidden');
+    }
+
+    function exportDataFile() {
+      const exportData = allTablesData.map(t => ({
+        id: t.id,
+        tableNo: t.tableNo,
+        side: t.side,
+        sideName: t.sideName,
+        customLabel: t.customLabel || '',
+        displayCategory: t.displayCategory,
+        customColor: t.customColor || '',
+        group: t.group,
+        groupName: t.groupName,
+        position: t.position,
+        guestCount: t.guestCount,
+        status: t.status,
+        highlight: t.highlight,
+        guests: t.guests || []
+      }));
+      const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `sodo_tiec_cuoi_backup_${new Date().toISOString().slice(0, 10)}.json`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      showToast('✓ Đã tải file sao lưu dữ liệu về máy thành công!');
+    }
+
+    function importDataFile(event) {
+      const file = event.target.files && event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const imported = JSON.parse(e.target.result);
+          applyImportedArray(imported);
+          event.target.value = '';
+          closeSyncModal();
+        } catch (err) {
+          alert('Lỗi: File JSON không hợp lệ! Vui lòng kiểm tra lại file.');
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    function applyDataFromTextarea() {
+      const textarea = document.getElementById('sync-json-textarea');
+      if (!textarea || !textarea.value.trim()) {
+        alert('Vui lòng dán dữ liệu JSON vào ô trước khi áp dụng!');
+        return;
+      }
+      try {
+        const imported = JSON.parse(textarea.value.trim());
+        applyImportedArray(imported);
+        closeSyncModal();
+      } catch (err) {
+        alert('Lỗi: Dữ liệu JSON không đúng định dạng! Vui lòng kiểm tra lại.');
+      }
+    }
+
+    function applyImportedArray(imported) {
+      if (!Array.isArray(imported)) {
+        alert('Dữ liệu không đúng cấu trúc danh sách bàn!');
+        return;
+      }
+      const customMap = {};
+      imported.forEach(item => {
+        if (!item || !item.id) return;
+        const targetTable = allTablesData.find(t => t.id === item.id);
+        if (targetTable) {
+          if (item.customLabel !== undefined) targetTable.customLabel = item.customLabel;
+          if (item.displayCategory) targetTable.displayCategory = item.displayCategory;
+          if (item.customColor) targetTable.customColor = item.customColor;
+          if (item.groupName) targetTable.groupName = item.groupName;
+          if (item.status) targetTable.status = item.status;
+          if (item.highlight) targetTable.highlight = item.highlight;
+          if (Array.isArray(item.guests)) {
+            targetTable.guests = item.guests;
+            targetTable.guestCount = item.guests.reduce((sum, g) => sum + (parseInt(g.count, 10) || 0), 0);
+          } else if (item.guestCount !== undefined) {
+            targetTable.guestCount = item.guestCount;
+          }
+          customMap[item.id] = {
+            customLabel: targetTable.customLabel || '',
+            displayCategory: targetTable.displayCategory,
+            customColor: targetTable.customColor,
+            groupName: targetTable.groupName,
+            guestCount: targetTable.guestCount,
+            status: targetTable.status,
+            highlight: targetTable.highlight,
+            guests: targetTable.guests
+          };
+        }
+      });
+      localStorage.setItem('sodo_all_tables_v2', JSON.stringify(customMap));
+      renderHallPlan();
+      renderTableInspector(currentSelectedId || 'T_1');
+      renderListGrid();
+      showToast('✓ Đã đồng bộ và áp dụng dữ liệu thành công!');
+    }
+
+    function copyRawJson() {
+      const textarea = document.getElementById('sync-json-textarea');
+      if (textarea && textarea.value) {
+        navigator.clipboard.writeText(textarea.value).then(() => {
+          showToast('✓ Đã sao chép mã JSON vào clipboard!');
+        }).catch(() => {
+          textarea.select();
+          document.execCommand('copy');
+          showToast('✓ Đã sao chép mã JSON!');
+        });
+      }
+    }
+
+    function copySourceCodeArray() {
+      const jsCode = 'const allTablesData = ' + JSON.stringify(allTablesData, null, 2) + ';';
+      navigator.clipboard.writeText(jsCode).then(() => {
+        showToast('✓ Đã copy mã allTablesData! Hãy dán đè vào index.html rồi commit lên GitHub.');
+      }).catch(() => {
+        prompt('Sao chép đoạn mã bên dưới rồi dán đè vào index.html:', jsCode);
+      });
     }
 
     // Initialize
