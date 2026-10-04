@@ -94,6 +94,12 @@
           <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
           <span class="hidden sm:inline">In Sơ Đồ</span>
         </button>
+        <div id="admin-status-badge">
+          <button onclick="handleAdminBadgeClick()" id="btn-admin-auth" class="px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition flex items-center gap-1.5 shadow" title="Đăng nhập mã PIN để có quyền chỉnh sửa">
+            <span id="admin-auth-dot" class="w-2 h-2 rounded-full bg-slate-500"></span>
+            <span id="admin-auth-text">🔒 Đăng Nhập PIN</span>
+          </button>
+        </div>
         <button onclick="openSyncModal()" class="px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-950/70 hover:bg-emerald-900 text-emerald-300 border border-emerald-700/80 transition flex items-center gap-1.5 shadow" title="Xuất / Nhập dữ liệu hoặc đồng bộ lên Vercel & Điện thoại">
           <span>🔄</span>
           <span class="hidden sm:inline">Đồng Bộ Dữ Liệu</span>
@@ -350,6 +356,52 @@
       <!-- Modal Body -->
       <div class="p-4 sm:p-5 overflow-y-auto space-y-4 custom-scrollbar text-xs">
         
+        <!-- KẾT NỐI GOOGLE SHEETS -->
+        <div class="bg-gradient-to-r from-emerald-950/50 to-slate-950 border border-emerald-500/40 rounded-2xl p-4 space-y-3">
+          <div class="flex items-center justify-between flex-wrap gap-2">
+            <div class="flex items-center gap-2">
+              <span class="text-lg">📊</span>
+              <div>
+                <h4 class="font-bold text-emerald-400 text-sm">Kết Nối Trực Tiếp Với Google Sheets</h4>
+                <p class="text-[11px] text-slate-400">Đồng bộ 2 chiều: chỉnh sửa trên web hoặc trên Google Sheets đều tự động cập nhật</p>
+              </div>
+            </div>
+            <div id="gs-status-badge" class="px-2.5 py-0.5 rounded-full text-[10px] font-bold border bg-slate-800 text-slate-400 border-slate-700">
+              Chưa kết nối
+            </div>
+          </div>
+
+          <div class="space-y-1.5 pt-1">
+            <label class="block text-[11px] font-bold text-slate-200">
+              🔗 Link Web App Google Apps Script:
+            </label>
+            <div class="flex items-center gap-2">
+              <input 
+                id="input-gs-url" 
+                type="text" 
+                placeholder="https://script.google.com/macros/s/.../exec" 
+                class="flex-1 bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-emerald-400 focus:ring-1 focus:ring-emerald-400 font-mono"
+              />
+              <button onclick="saveAndTestGoogleSheetUrl()" class="px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs flex-shrink-0 transition shadow">
+                Lưu & Kiểm Tra
+              </button>
+            </div>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-2 pt-1 border-t border-slate-800/80">
+            <button onclick="initDataToGoogleSheet()" class="px-3 py-1.5 rounded-lg bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 text-xs font-bold transition flex items-center gap-1.5">
+              <span>📤</span> <span>Khởi Tạo 34 Bàn Lên Google Sheet Mới</span>
+            </button>
+            <button onclick="fetchFromGoogleSheet(true)" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold transition flex items-center gap-1.5">
+              <span>📥</span> <span>Tải Lại Dữ Liệu Từ Google Sheet</span>
+            </button>
+          </div>
+          
+          <div class="text-[10px] text-slate-400 leading-relaxed bg-slate-900/60 p-2.5 rounded-xl border border-slate-800">
+            📖 <strong>Cách lấy link Web App:</strong> Mở Google Sheet -> vào <em>Tiện ích mở rộng > Apps Script</em> -> Dán mã trong file <code class="text-amber-300">GoogleAppsScript.js</code> -> Bấm <em>Triển khai > Quản lý bản triển khai mới > Ứng dụng web (Ai có quyền truy cập: Bất kỳ ai)</em> -> Copy URL dán vào ô trên!
+          </div>
+        </div>
+
         <!-- Giải thích vì sao Vercel chưa hiện -->
         <div class="bg-amber-500/10 border border-amber-500/30 rounded-xl p-3 text-amber-200 space-y-1">
           <div class="font-bold flex items-center gap-1 text-amber-300">
@@ -425,6 +477,100 @@
         <button onclick="closeSyncModal()" class="px-4 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs transition">
           Đóng
         </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL XÁC THỰC MÃ PIN QUẢN TRỊ -->
+  <div id="admin-pin-modal" class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/85 backdrop-blur-md hidden transition-opacity duration-200">
+    <div id="admin-pin-container" class="bg-slate-900 border border-slate-700/90 rounded-3xl max-w-sm w-full p-5 sm:p-6 shadow-2xl overflow-hidden text-center space-y-4">
+      
+      <!-- Icon & Title -->
+      <div class="space-y-1.5">
+        <div class="w-12 h-12 rounded-2xl bg-amber-500/20 border border-amber-500/40 text-amber-400 flex items-center justify-center text-2xl mx-auto shadow-inner">
+          🔐
+        </div>
+        <h3 class="text-base font-black text-white">Xác Thực Quản Trị Viên</h3>
+        <p class="text-xs text-slate-400">Vui lòng nhập mã PIN để chỉnh sửa sơ đồ bàn & danh sách khách</p>
+      </div>
+
+      <!-- PIN Input Display -->
+      <div class="space-y-2">
+        <div class="relative">
+          <input 
+            id="admin-pin-input" 
+            type="password" 
+            maxlength="10" 
+            placeholder="•••••" 
+            class="w-full bg-slate-950 border-2 border-slate-700 focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20 rounded-2xl py-3 px-4 text-center text-2xl font-mono tracking-widest text-amber-300 placeholder-slate-600 focus:outline-none transition shadow-inner"
+            onkeydown="if(event.key === 'Enter') submitAdminPin()"
+          />
+        </div>
+        <div id="admin-pin-error" class="text-rose-400 text-xs font-semibold min-h-[18px] transition-all"></div>
+      </div>
+
+      <!-- Quick Numeric Keypad for Mobile -->
+      <div class="grid grid-cols-3 gap-2 pt-1 select-none">
+        
+          <button type="button" onclick="keypadPress('1')" class="py-2.5 rounded-xl bg-slate-800/80 hover:bg-slate-700 active:bg-amber-500 active:text-slate-950 text-white font-bold text-base transition shadow-sm">
+            1
+          </button>
+        
+          <button type="button" onclick="keypadPress('2')" class="py-2.5 rounded-xl bg-slate-800/80 hover:bg-slate-700 active:bg-amber-500 active:text-slate-950 text-white font-bold text-base transition shadow-sm">
+            2
+          </button>
+        
+          <button type="button" onclick="keypadPress('3')" class="py-2.5 rounded-xl bg-slate-800/80 hover:bg-slate-700 active:bg-amber-500 active:text-slate-950 text-white font-bold text-base transition shadow-sm">
+            3
+          </button>
+        
+          <button type="button" onclick="keypadPress('4')" class="py-2.5 rounded-xl bg-slate-800/80 hover:bg-slate-700 active:bg-amber-500 active:text-slate-950 text-white font-bold text-base transition shadow-sm">
+            4
+          </button>
+        
+          <button type="button" onclick="keypadPress('5')" class="py-2.5 rounded-xl bg-slate-800/80 hover:bg-slate-700 active:bg-amber-500 active:text-slate-950 text-white font-bold text-base transition shadow-sm">
+            5
+          </button>
+        
+          <button type="button" onclick="keypadPress('6')" class="py-2.5 rounded-xl bg-slate-800/80 hover:bg-slate-700 active:bg-amber-500 active:text-slate-950 text-white font-bold text-base transition shadow-sm">
+            6
+          </button>
+        
+          <button type="button" onclick="keypadPress('7')" class="py-2.5 rounded-xl bg-slate-800/80 hover:bg-slate-700 active:bg-amber-500 active:text-slate-950 text-white font-bold text-base transition shadow-sm">
+            7
+          </button>
+        
+          <button type="button" onclick="keypadPress('8')" class="py-2.5 rounded-xl bg-slate-800/80 hover:bg-slate-700 active:bg-amber-500 active:text-slate-950 text-white font-bold text-base transition shadow-sm">
+            8
+          </button>
+        
+          <button type="button" onclick="keypadPress('9')" class="py-2.5 rounded-xl bg-slate-800/80 hover:bg-slate-700 active:bg-amber-500 active:text-slate-950 text-white font-bold text-base transition shadow-sm">
+            9
+          </button>
+        
+        <button type="button" onclick="keypadClear()" class="py-2.5 rounded-xl bg-slate-800/60 hover:bg-rose-950/40 text-slate-400 hover:text-rose-300 font-bold text-xs transition">
+          Xóa
+        </button>
+        <button type="button" onclick="keypadPress('0')" class="py-2.5 rounded-xl bg-slate-800/80 hover:bg-slate-700 active:bg-amber-500 active:text-slate-950 text-white font-bold text-base transition shadow-sm">
+          0
+        </button>
+        <button type="button" onclick="keypadBackspace()" class="py-2.5 rounded-xl bg-slate-800/60 hover:bg-slate-700 text-slate-300 font-bold text-sm transition">
+          ⌫
+        </button>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex items-center gap-2 pt-2">
+        <button type="button" onclick="closePinModal()" class="flex-1 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs transition">
+          Hủy Bỏ
+        </button>
+        <button type="button" onclick="submitAdminPin()" class="flex-1 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs transition shadow-lg shadow-amber-500/20">
+          Xác Nhận PIN
+        </button>
+      </div>
+
+      <div class="text-[11px] text-slate-500 pt-1">
+        💡 Mã PIN quản trị mặc định: <strong class="text-amber-400 font-mono">12345</strong>
       </div>
     </div>
   </div>
@@ -1880,7 +2026,271 @@
       `;
     }
 
+    // ==========================================
+    // QUẢN LÝ MÃ PIN BẢO MẬT & QUẢN TRỊ VIÊN
+    // ==========================================
+    const ADMIN_PIN = "12345";
+    let pendingAdminCallback = null;
+
+    function isAdminAuthenticated() {
+      return sessionStorage.getItem('sodo_admin_authed') === 'true';
+    }
+
+    function updateAdminHeaderBadge() {
+      const dot = document.getElementById('admin-auth-dot');
+      const text = document.getElementById('admin-auth-text');
+      const btn = document.getElementById('btn-admin-auth');
+      if (!dot || !text || !btn) return;
+
+      if (isAdminAuthenticated()) {
+        dot.className = 'w-2 h-2 rounded-full bg-emerald-400 animate-pulse';
+        text.textContent = '🔓 Quản Trị (Mở)';
+        btn.className = 'px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-bold bg-amber-500/20 text-amber-300 border border-amber-500/50 hover:bg-rose-950/40 hover:text-rose-300 hover:border-rose-500/50 transition flex items-center gap-1.5 shadow';
+        btn.title = 'Bạn đang là Quản Trị Viên. Nhấn để khóa lại.';
+      } else {
+        dot.className = 'w-2 h-2 rounded-full bg-slate-500';
+        text.textContent = '🔒 Đăng Nhập PIN';
+        btn.className = 'px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition flex items-center gap-1.5 shadow';
+        btn.title = 'Đăng nhập mã PIN (12345) để chỉnh sửa sơ đồ & danh sách khách';
+      }
+    }
+
+    function handleAdminBadgeClick() {
+      if (isAdminAuthenticated()) {
+        if (confirm('Bạn có muốn khóa chế độ Quản trị viên lại không?')) {
+          logoutAdmin();
+        }
+      } else {
+        openPinModal();
+      }
+    }
+
+    function openPinModal(onSuccessCallback = null) {
+      pendingAdminCallback = onSuccessCallback;
+      const modal = document.getElementById('admin-pin-modal');
+      const input = document.getElementById('admin-pin-input');
+      const err = document.getElementById('admin-pin-error');
+      if (modal) {
+        modal.classList.remove('hidden');
+        if (err) err.textContent = '';
+        if (input) {
+          input.value = '';
+          setTimeout(() => input.focus(), 150);
+        }
+      }
+    }
+
+    function closePinModal() {
+      const modal = document.getElementById('admin-pin-modal');
+      if (modal) modal.classList.add('hidden');
+      pendingAdminCallback = null;
+    }
+
+    function keypadPress(digit) {
+      const input = document.getElementById('admin-pin-input');
+      if (!input) return;
+      if (input.value.length < 10) {
+        input.value += digit;
+      }
+      const err = document.getElementById('admin-pin-error');
+      if (err) err.textContent = '';
+    }
+
+    function keypadClear() {
+      const input = document.getElementById('admin-pin-input');
+      if (input) input.value = '';
+      const err = document.getElementById('admin-pin-error');
+      if (err) err.textContent = '';
+    }
+
+    function keypadBackspace() {
+      const input = document.getElementById('admin-pin-input');
+      if (input && input.value.length > 0) {
+        input.value = input.value.slice(0, -1);
+      }
+    }
+
+    function submitAdminPin() {
+      const input = document.getElementById('admin-pin-input');
+      const err = document.getElementById('admin-pin-error');
+      const container = document.getElementById('admin-pin-container');
+      const enteredPin = input ? input.value.trim() : '';
+
+      if (enteredPin === ADMIN_PIN) {
+        const cb = pendingAdminCallback;
+        pendingAdminCallback = null;
+        sessionStorage.setItem('sodo_admin_authed', 'true');
+        updateAdminHeaderBadge();
+        closePinModal();
+        showToast('✓ Đã xác thực thành công quyền Quản Trị Viên!');
+        if (typeof cb === 'function') {
+          cb();
+        }
+      } else {
+        if (err) err.textContent = '❌ Mã PIN không chính xác! Vui lòng thử lại.';
+        if (container) {
+          container.classList.add('animate-bounce');
+          setTimeout(() => container.classList.remove('animate-bounce'), 400);
+        }
+        if (input) {
+          input.value = '';
+          input.focus();
+        }
+      }
+    }
+
+    function logoutAdmin() {
+      sessionStorage.removeItem('sodo_admin_authed');
+      updateAdminHeaderBadge();
+      showToast('Đã khóa quyền quản trị viên.');
+      // If currently editing, cancel edit
+      cancelTableEdit('desktop');
+      cancelTableEdit('mobile');
+    }
+
+    // ==========================================
+    // KẾT NỐI & ĐỒNG BỘ GOOGLE SHEETS
+    // ==========================================
+    function getGoogleSheetUrl() {
+      return (localStorage.getItem('sodo_google_sheet_url') || '').trim();
+    }
+
+    function updateGoogleSheetStatusBadge() {
+      const badge = document.getElementById('gs-status-badge');
+      const input = document.getElementById('input-gs-url');
+      const url = getGoogleSheetUrl();
+      if (input && url) input.value = url;
+      if (!badge) return;
+
+      if (url) {
+        badge.className = 'px-2.5 py-0.5 rounded-full text-[10px] font-bold border bg-emerald-500/20 text-emerald-300 border-emerald-500/40 flex items-center gap-1';
+        badge.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> Đã kết nối Google Sheet';
+      } else {
+        badge.className = 'px-2.5 py-0.5 rounded-full text-[10px] font-bold border bg-slate-800 text-slate-400 border-slate-700';
+        badge.textContent = 'Chưa kết nối';
+      }
+    }
+
+    function saveAndTestGoogleSheetUrl() {
+      const input = document.getElementById('input-gs-url');
+      if (!input) return;
+      const url = input.value.trim();
+      if (!url) {
+        localStorage.removeItem('sodo_google_sheet_url');
+        updateGoogleSheetStatusBadge();
+        showToast('Đã xóa liên kết Google Sheet.');
+        return;
+      }
+
+      if (!url.startsWith('https://script.google.com/macros/s/')) {
+        alert('Cảnh báo: Link Web App Google Apps Script thường bắt đầu bằng:\nhttps://script.google.com/macros/s/.../exec\nVui lòng kiểm tra lại URL triển khai!');
+        return;
+      }
+
+      localStorage.setItem('sodo_google_sheet_url', url);
+      updateGoogleSheetStatusBadge();
+      showToast('Đang kiểm tra kết nối tới Google Sheet...');
+
+      fetchFromGoogleSheet(true);
+    }
+
+    function fetchFromGoogleSheet(isManual = false) {
+      const url = getGoogleSheetUrl();
+      if (!url) return;
+
+      const fetchUrl = url + (url.includes('?') ? '&' : '?') + 'action=get&t=' + Date.now();
+      
+      fetch(fetchUrl)
+        .then(res => res.json())
+        .then(result => {
+          if (result && result.success && Array.isArray(result.data) && result.data.length > 0) {
+            applyImportedArray(result.data);
+            showToast('✓ Đồng bộ dữ liệu mới nhất từ Google Sheet thành công!');
+          } else if (result && result.error) {
+            if (isManual) alert('Lỗi Google Sheet: ' + result.error);
+          } else {
+            if (isManual) showToast('Google Sheet chưa có dữ liệu. Bạn hãy bấm "Khởi tạo 34 bàn"!');
+          }
+        })
+        .catch(err => {
+          console.warn('Google Sheet fetch error:', err);
+          if (isManual) alert('Không thể kết nối tới Google Sheet: ' + err.message);
+        });
+    }
+
+    function initDataToGoogleSheet() {
+      if (!isAdminAuthenticated()) {
+        openPinModal(() => initDataToGoogleSheet());
+        return;
+      }
+      const url = getGoogleSheetUrl();
+      if (!url) {
+        alert('Vui lòng dán và lưu Link Web App Google Apps Script trước khi khởi tạo!');
+        return;
+      }
+
+      if (!confirm('Bạn có chắc chắn muốn đẩy toàn bộ 34 bàn và danh sách khách hiện tại lên Google Sheet không? (Dữ liệu cũ trên Google Sheet sẽ được cập nhật mới)')) {
+        return;
+      }
+
+      showToast('Đang gửi 34 bàn lên Google Sheet...');
+      
+      fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify({
+          action: 'init',
+          pin: ADMIN_PIN,
+          data: allTablesData
+        })
+      })
+      .then(res => res.json())
+      .then(result => {
+        if (result && result.success) {
+          showToast('✓ Đã khởi tạo 34 bàn lên Google Sheet thành công!');
+          updateGoogleSheetStatusBadge();
+        } else {
+          alert('Lỗi khởi tạo: ' + (result ? result.error : 'Không rõ nguyên nhân'));
+        }
+      })
+      .catch(err => {
+        alert('Lỗi kết nối khi gửi dữ liệu lên Google Sheet: ' + err.message);
+      });
+    }
+
+    function syncToGoogleSheet() {
+      const url = getGoogleSheetUrl();
+      if (!url) return;
+
+      fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify({
+          action: 'save',
+          pin: ADMIN_PIN,
+          data: allTablesData
+        })
+      })
+      .then(res => res.json())
+      .then(result => {
+        if (result && result.success) {
+          showToast('✓ Đã lưu đồng bộ lên Google Sheet!');
+        } else {
+          console.warn('Google Sheet sync warn:', result);
+        }
+      })
+      .catch(err => {
+        console.warn('Google Sheet sync error:', err);
+      });
+    }
+
     function startEditMode(target, tableId) {
+      if (!isAdminAuthenticated()) {
+        openPinModal(() => {
+          startEditMode(target, tableId);
+        });
+        return;
+      }
       const t = allTablesData.find(item => item.id === tableId);
       if (!t) return;
       activeEditSession[target] = {
@@ -2150,10 +2560,17 @@
       renderListGrid();
 
       showToast(`✓ Đã lưu thành công Bàn ${t.tableNo} (${t.guestCount} khách)!`);
+      syncToGoogleSheet();
     }
 
     // TÍNH NĂNG HOÁN ĐỔI BÀN (SWAP TABLES)
     function swapTables(sourceId, target) {
+      if (!isAdminAuthenticated()) {
+        openPinModal(() => {
+          swapTables(sourceId, target);
+        });
+        return;
+      }
       const select = document.getElementById('select-swap-table-' + target);
       if (!select || !select.value) {
         alert('Vui lòng chọn bàn muốn hoán đổi vị trí!');
@@ -2213,6 +2630,7 @@
       renderListGrid();
 
       showToast(`✓ Đã đổi vị trí Bàn ${tableA.tableNo} (${tableA.sideName}) và Bàn ${tableB.tableNo} (${tableB.sideName})!`);
+      syncToGoogleSheet();
     }
 
     function resetTableCustomization(tableId, target) {
@@ -2652,6 +3070,7 @@
     function openSyncModal() {
       const modal = document.getElementById('sync-data-modal');
       const textarea = document.getElementById('sync-json-textarea');
+      updateGoogleSheetStatusBadge();
       if (modal) {
         modal.classList.remove('hidden');
         if (textarea) {
@@ -2810,6 +3229,15 @@
       loadCustomizationsFromStorage();
       filterGroup('all');
       renderTableInspector('T_1');
+
+      // Update admin auth UI state
+      updateAdminHeaderBadge();
+      updateGoogleSheetStatusBadge();
+
+      // Check and fetch latest data from Google Sheet if URL exists
+      if (getGoogleSheetUrl()) {
+        fetchFromGoogleSheet(false);
+      }
 
       const modal = document.getElementById('mobile-table-modal');
       if (modal) {
