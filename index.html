@@ -46,13 +46,13 @@
       background: #475569;
     }
     .table-selected {
-      filter: drop-shadow(0 0 16px rgba(245, 158, 11, 0.95));
+      filter: drop-shadow(0 0 16px rgba(255, 255, 255, 0.95));
     }
     .table-hover {
       cursor: pointer;
     }
     .table-hover:hover {
-      filter: drop-shadow(0 0 12px rgba(245, 158, 11, 0.9));
+      filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.7));
     }
     @media print {
       .no-print { display: none !important; }
@@ -86,6 +86,10 @@
 
       <!-- Action buttons -->
       <div class="flex items-center gap-2 no-print">
+        <!-- <button onclick="resetAllTablesToDefault()" class="px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-rose-950/60 text-slate-300 hover:text-rose-200 border border-slate-700 hover:border-rose-500/50 transition flex items-center gap-1.5 shadow" title="Khôi phục dữ liệu bàn và danh sách khách về mặc định ban đầu">
+          <span class="text-rose-400">↺</span>
+          <span class="hidden sm:inline">Đặt Lại Gốc</span>
+        </button> -->
         <button onclick="window.print()" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition flex items-center gap-1.5 shadow">
           <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
           <span class="hidden sm:inline">In Sơ Đồ</span>
@@ -100,17 +104,17 @@
 
   <!-- Filter Pills & Quick Search -->
   <section class="bg-slate-900/60 border-b border-slate-800 px-3 sm:px-4 py-2.5 no-print">
-    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
+    <div class="max-w-7xl mx-auto flex flex-col xl:flex-row items-stretch xl:items-center justify-between gap-3">
       
-      <!-- Metrics Pills -->
-      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 flex-1 max-w-3xl">
-        <button onclick="filterGroup('all')" class="bg-slate-800/80 hover:bg-slate-800 border border-slate-700 rounded-xl p-2 text-left transition group">
+      <!-- Metrics Pills (5 thẻ: Toàn Bộ Sảnh Tiệc, Nhà Trai, Nhà Gái, Bàn VIP, và Bàn Còn Trống Chỗ) -->
+      <div class="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-5 gap-2 flex-1">
+        <button id="btn-filter-all" onclick="filterGroup('all')" class="bg-slate-800/80 hover:bg-slate-800 border border-slate-700 rounded-xl p-2 text-left transition group">
           <div class="text-[10px] text-slate-400 font-medium">Toàn Bộ Sảnh Tiệc</div>
           <div class="text-base font-bold text-white flex items-baseline gap-1">
             <span>34 Bàn</span> <span class="text-[10px] text-amber-300 font-semibold">(32 chính + 2 dự bị)</span>
           </div>
         </button>
-        <button onclick="filterGroup('groom')" class="bg-amber-950/40 hover:bg-amber-900/50 border border-amber-800/60 rounded-xl p-2 text-left transition">
+        <button id="btn-filter-groom" onclick="filterGroup('groom')" class="bg-amber-950/40 hover:bg-amber-900/50 border border-amber-800/60 rounded-xl p-2 text-left transition">
           <div class="text-[10px] text-amber-400 font-medium flex items-center gap-1">
             <span class="w-2 h-2 rounded-full bg-amber-400"></span> Nhà Trai (Bên Trái)
           </div>
@@ -118,7 +122,7 @@
             <span>16 Bàn</span> <span class="text-[10px] text-amber-400/80 font-normal">+ 1 Dự Bị (B17)</span>
           </div>
         </button>
-        <button onclick="filterGroup('bride')" class="bg-rose-950/40 hover:bg-rose-900/50 border border-rose-800/60 rounded-xl p-2 text-left transition">
+        <button id="btn-filter-bride" onclick="filterGroup('bride')" class="bg-rose-950/40 hover:bg-rose-900/50 border border-rose-800/60 rounded-xl p-2 text-left transition">
           <div class="text-[10px] text-rose-400 font-medium flex items-center gap-1">
             <span class="w-2 h-2 rounded-full bg-rose-400"></span> Nhà Gái (Bên Phải)
           </div>
@@ -126,7 +130,7 @@
             <span>16 Bàn</span> <span class="text-[10px] text-rose-400/80 font-normal">+ 1 Dự Bị (B17)</span>
           </div>
         </button>
-        <button onclick="filterGroup('vip')" class="bg-purple-950/40 hover:bg-purple-900/50 border border-purple-800/60 rounded-xl p-2 text-left transition">
+        <button id="btn-filter-vip" onclick="filterGroup('vip')" class="bg-purple-950/40 hover:bg-purple-900/50 border border-purple-800/60 rounded-xl p-2 text-left transition">
           <div class="text-[10px] text-purple-400 font-medium flex items-center gap-1">
             <span class="w-2 h-2 rounded-full bg-purple-400"></span> Khu Bàn VIP 2 Nhà
           </div>
@@ -134,10 +138,18 @@
             <span>8 Bàn VIP</span> <span class="text-[10px] text-purple-400/80 font-normal">Gần Sân Khấu</span>
           </div>
         </button>
+        <button id="btn-filter-available" onclick="filterGroup('available')" class="bg-emerald-950/40 hover:bg-emerald-900/50 border border-emerald-800/60 rounded-xl p-2 text-left transition" title="Lọc xem các bàn còn trống chỗ để tiếp đón khách phát sinh">
+          <div class="text-[10px] text-emerald-400 font-medium flex items-center gap-1">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> Bàn Còn Trống Chỗ
+          </div>
+          <div class="text-base font-bold text-emerald-200 flex items-baseline gap-1">
+            <span id="metric-available-tables">3 Bàn</span> <span id="metric-available-seats" class="text-[10px] text-emerald-300 font-semibold">(21 chỗ trống)</span>
+          </div>
+        </button>
       </div>
 
       <!-- Quick Search Box -->
-      <div class="w-full md:w-80 relative">
+      <div class="w-full xl:w-72 relative">
         <input 
           id="search-input" 
           type="text" 
@@ -180,10 +192,14 @@
           <svg id="hall-svg" viewBox="0 0 1000 1380" class="w-full h-auto select-none block">
             <!-- Definitions for gradients & shadow filters -->
             <defs>
-              <filter id="glow-gold" x="-20%" y="-20%" width="140%" height="140%">
-                <feGaussianBlur stdDeviation="6" result="blur" />
+              <filter id="glow-white" x="-30%" y="-30%" width="160%" height="160%">
+                <feGaussianBlur stdDeviation="5" result="blur" />
                 <feComposite in="SourceGraphic" in2="blur" operator="over" />
               </filter>
+              <radialGradient id="selected-table-fill" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#334155" />
+                <stop offset="100%" stop-color="#1e293b" />
+              </radialGradient>
               <linearGradient id="stage-grad" x1="0%" y1="0%" x2="0%" y2="100%">
                 <stop offset="0%" stop-color="#334155" />
                 <stop offset="100%" stop-color="#1e293b" />
@@ -225,17 +241,17 @@
               </text>
             </g>
 
-            <!-- ENTRANCE DOORS AT BOTTOM WITH ARROWS -->
-            <!-- Left Door -->
-            <rect x="220" y="1290" width="180" height="40" rx="4" fill="#1e293b" stroke="#475569" stroke-width="2" />
-            <!-- Right Door -->
-            <rect x="600" y="1290" width="180" height="40" rx="4" fill="#1e293b" stroke="#475569" stroke-width="2" />
-            
-            <!-- Main Entrance Arrow indicator (Center aligned) -->
-            <g transform="translate(500, 1345)">
+            <!-- ENTRANCE DOORS AT BOTTOM (CỬA RA VÀO PHÍA BÊN TRÁI NHƯ BAN ĐẦU) -->
+            <!-- Left Door: Cửa vào tiệc chính (phía bên trái) -->
+            <rect x="210" y="1290" width="200" height="40" rx="4" fill="#1e293b" stroke="#f59e0b" stroke-width="2" />
+            <!-- Main Entrance Arrow indicator (Left Side) -->
+            <g transform="translate(310, 1345)">
               <text x="0" y="0" fill="#f8fafc" font-size="28" font-weight="bold" text-anchor="middle">⇑</text>
-              <text x="0" y="-22" fill="#94a3b8" font-size="13" font-weight="bold" text-anchor="middle">CỬA VÀO TIỆC CƯỚI</text>
+              <text x="0" y="-22" fill="#fbbf24" font-size="13" font-weight="bold" text-anchor="middle">CỬA VÀO TIỆC</text>
             </g>
+
+            <!-- Right Door -->
+            <rect x="600" y="1290" width="180" height="40" rx="4" fill="#1e293b" stroke="#334155" stroke-width="1.5" stroke-dasharray="4 3" />
 
             <!-- INTERACTIVE TABLES ON LEFT SIDE (NHÀ TRAI - BÊN TRÁI TÍNH TỪ CỬA) -->
             <g id="interactive-tables-left"></g>
@@ -261,6 +277,10 @@
             <span class="w-3 h-3 rounded-full bg-slate-700 border border-dashed border-slate-400"></span>
             <span class="text-slate-400 font-medium">Bàn 17: Dự Bị Duy Nhất</span>
           </div>
+          <div class="flex items-center gap-1.5">
+            <span class="w-3 h-3 rounded-full bg-white shadow-sm ring-2 ring-white/50"></span>
+            <span class="text-white font-bold">Bàn Đang Chọn (Màu trắng)</span>
+          </div>
         </div>
         <div class="text-amber-300 font-medium">
           💡 Chạm vào bàn bất kỳ để xem danh sách khách, đổi tên, đổi màu hoặc <strong>đổi bàn</strong>
@@ -277,27 +297,6 @@
         <!-- Rendered by JS -->
       </div>
 
-      <!-- Banquet Coordinator Quick Notes -->
-      <div class="bg-slate-900/60 border border-slate-800/80 rounded-2xl p-4 text-xs space-y-2 text-slate-300">
-        <h4 class="font-bold text-amber-400 uppercase tracking-wider text-[11px] flex items-center gap-1.5">
-          <span>📋</span> Hướng dẫn bố trí & Tiếp khách
-        </h4>
-        <ul class="space-y-1.5 text-slate-400 text-[11px] leading-relaxed">
-          <li class="flex items-start gap-1.5">
-            <span class="text-amber-400 font-bold">•</span>
-            <span><strong>Chỉ Bàn 17 là Bàn Dự Bị:</strong> Cả 2 bên Nhà Trai và Nhà Gái đều bố trí 16 bàn chính thức (Bàn 1 - 16) và duy nhất Bàn 17 ở cuối hàng giữa là bàn dự bị.</span>
-          </li>
-          <li class="flex items-start gap-1.5">
-            <span class="text-amber-400 font-bold">•</span>
-            <span><strong>Hiển thị 3 thông tin trên mỗi bàn:</strong> Số bàn + Phân loại bàn + Số khách (chuẩn 1 bàn 10 khách).</span>
-          </li>
-          <li class="flex items-start gap-1.5">
-            <span class="text-amber-400 font-bold">•</span>
-            <span><strong>Tính năng Đổi Bàn:</strong> Nhấp vào bàn và bấm <em>"✏️ Sửa Tên, Màu & Đổi Bàn"</em> để hoán đổi vị trí giữa 2 bàn bất kỳ cực kỳ nhanh chóng.</span>
-          </li>
-        </ul>
-      </div>
-
     </div>
 
     <!-- FULL TABLE LIST VIEW MODAL -->
@@ -312,6 +311,7 @@
             <button onclick="setListViewFilter('all')" id="btn-list-filter-all" class="px-2.5 py-1 rounded bg-amber-500 text-slate-950">Tất Cả</button>
             <button onclick="setListViewFilter('groom')" id="btn-list-filter-groom" class="px-2.5 py-1 rounded text-slate-300 hover:text-white">Nhà Trai</button>
             <button onclick="setListViewFilter('bride')" id="btn-list-filter-bride" class="px-2.5 py-1 rounded text-slate-300 hover:text-white">Nhà Gái</button>
+            <button onclick="setListViewFilter('available')" id="btn-list-filter-available" class="px-2.5 py-1 rounded text-emerald-400 hover:text-white">Còn Trống</button>
           </div>
           <button onclick="toggleListView()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-xs font-bold transition">
             ✕ Đóng
@@ -388,7 +388,7 @@
         tableNo: 1,
         side: "groom",
         sideName: "Nhà Trai",
-        cx: 390, cy: 330,
+        cx: 400, cy: 445,
         cadId: "L_INNER_1",
         displayCategory: "VIP 1",
         customColor: "#f59e0b",
@@ -412,7 +412,7 @@
         tableNo: 2,
         side: "groom",
         sideName: "Nhà Trai",
-        cx: 280, cy: 250,
+        cx: 275, cy: 350,
         cadId: "L_MID_1",
         displayCategory: "VIP 2",
         customColor: "#10b981",
@@ -439,7 +439,7 @@
         tableNo: 3,
         side: "groom",
         sideName: "Nhà Trai",
-        cx: 170, cy: 175,
+        cx: 150, cy: 265,
         cadId: "L_OUTER_1",
         displayCategory: "VIP 3",
         customColor: "#10b981",
@@ -463,7 +463,7 @@
         tableNo: 4,
         side: "groom",
         sideName: "Nhà Trai",
-        cx: 390, cy: 445,
+        cx: 400, cy: 580,
         cadId: "L_INNER_2",
         displayCategory: "Bên Nội",
         customColor: "#f59e0b",
@@ -487,7 +487,7 @@
         tableNo: 5,
         side: "groom",
         sideName: "Nhà Trai",
-        cx: 280, cy: 375,
+        cx: 275, cy: 500,
         cadId: "L_MID_2",
         displayCategory: "Bên Ngoại",
         customColor: "#10b981",
@@ -509,7 +509,7 @@
         tableNo: 6,
         side: "groom",
         sideName: "Nhà Trai",
-        cx: 170, cy: 310,
+        cx: 150, cy: 420,
         cadId: "L_OUTER_2",
         displayCategory: "Bên Ngoại",
         customColor: "#10b981",
@@ -533,7 +533,7 @@
         tableNo: 7,
         side: "groom",
         sideName: "Nhà Trai",
-        cx: 390, cy: 565,
+        cx: 400, cy: 725,
         cadId: "L_INNER_3",
         displayCategory: "Thanh Niên",
         customColor: "#f59e0b",
@@ -559,7 +559,7 @@
         tableNo: 8,
         side: "groom",
         sideName: "Nhà Trai",
-        cx: 280, cy: 500,
+        cx: 275, cy: 650,
         cadId: "L_MID_3",
         displayCategory: "Bên Ngoại",
         customColor: "#10b981",
@@ -583,7 +583,7 @@
         tableNo: 9,
         side: "groom",
         sideName: "Nhà Trai",
-        cx: 170, cy: 440,
+        cx: 150, cy: 575,
         cadId: "L_OUTER_3",
         displayCategory: "Bên Ngoại",
         customColor: "#10b981",
@@ -605,7 +605,7 @@
         tableNo: 10,
         side: "groom",
         sideName: "Nhà Trai",
-        cx: 390, cy: 690,
+        cx: 400, cy: 875,
         cadId: "L_INNER_4",
         displayCategory: "Bên Ngoại",
         customColor: "#10b981",
@@ -627,7 +627,7 @@
         tableNo: 11,
         side: "groom",
         sideName: "Nhà Trai",
-        cx: 280, cy: 625,
+        cx: 275, cy: 800,
         cadId: "L_MID_4",
         displayCategory: "Bạn Má",
         customColor: "#3b82f6",
@@ -651,7 +651,7 @@
         tableNo: 12,
         side: "groom",
         sideName: "Nhà Trai",
-        cx: 170, cy: 565,
+        cx: 150, cy: 730,
         cadId: "L_OUTER_4",
         displayCategory: "Bạn Má",
         customColor: "#3b82f6",
@@ -680,7 +680,7 @@
         tableNo: 13,
         side: "groom",
         sideName: "Nhà Trai",
-        cx: 280, cy: 755,
+        cx: 275, cy: 955,
         cadId: "L_MID_5",
         displayCategory: "Bàn 13",
         customColor: "#f97316",
@@ -702,7 +702,7 @@
         tableNo: 14,
         side: "groom",
         sideName: "Nhà Trai",
-        cx: 170, cy: 690,
+        cx: 150, cy: 880,
         cadId: "L_OUTER_5",
         displayCategory: "A Vĩ",
         customColor: "#3b82f6",
@@ -726,7 +726,7 @@
         tableNo: 15,
         side: "groom",
         sideName: "Nhà Trai",
-        cx: 390, cy: 815,
+        cx: 400, cy: 1025,
         cadId: "L_INNER_5",
         displayCategory: "Khách Mời",
         customColor: "#8b5cf6",
@@ -748,7 +748,7 @@
         tableNo: 16,
         side: "groom",
         sideName: "Nhà Trai",
-        cx: 170, cy: 820,
+        cx: 150, cy: 1030,
         cadId: "L_OUTER_6",
         displayCategory: "Đồng Nghiệp",
         customColor: "#06b6d4",
@@ -770,7 +770,7 @@
         tableNo: 17,
         side: "groom",
         sideName: "Nhà Trai",
-        cx: 280, cy: 885,
+        cx: 275, cy: 1110,
         cadId: "L_MID_6",
         displayCategory: "DỰ BỊ",
         customColor: "#64748b",
@@ -793,7 +793,7 @@
         tableNo: 1,
         side: "bride",
         sideName: "Nhà Gái",
-        cx: 610, cy: 330,
+        cx: 600, cy: 445,
         cadId: "R_INNER_1",
         displayCategory: "VIP 1 GĐ",
         customColor: "#f43f5e",
@@ -822,7 +822,7 @@
         tableNo: 2,
         side: "bride",
         sideName: "Nhà Gái",
-        cx: 720, cy: 250,
+        cx: 725, cy: 350,
         cadId: "R_MID_1",
         displayCategory: "VIP 2 GĐ",
         customColor: "#f43f5e",
@@ -851,7 +851,7 @@
         tableNo: 3,
         side: "bride",
         sideName: "Nhà Gái",
-        cx: 830, cy: 175,
+        cx: 850, cy: 265,
         cadId: "R_OUTER_1",
         displayCategory: "VIP 3",
         customColor: "#f59e0b",
@@ -880,7 +880,7 @@
         tableNo: 4,
         side: "bride",
         sideName: "Nhà Gái",
-        cx: 610, cy: 445,
+        cx: 600, cy: 580,
         cadId: "R_INNER_2",
         displayCategory: "Lìn Có",
         customColor: "#f43f5e",
@@ -902,7 +902,7 @@
         tableNo: 5,
         side: "bride",
         sideName: "Nhà Gái",
-        cx: 720, cy: 375,
+        cx: 725, cy: 500,
         cadId: "R_MID_2",
         displayCategory: "VIP 4",
         customColor: "#f59e0b",
@@ -923,7 +923,7 @@
         tableNo: 6,
         side: "bride",
         sideName: "Nhà Gái",
-        cx: 830, cy: 310,
+        cx: 850, cy: 420,
         cadId: "R_OUTER_2",
         displayCategory: "VIP 5 GĐ",
         customColor: "#f59e0b",
@@ -952,7 +952,7 @@
         tableNo: 7,
         side: "bride",
         sideName: "Nhà Gái",
-        cx: 610, cy: 565,
+        cx: 600, cy: 725,
         cadId: "R_INNER_3",
         displayCategory: "Cấp 3",
         customColor: "#06b6d4",
@@ -981,7 +981,7 @@
         tableNo: 8,
         side: "bride",
         sideName: "Nhà Gái",
-        cx: 720, cy: 500,
+        cx: 725, cy: 650,
         cadId: "R_MID_3",
         displayCategory: "Cấp 2",
         customColor: "#06b6d4",
@@ -1010,7 +1010,7 @@
         tableNo: 9,
         side: "bride",
         sideName: "Nhà Gái",
-        cx: 830, cy: 440,
+        cx: 850, cy: 575,
         cadId: "R_OUTER_3",
         displayCategory: "Ngoại",
         customColor: "#10b981",
@@ -1039,7 +1039,7 @@
         tableNo: 10,
         side: "bride",
         sideName: "Nhà Gái",
-        cx: 610, cy: 690,
+        cx: 600, cy: 875,
         cadId: "R_INNER_4",
         displayCategory: "Vin 1",
         customColor: "#3b82f6",
@@ -1068,7 +1068,7 @@
         tableNo: 11,
         side: "bride",
         sideName: "Nhà Gái",
-        cx: 720, cy: 625,
+        cx: 725, cy: 800,
         cadId: "R_MID_4",
         displayCategory: "Vin 2",
         customColor: "#3b82f6",
@@ -1097,7 +1097,7 @@
         tableNo: 12,
         side: "bride",
         sideName: "Nhà Gái",
-        cx: 830, cy: 565,
+        cx: 850, cy: 730,
         cadId: "R_OUTER_4",
         displayCategory: "NVL",
         customColor: "#8b5cf6",
@@ -1126,7 +1126,7 @@
         tableNo: 13,
         side: "bride",
         sideName: "Nhà Gái",
-        cx: 720, cy: 755,
+        cx: 725, cy: 955,
         cadId: "R_MID_5",
         displayCategory: "Cen",
         customColor: "#8b5cf6",
@@ -1155,7 +1155,7 @@
         tableNo: 14,
         side: "bride",
         sideName: "Nhà Gái",
-        cx: 830, cy: 690,
+        cx: 850, cy: 880,
         cadId: "R_OUTER_5",
         displayCategory: "Vin 3",
         customColor: "#3b82f6",
@@ -1184,7 +1184,7 @@
         tableNo: 15,
         side: "bride",
         sideName: "Nhà Gái",
-        cx: 610, cy: 815,
+        cx: 600, cy: 1025,
         cadId: "R_INNER_5",
         displayCategory: "Khách Iu",
         customColor: "#f43f5e",
@@ -1213,7 +1213,7 @@
         tableNo: 16,
         side: "bride",
         sideName: "Nhà Gái",
-        cx: 830, cy: 820,
+        cx: 850, cy: 1030,
         cadId: "R_OUTER_6",
         displayCategory: "Nail Thủy",
         customColor: "#f43f5e",
@@ -1243,7 +1243,7 @@
         tableNo: 17,
         side: "bride",
         sideName: "Nhà Gái",
-        cx: 720, cy: 885,
+        cx: 725, cy: 1110,
         cadId: "R_MID_6",
         displayCategory: "DỰ BỊ",
         customColor: "#64748b",
@@ -1303,22 +1303,53 @@
       }
     }
 
+    function resetAllTablesToDefault() {
+      if (confirm('Bạn có chắc chắn muốn đặt lại toàn bộ sơ đồ và danh sách khách về mặc định ban đầu không?\n(Mọi chỉnh sửa lưu tạm trên trình duyệt sẽ được làm mới)')) {
+        localStorage.removeItem('sodo_all_tables_v2');
+        location.reload();
+      }
+    }
+
     function loadCustomizationsFromStorage() {
       try {
         const raw = localStorage.getItem('sodo_all_tables_v2');
         if (!raw) return;
         const customMap = JSON.parse(raw);
+
+        // Detect if storage was corrupted with empty guests for non-spare tables
+        const emptyNonSpareCount = allTablesData.filter(t => t.group !== 'spare' && customMap[t.id] && Array.isArray(customMap[t.id].guests) && customMap[t.id].guests.length === 0).length;
+        const ignoreEmptyGuests = emptyNonSpareCount >= 5;
+
         allTablesData.forEach(t => {
           if (customMap[t.id]) {
             const data = customMap[t.id];
-            if (data.customLabel !== undefined) t.customLabel = data.customLabel;
-            if (data.displayCategory) t.displayCategory = data.displayCategory;
+            if (data.customLabel !== undefined && data.customLabel !== '') {
+              t.customLabel = data.customLabel;
+              t.displayCategory = data.customLabel;
+            }
             if (data.customColor) t.customColor = data.customColor;
-            if (data.groupName) t.groupName = data.groupName;
-            if (data.guestCount !== undefined) t.guestCount = data.guestCount;
+
+            // Auto-clean: if customLabel is set (e.g. 'Bạn má'), ensure groupName reflects it if groupName was still the old default
+            if (t.customLabel && t.customLabel.trim() !== '') {
+              if (!data.groupName || data.groupName === 'Bên Ngoại 5 (Mỹ & Phong)' || data.groupName.includes('Bên Ngoại 5') || data.groupName.includes('VIP Bên') || data.groupName === t.displayCategory) {
+                t.groupName = t.customLabel;
+              } else {
+                t.groupName = data.groupName;
+              }
+            } else if (data.groupName) {
+              t.groupName = data.groupName;
+            }
+
             if (data.status) t.status = data.status;
             if (data.highlight) t.highlight = data.highlight;
-            if (data.guests) t.guests = data.guests;
+
+            if (data.guests && Array.isArray(data.guests) && data.guests.length > 0) {
+              t.guests = data.guests;
+              t.guestCount = data.guests.reduce((sum, g) => sum + (parseInt(g.count, 10) || 0), 0);
+            } else if (!ignoreEmptyGuests && data.guests) {
+              t.guests = data.guests;
+              if (data.guestCount !== undefined) t.guestCount = data.guestCount;
+            }
           }
         });
       } catch (e) {
@@ -1392,6 +1423,7 @@
       if (currentFilter === 'groom' && t.side !== 'groom') opacity = '0.2';
       else if (currentFilter === 'bride' && t.side !== 'bride') opacity = '0.2';
       else if (currentFilter === 'vip' && !t.displayCategory.includes('VIP')) opacity = '0.2';
+      else if (currentFilter === 'available' && t.guestCount >= 10) opacity = '0.2';
 
       // 3 Info Lines on Table:
       // Line 1: Table Number ("BÀN 1" ...)
@@ -1411,20 +1443,22 @@
            style="opacity: ${opacity}">
           
           <!-- Exactly 10 Chairs surrounding table -->
-          ${generateChairPath(t.cx, t.cy, tableRadius, 10, isSelected ? '#fbbf24' : chairColor)}
+          ${generateChairPath(t.cx, t.cy, tableRadius, 10, isSelected ? '#ffffff' : chairColor)}
 
-          <!-- Glow effect if selected -->
+          <!-- Glow effect if selected (Luminous White Glow) or if matching available filter -->
           ${isSelected ? `
-            <circle cx="${t.cx}" cy="${t.cy}" r="${tableRadius + 6}" fill="none" stroke="#fbbf24" stroke-width="4" filter="url(#glow-gold)" opacity="0.95" />
-          ` : ''}
+            <circle cx="${t.cx}" cy="${t.cy}" r="${tableRadius + 6}" fill="none" stroke="#ffffff" stroke-width="3.5" filter="url(#glow-white)" opacity="1" />
+          ` : (currentFilter === 'available' && t.guestCount < 10 ? `
+            <circle cx="${t.cx}" cy="${t.cy}" r="${tableRadius + 5}" fill="none" stroke="#34d399" stroke-width="2.5" stroke-dasharray="4 2" opacity="0.95" />
+          ` : '')}
 
           <!-- Round Table Body -->
           <circle 
             cx="${t.cx}" 
             cy="${t.cy}" 
             r="${tableRadius}" 
-            fill="${isSelected ? '#1e293b' : '#0b1120'}" 
-            stroke="${isSelected ? '#fbbf24' : mainColor}" 
+            fill="${isSelected ? 'url(#selected-table-fill)' : '#0b1120'}" 
+            stroke="${isSelected ? '#ffffff' : mainColor}" 
             stroke-width="${isSelected ? 3.5 : 2.5}" 
             stroke-dasharray="${isSpare ? '4 3' : 'none'}"
           />
@@ -1433,9 +1467,9 @@
           <text 
             x="${t.cx}" 
             y="${t.cy - 12}" 
-            fill="${mainColor}" 
+            fill="${isSelected ? '#ffffff' : mainColor}" 
             font-size="9" 
-            font-weight="800" 
+            font-weight="900" 
             text-anchor="middle"
             letter-spacing="0.5">
             ${tableLabel}
@@ -1445,7 +1479,7 @@
           <text 
             x="${t.cx}" 
             y="${t.cy + 1.5}" 
-            fill="${isSelected ? '#fbbf24' : '#ffffff'}" 
+            fill="#ffffff" 
             font-size="${fontSize}" 
             font-weight="900" 
             text-anchor="middle"
@@ -1461,8 +1495,8 @@
             height="14" 
             rx="7" 
             fill="${badgeBg}" 
-            stroke="${mainColor}" 
-            stroke-width="1.2"
+            stroke="${isSelected ? '#ffffff' : mainColor}" 
+            stroke-width="${isSelected ? 1.5 : 1.2}"
           />
           <text 
             x="${t.cx}" 
@@ -1478,7 +1512,19 @@
       `;
     }
 
+    function updateMetricsPills() {
+      const availableTables = allTablesData.filter(t => t.guestCount < 10);
+      const emptySeats = availableTables.reduce((sum, t) => sum + Math.max(0, 10 - t.guestCount), 0);
+      const elTables = document.getElementById('metric-available-tables');
+      const elSeats = document.getElementById('metric-available-seats');
+      if (elTables) elTables.textContent = `${availableTables.length} Bàn`;
+      if (elSeats) elSeats.textContent = `(${emptySeats} chỗ trống)`;
+    }
+
     function renderHallPlan() {
+      // Dynamic update for available seats & tables KPI
+      updateMetricsPills();
+
       // 1. Render Left Side (Nhà Trai) Tables
       const leftContainer = document.getElementById('interactive-tables-left');
       const groomTables = allTablesData.filter(t => t.side === 'groom');
@@ -1520,16 +1566,16 @@
           <!-- 1. Tên phân loại đại diện hiển thị trên bàn -->
           <div>
             <label class="block text-xs font-bold text-slate-200 mb-1">
-              🏷️ Phân loại / Tên đại diện <span class="text-[11px] font-normal text-amber-300">(Hiển thị trực tiếp trên bàn)</span>:
+              🏷️ Phân loại / Tên đại diện <span class="text-[11px] font-normal text-amber-300">(Hiển thị trực tiếp trên bàn & tiêu đề)</span>:
             </label>
             <input 
               id="input-edit-label-${target}" 
               type="text" 
               value="${escapeXml(currentLabel)}" 
-              placeholder="Vd: VIP, Chú Rể, Cô Dâu, Vin 1, Cấp 3..." 
-              maxlength="18"
+              placeholder="Vd: VIP, Bạn Má, Chú Rể, Vin 1, Cấp 3..." 
+              maxlength="20"
               class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400 transition"
-              oninput="updateEditPreview('${target}', '${t.id}')"
+              oninput="onEditLabelInput('${target}', this.value)"
             />
             <!-- Quick Chips -->
             <div class="flex flex-wrap gap-1.5 mt-2">
@@ -1573,19 +1619,34 @@
             </div>
           </div>
 
-          <!-- 3. Tên phân nhóm chi tiết -->
-          <div>
-            <label class="block text-xs font-bold text-slate-200 mb-1">
-              👥 Tên phân nhóm chi tiết:
-            </label>
-            <input 
-              id="input-edit-group-${target}" 
-              type="text" 
-              value="${escapeXml(currentGroup)}" 
-              placeholder="Vd: VIP 1 Gia Đình Nhà Gái, Bạn Cấp 3..." 
-              class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400 transition"
-              oninput="syncCurrentFormInputs('${target}')"
-            />
+          <!-- 3. Tên phân nhóm chi tiết & Ghi chú đặc điểm -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+            <div>
+              <label class="block text-xs font-bold text-slate-200 mb-1">
+                👥 Tên phân nhóm chi tiết:
+              </label>
+              <input 
+                id="input-edit-group-${target}" 
+                type="text" 
+                value="${escapeXml(currentGroup)}" 
+                placeholder="Vd: Bạn Má (Nhóm bạn thân), Cấp 3..." 
+                class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400 transition"
+                oninput="syncCurrentFormInputs('${target}')"
+              />
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-200 mb-1">
+                ★ Ghi chú đặc điểm bàn:
+              </label>
+              <input 
+                id="input-edit-highlight-${target}" 
+                type="text" 
+                value="${escapeXml((session.tempHighlight !== undefined) ? session.tempHighlight : (t.highlight || ''))}" 
+                placeholder="Vd: Bạn thân của Má, cạnh lối đi..." 
+                class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400 transition"
+                oninput="syncCurrentFormInputs('${target}')"
+              />
+            </div>
           </div>
 
           <!-- 4. CHỈNH SỬA DANH SÁCH KHÁCH MỜI TRONG BÀN -->
@@ -1725,6 +1786,7 @@
         selectedColor: getTableColor(t),
         tempLabel: t.customLabel || t.displayCategory || '',
         tempGroup: t.groupName || '',
+        tempHighlight: t.highlight || '',
         tempGuests: JSON.parse(JSON.stringify(t.guests || []))
       };
       if (target === 'mobile') {
@@ -1736,7 +1798,7 @@
 
     function cancelTableEdit(target) {
       const tableId = activeEditSession[target].tableId || currentSelectedId;
-      activeEditSession[target] = { isEditing: false, tableId: null, selectedColor: '', tempLabel: '', tempGroup: '', tempGuests: [] };
+      activeEditSession[target] = { isEditing: false, tableId: null, selectedColor: '', tempLabel: '', tempGroup: '', tempHighlight: '', tempGuests: [] };
       if (target === 'mobile') {
         openMobileModal(tableId);
       } else {
@@ -1749,17 +1811,36 @@
       if (!session) return;
       const inputLabel = document.getElementById('input-edit-label-' + target);
       const inputGroup = document.getElementById('input-edit-group-' + target);
+      const inputHighlight = document.getElementById('input-edit-highlight-' + target);
       if (inputLabel) session.tempLabel = inputLabel.value;
       if (inputGroup) session.tempGroup = inputGroup.value;
+      if (inputHighlight) session.tempHighlight = inputHighlight.value;
     }
 
     function setLabelTag(target, tag) {
       const input = document.getElementById('input-edit-label-' + target);
+      const inputGroup = document.getElementById('input-edit-group-' + target);
       if (input) {
         input.value = tag;
-        if (activeEditSession[target]) activeEditSession[target].tempLabel = tag;
+        if (activeEditSession[target]) {
+          activeEditSession[target].tempLabel = tag;
+          activeEditSession[target].tempGroup = tag;
+        }
+        if (inputGroup) inputGroup.value = tag;
         updateEditPreview(target, activeEditSession[target].tableId);
       }
+    }
+
+    function onEditLabelInput(target, val) {
+      const session = activeEditSession[target];
+      if (!session) return;
+      session.tempLabel = val;
+      const inputGroup = document.getElementById('input-edit-group-' + target);
+      if (inputGroup && (!session.tempGroup || session.tempGroup === '' || session.tempGroup === session.tempLabel)) {
+        inputGroup.value = val;
+        session.tempGroup = val;
+      }
+      updateEditPreview(target, session.tableId);
     }
 
     function setColorChoice(target, color) {
@@ -1907,14 +1988,27 @@
 
       const inputLabel = document.getElementById('input-edit-label-' + target);
       const inputGroup = document.getElementById('input-edit-group-' + target);
+      const inputHighlight = document.getElementById('input-edit-highlight-' + target);
       const newLabel = inputLabel ? inputLabel.value.trim() : (session ? session.tempLabel || '' : '');
-      const newGroup = inputGroup ? inputGroup.value.trim() : (session ? session.tempGroup || t.groupName : t.groupName);
+      const newGroup = inputGroup ? inputGroup.value.trim() : (session ? session.tempGroup || '' : '');
+      const newHighlight = inputHighlight ? inputHighlight.value.trim() : (session ? session.tempHighlight || '' : '');
       const newColor = (session && session.selectedColor) ? session.selectedColor : t.customColor;
 
       t.customLabel = newLabel;
       t.displayCategory = newLabel || t.displayCategory;
       t.customColor = newColor;
-      if (newGroup) t.groupName = newGroup;
+
+      if (newGroup && newGroup !== '') {
+        t.groupName = newGroup;
+      } else if (newLabel) {
+        t.groupName = newLabel;
+      }
+
+      if (newHighlight) {
+        t.highlight = newHighlight;
+      } else if (newLabel && t.highlight.includes('Ngoại')) {
+        t.highlight = `Bàn ${newLabel} - ${t.position}`;
+      }
 
       // Save guest list from session.tempGuests
       if (session && session.tempGuests) {
@@ -2092,9 +2186,9 @@
               </span>
               <span class="text-[11px] text-slate-400 font-medium">${t.status}</span>
             </div>
-            <h3 class="text-xl font-black text-white mt-1.5 flex items-center gap-1.5">
+            <h3 class="text-xl font-black text-white mt-1.5 flex items-center gap-1.5 flex-wrap">
               <span>BÀN ${t.tableNo}:</span>
-              <span style="color: ${mainColor};">${t.groupName}</span>
+              <span style="color: ${mainColor};">${escapeXml(t.customLabel || t.groupName || t.displayCategory)}</span>
             </h3>
             <p class="text-xs text-slate-400 mt-1 flex items-center gap-1">
               <span>📍</span> <span>${t.position}</span>
@@ -2113,7 +2207,7 @@
         </div>
 
         <div class="bg-slate-950/70 rounded-xl p-3 my-3 border border-slate-800/80 text-xs text-slate-300 leading-relaxed">
-          <span class="text-amber-400 font-bold">★ Vị trí & Đặc điểm:</span> ${t.highlight}
+          <span class="text-amber-400 font-bold">★ Vị trí & Đặc điểm:</span> ${t.customLabel && t.highlight.includes('Ngoại') && !t.customLabel.toLowerCase().includes('ngoại') ? `Bàn ${t.customLabel} • ${t.position}` : t.highlight}
         </div>
 
         <div class="flex-1 flex flex-col">
@@ -2134,8 +2228,8 @@
 
         <div class="mt-4 pt-3 border-t border-slate-800 flex items-center justify-between text-xs">
           <span class="text-slate-400">Tiêu chuẩn: <strong class="text-amber-300">1 bàn 10 khách</strong></span>
-          <span class="${t.guestCount === 10 ? 'text-emerald-400' : (t.guestCount > 10 ? 'text-amber-400' : 'text-slate-400')} font-bold">
-            ${isSpare ? 'Bàn Dự Bị Sẵn Sàng' : (t.guestCount === 10 ? '✓ Đủ 10 khách' : (t.guestCount > 10 ? '⚠ Vượt tiêu chuẩn' : 'Còn trống chỗ'))}
+          <span class="${t.guestCount === 10 ? 'text-emerald-400' : (t.guestCount > 10 ? 'text-amber-400' : 'text-blue-400')} font-bold">
+            ${isSpare ? 'Bàn Dự Bị (Còn 10 chỗ)' : (t.guestCount === 10 ? '✓ Đủ 10 khách' : (t.guestCount > 10 ? '⚠ Vượt tiêu chuẩn' : `Còn trống ${10 - t.guestCount} chỗ`))}
           </span>
         </div>
       `;
@@ -2179,7 +2273,7 @@
         </div>
         <h3 class="text-lg font-black text-white mt-1 flex items-center gap-1.5 flex-wrap">
           <span>BÀN ${t.tableNo}:</span>
-          <span style="color: ${mainColor};">${t.groupName}</span>
+          <span style="color: ${mainColor};">${escapeXml(t.customLabel || t.groupName || t.displayCategory)}</span>
         </h3>
         <p class="text-[11px] text-slate-400 mt-0.5">📍 ${t.position}</p>
       `;
@@ -2255,7 +2349,7 @@
           <div class="text-right">
             <div class="text-[10px] text-slate-400 uppercase font-semibold">Tiêu chuẩn bàn</div>
             <div class="text-xs font-bold ${t.guestCount === 10 ? 'text-emerald-400' : (t.guestCount > 10 ? 'text-amber-400' : 'text-blue-400')}">
-              ${isSpare ? 'Bàn Dự Bị Sẵn Sàng' : (t.guestCount === 10 ? '✓ Đủ 10 khách' : (t.guestCount > 10 ? '⚠ Vượt tiêu chuẩn' : 'Còn trống chỗ'))}
+              ${isSpare ? 'Bàn Dự Bị (Còn 10 chỗ)' : (t.guestCount === 10 ? '✓ Đủ 10 khách' : (t.guestCount > 10 ? '⚠ Vượt tiêu chuẩn' : `Còn trống ${10 - t.guestCount} chỗ`))}
             </div>
           </div>
         </div>
@@ -2295,7 +2389,22 @@
     }
 
     function filterGroup(group) {
-      currentFilter = group;
+      if (currentFilter === group && group !== 'all') {
+        currentFilter = 'all';
+      } else {
+        currentFilter = group;
+      }
+      
+      const filterBtns = ['all', 'groom', 'bride', 'vip', 'available'];
+      filterBtns.forEach(key => {
+        const btn = document.getElementById(`btn-filter-${key}`);
+        if (!btn) return;
+        if (currentFilter === key) {
+          btn.classList.add('ring-2', 'ring-white/90', 'shadow-lg');
+        } else {
+          btn.classList.remove('ring-2', 'ring-white/90', 'shadow-lg');
+        }
+      });
       renderHallPlan();
     }
 
@@ -2358,13 +2467,13 @@
 
     function setListViewFilter(filter) {
       listViewFilter = filter;
-      ['all', 'groom', 'bride'].forEach(f => {
+      ['all', 'groom', 'bride', 'available'].forEach(f => {
         const btn = document.getElementById('btn-list-filter-' + f);
         if (btn) {
           if (f === filter) {
-            btn.className = 'px-2.5 py-1 rounded bg-amber-500 text-slate-950';
+            btn.className = 'px-2.5 py-1 rounded bg-amber-500 text-slate-950 font-bold';
           } else {
-            btn.className = 'px-2.5 py-1 rounded text-slate-300 hover:text-white';
+            btn.className = 'px-2.5 py-1 rounded text-slate-300 hover:text-white font-bold';
           }
         }
       });
@@ -2376,24 +2485,29 @@
       let filtered = allTablesData;
       if (listViewFilter === 'groom') filtered = allTablesData.filter(t => t.side === 'groom');
       else if (listViewFilter === 'bride') filtered = allTablesData.filter(t => t.side === 'bride');
+      else if (listViewFilter === 'available') filtered = allTablesData.filter(t => t.guestCount < 10);
 
       grid.innerHTML = filtered.map(t => {
         const mainColor = getTableColor(t);
         const badgeSide = t.side === 'groom' ? 'Nhà Trai' : 'Nhà Gái';
+        const isAvailable = t.guestCount < 10;
+        const emptyCount = Math.max(0, 10 - t.guestCount);
         return `
-          <div onclick="jumpFromListToTable('${t.id}')" class="bg-slate-950 border border-slate-800 hover:border-amber-400/80 rounded-xl p-3.5 flex flex-col justify-between cursor-pointer transition">
+          <div onclick="jumpFromListToTable('${t.id}')" class="bg-slate-950 border ${isAvailable && listViewFilter === 'available' ? 'border-emerald-500/80 shadow-md shadow-emerald-950/40' : 'border-slate-800'} hover:border-amber-400/80 rounded-xl p-3.5 flex flex-col justify-between cursor-pointer transition">
             <div>
               <div class="flex items-center justify-between mb-2">
                 <span class="text-xs font-bold px-2 py-0.5 rounded border" style="border-color: ${mainColor}60; background-color: ${mainColor}20; color: ${mainColor};">
                   [${badgeSide}] BÀN ${t.tableNo} • ${escapeXml(t.customLabel || t.displayCategory)}
                 </span>
-                <span class="text-xs font-bold text-amber-400">${t.guestCount} / 10 khách</span>
+                ${isAvailable 
+                  ? `<span class="text-xs font-bold text-emerald-400 bg-emerald-950/60 border border-emerald-800/80 px-2 py-0.5 rounded">${t.guestCount}/10 khách (${emptyCount} chỗ trống)</span>` 
+                  : `<span class="text-xs font-bold text-amber-400">${t.guestCount} / 10 khách</span>`}
               </div>
               <h4 class="font-bold text-sm text-white">${t.groupName}</h4>
               <p class="text-[11px] text-slate-400 mb-2">${t.position}</p>
 
               <div class="space-y-1 text-xs border-t border-slate-800/80 pt-2">
-                ${t.guests.length === 0 ? `<div class="text-slate-500 text-[11px] italic">Bàn dự bị sẵn sàng</div>` : t.guests.map(g => `
+                ${t.guests.length === 0 ? `<div class="text-emerald-400 font-semibold text-[11px] italic">★ Bàn dự bị sẵn sàng (Trống 10 chỗ)</div>` : t.guests.map(g => `
                   <div class="flex items-center justify-between text-slate-300 text-[11px]">
                     <span class="truncate">${g.name}</span>
                     <span class="text-amber-300/90 font-semibold">${g.count > 0 ? g.count + ' ng' : 'Dự bị'}</span>
@@ -2434,7 +2548,7 @@
     // Initialize
     document.addEventListener('DOMContentLoaded', () => {
       loadCustomizationsFromStorage();
-      renderHallPlan();
+      filterGroup('all');
       renderTableInspector('T_1');
 
       const modal = document.getElementById('mobile-table-modal');
