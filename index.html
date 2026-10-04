@@ -82,100 +82,155 @@
           <h1 class="text-base sm:text-lg md:text-xl font-bold bg-gradient-to-r from-amber-200 via-rose-300 to-yellow-400 bg-clip-text text-transparent">
             Sơ Đồ Phân Bổ Chỗ Ngồi Sảnh Tiệc Cưới - Nhà Trai & Nhà Gái
           </h1>
-          <p class="text-xs text-slate-400 flex items-center gap-1.5 sm:gap-2 flex-wrap">
-            <span class="text-amber-300 font-semibold">Bên Trái: Nhà Trai</span>
-            <span>•</span>
-            <span class="text-rose-300 font-semibold">Bên Phải: Nhà Gái</span>
-            <span>•</span>
-            <span>Tiêu chuẩn 1 bàn 10 khách (Chỉ Bàn 17 là Dự Bị)</span>
+          <p id="header-subtitle" class="text-xs text-slate-400 flex items-center gap-1.5 sm:gap-2 flex-wrap">
+            <span class="text-amber-300 font-bold text-xs sm:text-sm">❤️ Kính chúc Quý Khách & Người Thân một buổi tiệc vui vẻ, ấm cúng!</span>
           </p>
         </div>
       </div>
 
-      <!-- Action buttons -->
-      <div class="flex items-center gap-2 no-print">
-        <!-- <button onclick="resetAllTablesToDefault()" class="px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-rose-950/60 text-slate-300 hover:text-rose-200 border border-slate-700 hover:border-rose-500/50 transition flex items-center gap-1.5 shadow" title="Khôi phục dữ liệu bàn và danh sách khách về mặc định ban đầu">
-          <span class="text-rose-400">↺</span>
-          <span class="hidden sm:inline">Đặt Lại Gốc</span>
-        </button> -->
-        <button onclick="window.print()" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition flex items-center gap-1.5 shadow">
-          <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
-          <span class="hidden sm:inline">In Sơ Đồ</span>
-        </button>
-        <div id="admin-status-badge">
-          <button onclick="handleAdminBadgeClick()" id="btn-admin-auth" class="px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition flex items-center gap-1.5 shadow" title="Đăng nhập mã PIN để có quyền chỉnh sửa">
-            <span id="admin-auth-dot" class="w-2 h-2 rounded-full bg-slate-500"></span>
-            <span id="admin-auth-text">🔒 Đăng Nhập PIN</span>
+      <!-- Mode Switcher Pill & Action buttons -->
+      <div class="flex items-center gap-2 sm:gap-3 flex-wrap no-print">
+        <!-- MODE TOGGLE PILL: DỄ DÙNG (CHỮ TO) vs QUẢN TRỊ -->
+        <div class="flex items-center bg-slate-950 p-1 rounded-xl border border-slate-700 shadow-inner">
+          <button id="btn-mode-senior" onclick="setUserMode('senior')" class="px-2.5 sm:px-3 py-1 rounded-lg text-xs font-black transition flex items-center gap-1.5 cursor-pointer bg-gradient-to-r from-amber-500 to-yellow-400 text-slate-950 shadow" title="Giao diện tối giản, chữ to, siêu nét cho người lớn tuổi">
+            <span>👓 Chế Độ Dễ Dùng (Chữ To)</span>
+          </button>
+          <button id="btn-mode-admin" onclick="setUserMode('admin')" class="px-2.5 sm:px-3 py-1 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition flex items-center gap-1.5 cursor-pointer" title="Giao diện đầy đủ công cụ quản lý, đổi bàn, đổi màu, Google Sheets">
+            <span>⚙️ Chế Độ Quản Trị</span>
           </button>
         </div>
-        <button onclick="openSyncModal()" class="px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-950/70 hover:bg-emerald-900 text-emerald-300 border border-emerald-700/80 transition flex items-center gap-1.5 shadow" title="Xuất / Nhập dữ liệu hoặc đồng bộ lên Vercel & Điện thoại">
-          <span>🔄</span>
-          <span class="hidden sm:inline">Đồng Bộ Dữ Liệu</span>
-        </button>
-        <button id="btn-view-toggle" onclick="toggleListView()" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 transition flex items-center gap-1.5 shadow-lg shadow-amber-500/20">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"></path></svg>
-          <span id="btn-toggle-label">Xem Dạng Bảng</span>
-        </button>
+
+        <!-- ADMIN ONLY HEADER ACTIONS (Hidden in Senior Mode) -->
+        <div id="admin-header-actions" class="hidden flex items-center gap-2">
+          <button onclick="window.print()" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition flex items-center gap-1.5 shadow">
+            <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
+            <span class="hidden sm:inline">In Sơ Đồ</span>
+          </button>
+          <div id="admin-status-badge">
+            <button onclick="handleAdminBadgeClick()" id="btn-admin-auth" class="px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition flex items-center gap-1.5 shadow" title="Đăng nhập mã PIN để có quyền chỉnh sửa">
+              <span id="admin-auth-dot" class="w-2 h-2 rounded-full bg-slate-500"></span>
+              <span id="admin-auth-text">🔒 Đăng Nhập PIN</span>
+            </button>
+          </div>
+          <button onclick="openSyncModal()" class="px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-950/70 hover:bg-emerald-900 text-emerald-300 border border-emerald-700/80 transition flex items-center gap-1.5 shadow" title="Xuất / Nhập dữ liệu hoặc đồng bộ lên Vercel & Điện thoại">
+            <span>🔄</span>
+            <span class="hidden sm:inline">Đồng Bộ Dữ Liệu</span>
+          </button>
+          <button id="btn-view-toggle" onclick="toggleListView()" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 transition flex items-center gap-1.5 shadow-lg shadow-amber-500/20">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"></path></svg>
+            <span id="btn-toggle-label">Xem Dạng Bảng</span>
+          </button>
+        </div>
       </div>
     </div>
   </header>
 
   <!-- Filter Pills & Quick Search -->
   <section class="bg-slate-900/60 border-b border-slate-800 px-3 sm:px-4 py-2.5 no-print">
-    <div class="max-w-7xl mx-auto flex flex-col xl:flex-row items-stretch xl:items-center justify-between gap-3">
+    <div class="max-w-7xl mx-auto">
       
-      <!-- Metrics Pills (5 thẻ: Toàn Bộ Sảnh Tiệc, Nhà Trai, Nhà Gái, Bàn VIP, và Bàn Còn Trống Chỗ) -->
-      <div class="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-5 gap-2 flex-1">
-        <button id="btn-filter-all" onclick="filterGroup('all')" class="bg-slate-800/80 hover:bg-slate-800 border border-slate-700 rounded-xl p-2 text-left transition group">
-          <div class="text-[10px] text-slate-400 font-medium">Toàn Bộ Sảnh Tiệc</div>
-          <div class="text-base font-bold text-white flex items-baseline gap-1">
-            <span>34 Bàn</span> <span class="text-[10px] text-amber-300 font-semibold">(32 chính + 2 dự bị)</span>
-          </div>
-        </button>
-        <button id="btn-filter-groom" onclick="filterGroup('groom')" class="bg-amber-950/40 hover:bg-amber-900/50 border border-amber-800/60 rounded-xl p-2 text-left transition">
-          <div class="text-[10px] text-amber-400 font-medium flex items-center gap-1">
-            <span class="w-2 h-2 rounded-full bg-amber-400"></span> Nhà Trai (Bên Trái)
-          </div>
-          <div class="text-base font-bold text-amber-200 flex items-baseline gap-1">
-            <span>16 Bàn</span> <span class="text-[10px] text-amber-400/80 font-normal">+ 1 Dự Bị (B17)</span>
-          </div>
-        </button>
-        <button id="btn-filter-bride" onclick="filterGroup('bride')" class="bg-rose-950/40 hover:bg-rose-900/50 border border-rose-800/60 rounded-xl p-2 text-left transition">
-          <div class="text-[10px] text-rose-400 font-medium flex items-center gap-1">
-            <span class="w-2 h-2 rounded-full bg-rose-400"></span> Nhà Gái (Bên Phải)
-          </div>
-          <div class="text-base font-bold text-rose-200 flex items-baseline gap-1">
-            <span>16 Bàn</span> <span class="text-[10px] text-rose-400/80 font-normal">+ 1 Dự Bị (B17)</span>
-          </div>
-        </button>
-        <button id="btn-filter-vip" onclick="filterGroup('vip')" class="bg-purple-950/40 hover:bg-purple-900/50 border border-purple-800/60 rounded-xl p-2 text-left transition">
-          <div class="text-[10px] text-purple-400 font-medium flex items-center gap-1">
-            <span class="w-2 h-2 rounded-full bg-purple-400"></span> Khu Bàn VIP 2 Nhà
-          </div>
-          <div class="text-base font-bold text-purple-200 flex items-baseline gap-1">
-            <span>8 Bàn VIP</span> <span class="text-[10px] text-purple-400/80 font-normal">Gần Sân Khấu</span>
-          </div>
-        </button>
-        <button id="btn-filter-available" onclick="filterGroup('available')" class="bg-emerald-950/40 hover:bg-emerald-900/50 border border-emerald-800/60 rounded-xl p-2 text-left transition" title="Lọc xem các bàn còn trống chỗ để tiếp đón khách phát sinh">
-          <div class="text-[10px] text-emerald-400 font-medium flex items-center gap-1">
-            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> Bàn Còn Trống Chỗ
-          </div>
-          <div class="text-base font-bold text-emerald-200 flex items-baseline gap-1">
-            <span id="metric-available-tables">3 Bàn</span> <span id="metric-available-seats" class="text-[10px] text-emerald-300 font-semibold">(21 chỗ trống)</span>
-          </div>
-        </button>
+      <!-- 1. SENIOR / GUEST QUICK BAR (Dành cho Người Lớn Tuổi & Khách Mời - Mặc định) -->
+      <div id="senior-quick-bar" class="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
+        <!-- 2 Giant Side Buttons -->
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5 flex-1">
+          <button id="senior-btn-groom" onclick="filterGroup('groom')" class="p-3 sm:p-3.5 rounded-2xl bg-gradient-to-r from-amber-500 to-yellow-400 text-slate-950 font-black shadow-lg shadow-amber-500/25 text-left transition transform active:scale-95 cursor-pointer ring-2 ring-white">
+            <div class="flex items-center gap-2.5">
+              <span class="text-2xl sm:text-3xl">🏠</span>
+              <div>
+                <div class="text-xs sm:text-sm font-black uppercase tracking-wider">BÊN NHÀ TRAI</div>
+                <div class="text-[11px] font-bold text-amber-950/80">Bên Trái Sảnh (Phóng To)</div>
+              </div>
+            </div>
+          </button>
+
+          <button id="senior-btn-bride" onclick="filterGroup('bride')" class="p-3 sm:p-3.5 rounded-2xl bg-rose-950/60 hover:bg-rose-900/80 text-rose-200 font-bold border border-rose-600/60 text-left transition transform active:scale-95 cursor-pointer">
+            <div class="flex items-center gap-2.5">
+              <span class="text-2xl sm:text-3xl">🌸</span>
+              <div>
+                <div class="text-xs sm:text-sm font-black uppercase tracking-wider">BÊN NHÀ GÁI</div>
+                <div class="text-[11px] font-semibold text-rose-300/80">Bên Phải Sảnh (Phóng To)</div>
+              </div>
+            </div>
+          </button>
+
+          <button id="senior-btn-all" onclick="filterGroup('all')" class="col-span-2 sm:col-span-1 p-3 sm:p-3.5 rounded-2xl bg-slate-800/90 hover:bg-slate-700 text-slate-200 font-bold border border-slate-700 text-left transition cursor-pointer flex items-center justify-between sm:justify-start gap-2">
+            <div class="flex items-center gap-2.5">
+              <span class="text-xl sm:text-2xl">🏛️</span>
+              <div>
+                <div class="text-xs sm:text-sm font-bold uppercase">Toàn Bộ Sảnh</div>
+                <div class="text-[11px] text-slate-400 font-normal">Xem cả 2 bên</div>
+              </div>
+            </div>
+          </button>
+        </div>
+
+        <!-- Big Search Box for Elders -->
+        <div class="w-full md:w-80 relative">
+          <input 
+            id="search-input" 
+            type="text" 
+            placeholder="🔍 Tìm tên bạn hoặc số bàn..." 
+            class="w-full bg-slate-950 border-2 border-amber-500/60 focus:border-amber-400 rounded-2xl px-4 py-2.5 sm:py-3 text-sm sm:text-base text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-400/50 transition font-medium shadow-inner"
+            oninput="handleSearch(this.value)"
+          />
+          <div id="search-badge" class="absolute right-3.5 top-2.5 sm:top-3 text-[11px] px-2 py-0.5 rounded-full bg-amber-500 text-slate-950 font-black hidden"></div>
+        </div>
       </div>
 
-      <!-- Quick Search Box -->
-      <div class="w-full xl:w-72 relative">
-        <input 
-          id="search-input" 
-          type="text" 
-          placeholder="🔍 Tìm nhanh: Vip, Chú Rể, Kiệt, Sếp Huy, Duyên..." 
-          class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400 transition"
-          oninput="handleSearch(this.value)"
-        />
-        <div id="search-badge" class="absolute right-3 top-2 text-[10px] px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 font-bold hidden"></div>
+      <!-- 2. ADMIN METRICS BAR (5 thẻ quản trị: Toàn Bộ Sảnh, Nhà Trai, Nhà Gái, Bàn VIP, Bàn Còn Trống Chỗ) -->
+      <div id="admin-metrics-bar" class="hidden flex flex-col xl:flex-row items-stretch xl:items-center justify-between gap-3">
+        <div class="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-5 gap-2 flex-1">
+          <button id="btn-filter-all" onclick="filterGroup('all')" class="bg-slate-800/80 hover:bg-slate-800 border border-slate-700 rounded-xl p-2 text-left transition group">
+            <div class="text-[10px] text-slate-400 font-medium">Toàn Bộ Sảnh Tiệc</div>
+            <div class="text-base font-bold text-white flex items-baseline gap-1">
+              <span>34 Bàn</span> <span class="text-[10px] text-amber-300 font-semibold">(32 chính + 2 dự bị)</span>
+            </div>
+          </button>
+          <button id="btn-filter-groom" onclick="filterGroup('groom')" class="bg-amber-950/40 hover:bg-amber-900/50 border border-amber-800/60 rounded-xl p-2 text-left transition">
+            <div class="text-[10px] text-amber-400 font-medium flex items-center gap-1">
+              <span class="w-2 h-2 rounded-full bg-amber-400"></span> Nhà Trai (Bên Trái)
+            </div>
+            <div class="text-base font-bold text-amber-200 flex items-baseline gap-1">
+              <span>16 Bàn</span> <span class="text-[10px] text-amber-400/80 font-normal">+ 1 Dự Bị (B17)</span>
+            </div>
+          </button>
+          <button id="btn-filter-bride" onclick="filterGroup('bride')" class="bg-rose-950/40 hover:bg-rose-900/50 border border-rose-800/60 rounded-xl p-2 text-left transition">
+            <div class="text-[10px] text-rose-400 font-medium flex items-center gap-1">
+              <span class="w-2 h-2 rounded-full bg-rose-400"></span> Nhà Gái (Bên Phải)
+            </div>
+            <div class="text-base font-bold text-rose-200 flex items-baseline gap-1">
+              <span>16 Bàn</span> <span class="text-[10px] text-rose-400/80 font-normal">+ 1 Dự Bị (B17)</span>
+            </div>
+          </button>
+          <button id="btn-filter-vip" onclick="filterGroup('vip')" class="bg-purple-950/40 hover:bg-purple-900/50 border border-purple-800/60 rounded-xl p-2 text-left transition">
+            <div class="text-[10px] text-purple-400 font-medium flex items-center gap-1">
+              <span class="w-2 h-2 rounded-full bg-purple-400"></span> Khu Bàn VIP 2 Nhà
+            </div>
+            <div class="text-base font-bold text-purple-200 flex items-baseline gap-1">
+              <span>8 Bàn VIP</span> <span class="text-[10px] text-purple-400/80 font-normal">Gần Sân Khấu</span>
+            </div>
+          </button>
+          <button id="btn-filter-available" onclick="filterGroup('available')" class="bg-emerald-950/40 hover:bg-emerald-900/50 border border-emerald-800/60 rounded-xl p-2 text-left transition" title="Lọc xem các bàn còn trống chỗ để tiếp đón khách phát sinh">
+            <div class="text-[10px] text-emerald-400 font-medium flex items-center gap-1">
+              <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> Bàn Còn Trống Chỗ
+            </div>
+            <div class="text-base font-bold text-emerald-200 flex items-baseline gap-1">
+              <span id="metric-available-tables">3 Bàn</span> <span id="metric-available-seats" class="text-[10px] text-emerald-300 font-semibold">(21 chỗ trống)</span>
+            </div>
+          </button>
+        </div>
+
+        <!-- Admin Search Box -->
+        <div class="w-full xl:w-72 relative">
+          <input 
+            id="search-input-admin" 
+            type="text" 
+            placeholder="🔍 Tìm nhanh: Vip, Chú Rể, Kiệt, Sếp Huy..." 
+            class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400 transition"
+            oninput="handleSearch(this.value)"
+          />
+          <div id="search-badge-admin" class="absolute right-3 top-2 text-[10px] px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 font-bold hidden"></div>
+        </div>
       </div>
     </div>
   </section>
@@ -296,8 +351,29 @@
         </div>
       </div>
 
-      <!-- Legend below CAD plan -->
-      <div class="mt-2.5 sm:mt-3 pt-2.5 sm:pt-3 border-t border-slate-800 flex flex-wrap items-center justify-between gap-2.5 text-[11px] text-slate-400">
+      <!-- 1. SENIOR LEGEND (Hiển thị to, rõ ràng cho Người Lớn Tuổi) -->
+      <div id="senior-legend" class="mt-2.5 sm:mt-3 pt-2.5 sm:pt-3 border-t border-slate-800 flex flex-wrap items-center justify-between gap-2.5 text-xs text-slate-300">
+        <div class="flex flex-wrap items-center gap-3 sm:gap-4 font-semibold">
+          <div class="flex items-center gap-1.5">
+            <span class="w-3.5 h-3.5 rounded-full bg-amber-500 shadow-sm"></span>
+            <span class="text-amber-300 font-bold">Bàn Nhà Trai</span>
+          </div>
+          <div class="flex items-center gap-1.5">
+            <span class="w-3.5 h-3.5 rounded-full bg-rose-500 shadow-sm"></span>
+            <span class="text-rose-300 font-bold">Bàn Nhà Gái</span>
+          </div>
+          <div class="flex items-center gap-1.5">
+            <span class="w-3.5 h-3.5 rounded-full bg-white shadow-sm ring-2 ring-white/50"></span>
+            <span class="text-white font-bold">Bàn Đang Chọn</span>
+          </div>
+        </div>
+        <div class="text-amber-300 font-bold text-xs sm:text-sm">
+          💡 Chạm vào bàn bất kỳ để xem danh sách khách ngồi cùng bàn
+        </div>
+      </div>
+
+      <!-- 2. ADMIN LEGEND (Hiển thị chi tiết trong Chế Độ Quản Trị) -->
+      <div id="admin-legend" class="hidden mt-2.5 sm:mt-3 pt-2.5 sm:pt-3 border-t border-slate-800 flex flex-wrap items-center justify-between gap-2.5 text-[11px] text-slate-400">
         <div class="flex flex-wrap items-center gap-2.5 sm:gap-3">
           <div class="flex items-center gap-1.5">
             <span class="w-3 h-3 rounded-full bg-amber-500 shadow-sm"></span>
@@ -360,7 +436,13 @@
 
   </main>
 
-  <!-- MODAL ĐỒNG BỘ & XUẤT NHẬP DỮ LIỆU -->
+  <!-- Switch to Admin prompt at footer for Wedding organizers -->
+  <div id="senior-footer-prompt" class="text-center py-4 px-3 text-xs text-slate-500 no-print">
+    <span>Quý Khách đang ở <strong>Chế Độ Dễ Dùng (Chữ To)</strong>.</span>
+    <button onclick="setUserMode('admin')" class="ml-1 text-slate-400 hover:text-amber-400 underline font-semibold transition cursor-pointer">
+      ⚙️ Dành cho Ban Tổ Chức: Chuyển sang Chế Độ Quản Trị & Sửa Bàn
+    </button>
+  </div>
   <div id="sync-data-modal" class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-sm hidden transition-opacity duration-200">
     <div class="bg-slate-900 border border-slate-700 rounded-2xl max-w-2xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
       <!-- Modal Header -->
@@ -1535,6 +1617,7 @@
     let currentFilter = 'all';
     let currentZoom = 1;
     let listViewFilter = 'all';
+    let userMode = localStorage.getItem('sodo_user_mode') || 'senior';
 
     let activeEditSession = {
       mobile: { isEditing: false, tableId: null, selectedColor: '', tempLabel: '', tempGroup: '', tempGuests: [] },
@@ -1682,14 +1765,30 @@
       }
     }
 
+    // Helper to get bright, high-contrast, theme-matching text color
+    function getThemeTextColor(color) {
+      if (!color) return '#ffffff';
+      const c = color.toLowerCase();
+      if (c === '#f59e0b' || c === '#eab308') return '#fbbf24'; // Amber Gold
+      if (c === '#10b981' || c === '#059669') return '#34d399'; // Emerald Mint
+      if (c === '#3b82f6' || c === '#2563eb') return '#60a5fa'; // Sky Blue
+      if (c === '#f43f5e' || c === '#e11d48') return '#fb7185'; // Rose Pink
+      if (c === '#8b5cf6' || c === '#7c3aed') return '#c084fc'; // Violet Purple
+      if (c === '#f97316') return '#fb923c'; // Coral Orange
+      if (c === '#06b6d4') return '#38bdf8'; // Cyan
+      if (c === '#64748b') return '#94a3b8'; // Slate Silver
+      return color;
+    }
+
     // RENDER A SINGLE TABLE NODE ON SVG
     function renderTableNode(t) {
+      const isSenior = (userMode === 'senior');
       const isSelected = t.id === currentSelectedId;
       const isSpare = t.group === 'spare';
       const mainColor = getTableColor(t);
       const chairColor = mainColor;
-      const badgeBg = '#0b1120';
-      const tableRadius = 38;
+      const themeTextColor = getThemeTextColor(mainColor);
+      const tableRadius = isSenior ? 40 : 38;
 
       // Filter dimming
       let opacity = '1';
@@ -1700,14 +1799,23 @@
 
       // 3 Info Lines on Table:
       // Line 1: Table Number ("BÀN 1" ...)
-      // Line 2: Phân loại bàn ("VIP 1", "Bên Nội", "Vin 1", "Cấp 3", "A Vĩ"...)
-      // Line 3: Số khách ("10 khách", "Trống"...)
+      // Line 2: Phân loại bàn ("VIP 1", "Bên Nội", "Bạn Má", "A Vĩ"...)
+      // Line 3: Số khách ("10 khách", "10 chỗ"...)
       const categoryStr = (t.customLabel || t.displayCategory || 'Chính thức').trim();
       const catLen = categoryStr.length;
-      const fontSize = catLen > 11 ? 7.5 : (catLen > 7 ? 9 : 10.5);
+      const defaultFontSize = catLen > 11 ? 7.5 : (catLen > 7 ? 9 : 10.5);
+      const seniorFontSize = catLen > 11 ? 9.5 : (catLen > 7 ? 11 : 12.5);
 
-      const tableLabel = isSpare ? `BÀN ${t.tableNo}` : `BÀN ${t.tableNo}`;
-      const guestText = isSpare && t.guestCount === 0 ? 'Trống' : `${t.guestCount} khách`;
+      const tableLabel = `BÀN ${t.tableNo}`;
+      
+      let guestText = '';
+      if (isSpare) {
+        guestText = 'Dự bị';
+      } else if (t.guestCount > 0) {
+        guestText = `${t.guestCount} khách`;
+      } else {
+        guestText = isSenior ? '10 chỗ' : '0 khách';
+      }
 
       return `
         <g id="svg-table-${t.id}" 
@@ -1715,8 +1823,8 @@
            class="cursor-pointer table-hover transition-opacity duration-200" 
            style="opacity: ${opacity}">
           
-          <!-- Exactly 10 Chairs surrounding table -->
-          ${generateChairPath(t.cx, t.cy, tableRadius, 10, isSelected ? '#ffffff' : chairColor)}
+          <!-- Chairs: Only rendered in Admin Mode; in Senior Mode, chairs are hidden to keep tables clean & huge -->
+          ${isSenior ? '' : generateChairPath(t.cx, t.cy, tableRadius, 10, isSelected ? '#ffffff' : chairColor)}
 
           <!-- Glow effect if selected (Luminous White Glow) or if matching available filter -->
           ${isSelected ? `
@@ -1732,51 +1840,52 @@
             r="${tableRadius}" 
             fill="${isSelected ? 'url(#selected-table-fill)' : '#0b1120'}" 
             stroke="${isSelected ? '#ffffff' : mainColor}" 
-            stroke-width="${isSelected ? 3.5 : 2.5}" 
+            stroke-width="${isSelected ? 3.5 : (isSenior ? 3 : 2.5)}" 
             stroke-dasharray="${isSpare ? '4 3' : 'none'}"
           />
 
-          <!-- 1. SỐ BÀN -->
+          <!-- 1. SỐ BÀN: Màu sắc đồng bộ theo tông màu riêng của bàn (Theme Color), không bị chọi màu vàng với xanh/hồng -->
           <text 
             x="${t.cx}" 
-            y="${t.cy - 12}" 
-            fill="${isSelected ? '#ffffff' : mainColor}" 
-            font-size="9" 
+            y="${isSenior ? t.cy - 12 : t.cy - 12}" 
+            fill="${isSelected ? '#ffffff' : themeTextColor}" 
+            font-size="${isSenior ? 12.5 : 9}" 
             font-weight="900" 
             text-anchor="middle"
-            letter-spacing="0.5">
+            letter-spacing="${isSenior ? '0.6' : '0.4'}">
             ${tableLabel}
           </text>
 
-          <!-- 2. PHÂN LOẠI BÀN -->
+          <!-- 2. PHÂN LOẠI BÀN: Chữ trắng tinh (#ffffff) nổi bật, sắc nét, tương phản tối đa -->
           <text 
             x="${t.cx}" 
-            y="${t.cy + 1.5}" 
+            y="${isSenior ? t.cy + 4.5 : t.cy + 1.5}" 
             fill="#ffffff" 
-            font-size="${fontSize}" 
+            font-size="${isSenior ? seniorFontSize : defaultFontSize}" 
             font-weight="900" 
             text-anchor="middle"
             letter-spacing="0.3">
             ${escapeXml(categoryStr.toUpperCase())}
           </text>
 
-          <!-- 3. SỐ KHÁCH -->
+          <!-- 3. SỐ KHÁCH / TIÊU CHUẨN: Pill thanh thoát, nền tối, viền dịu nhẹ -->
           <rect 
-            x="${t.cx - 24}" 
-            y="${t.cy + 9}" 
-            width="48" 
-            height="14" 
-            rx="7" 
-            fill="${badgeBg}" 
+            x="${isSenior ? t.cx - 26 : t.cx - 24}" 
+            y="${isSenior ? t.cy + 14 : t.cy + 9}" 
+            width="${isSenior ? 52 : 48}" 
+            height="${isSenior ? 16 : 14}" 
+            rx="${isSenior ? 8 : 7}" 
+            fill="${isSelected ? 'rgba(255,255,255,0.15)' : '#1e293b'}" 
             stroke="${isSelected ? '#ffffff' : mainColor}" 
-            stroke-width="${isSelected ? 1.5 : 1.2}"
+            stroke-width="${isSelected ? 1.5 : 1}"
+            stroke-opacity="${isSenior ? '0.7' : '1'}"
           />
           <text 
             x="${t.cx}" 
-            y="${t.cy + 19.5}" 
-            fill="#ffffff" 
-            font-size="8.5" 
-            font-weight="700" 
+            y="${isSenior ? t.cy + 25.5 : t.cy + 19.5}" 
+            fill="${isSelected ? '#ffffff' : '#cbd5e1'}" 
+            font-size="${isSenior ? 9.5 : 8.5}" 
+            font-weight="800" 
             text-anchor="middle">
             ${guestText}
           </text>
@@ -1817,14 +1926,30 @@
 
         if (stageMain) {
           stageMain.setAttribute('x', '410');
-          stageMain.textContent = 'SÂN KHẤU (BÊN NHÀ TRAI)';
+          stageMain.setAttribute('y', '96');
+          stageMain.setAttribute('letter-spacing', '1.5');
+          stageMain.innerHTML = `
+            <tspan x="410" dy="0" font-size="14" font-weight="900" fill="#fbbf24">SÂN KHẤU</tspan>
+            <tspan x="410" dy="20" font-size="11" font-weight="700" fill="#cbd5e1">(Khu Vực Nhà Trai)</tspan>
+          `;
         }
         if (stageSub) {
           stageSub.setAttribute('x', '410');
+          stageSub.setAttribute('y', '150');
+          stageSub.setAttribute('font-size', '12');
           stageSub.textContent = '7,2 x 3,6 (m)';
         }
-        if (runwayMain) runwayMain.setAttribute('x', '455');
-        if (runwaySub) runwaySub.setAttribute('x', '455');
+        if (runwayMain) {
+          runwayMain.setAttribute('x', '455');
+          runwayMain.setAttribute('y', '245');
+          runwayMain.setAttribute('font-size', '10');
+          runwayMain.setAttribute('font-weight', '800');
+          runwayMain.textContent = 'CATWALK';
+        }
+        if (runwaySub) {
+          runwaySub.setAttribute('x', '455');
+          runwaySub.setAttribute('font-size', '11');
+        }
         if (groomDoor) groomDoor.style.display = '';
         if (brideDoor) brideDoor.style.display = 'none';
 
@@ -1836,14 +1961,30 @@
 
         if (stageMain) {
           stageMain.setAttribute('x', '590');
-          stageMain.textContent = 'SÂN KHẤU (BÊN NHÀ GÁI)';
+          stageMain.setAttribute('y', '96');
+          stageMain.setAttribute('letter-spacing', '1.5');
+          stageMain.innerHTML = `
+            <tspan x="590" dy="0" font-size="14" font-weight="900" fill="#fda4af">SÂN KHẤU</tspan>
+            <tspan x="590" dy="20" font-size="11" font-weight="700" fill="#cbd5e1">(Khu Vực Nhà Gái)</tspan>
+          `;
         }
         if (stageSub) {
           stageSub.setAttribute('x', '590');
+          stageSub.setAttribute('y', '150');
+          stageSub.setAttribute('font-size', '12');
           stageSub.textContent = '7,2 x 3,6 (m)';
         }
-        if (runwayMain) runwayMain.setAttribute('x', '545');
-        if (runwaySub) runwaySub.setAttribute('x', '545');
+        if (runwayMain) {
+          runwayMain.setAttribute('x', '545');
+          runwayMain.setAttribute('y', '245');
+          runwayMain.setAttribute('font-size', '10');
+          runwayMain.setAttribute('font-weight', '800');
+          runwayMain.textContent = 'CATWALK';
+        }
+        if (runwaySub) {
+          runwaySub.setAttribute('x', '545');
+          runwaySub.setAttribute('font-size', '11');
+        }
         if (groomDoor) groomDoor.style.display = 'none';
         if (brideDoor) brideDoor.style.display = '';
 
@@ -1855,14 +1996,27 @@
 
         if (stageMain) {
           stageMain.setAttribute('x', '500');
-          stageMain.textContent = 'SÂN KHẤU CHÍNH';
+          stageMain.setAttribute('y', '105');
+          stageMain.setAttribute('letter-spacing', '2');
+          stageMain.innerHTML = `<tspan x="500" dy="0" font-size="14" font-weight="800" fill="#fbbf24">SÂN KHẤU CHÍNH</tspan>`;
         }
         if (stageSub) {
           stageSub.setAttribute('x', '500');
+          stageSub.setAttribute('y', '140');
+          stageSub.setAttribute('font-size', '22');
           stageSub.textContent = '7,2 x 3,6 (m)';
         }
-        if (runwayMain) runwayMain.setAttribute('x', '500');
-        if (runwaySub) runwaySub.setAttribute('x', '500');
+        if (runwayMain) {
+          runwayMain.setAttribute('x', '500');
+          runwayMain.setAttribute('y', '240');
+          runwayMain.setAttribute('font-size', '11');
+          runwayMain.setAttribute('font-weight', '700');
+          runwayMain.textContent = 'RUNWAY CATWALK';
+        }
+        if (runwaySub) {
+          runwaySub.setAttribute('x', '500');
+          runwaySub.setAttribute('font-size', '19');
+        }
         if (groomDoor) groomDoor.style.display = '';
         if (brideDoor) brideDoor.style.display = '';
       }
@@ -2749,6 +2903,65 @@
       const isSpare = t.group === 'spare';
       const mainColor = getTableColor(t);
 
+      // SENIOR MODE INSPECTOR VIEW (To, rõ ràng, không có nút sửa kỹ thuật)
+      if (userMode === 'senior') {
+        const sideBadgeColor = t.side === 'groom' ? 'border-amber-500/50 bg-amber-500/20 text-amber-300' : 'border-rose-500/50 bg-rose-500/20 text-rose-300';
+        container.innerHTML = `
+          <div class="border-b border-slate-800 pb-3">
+            <div class="flex items-center gap-2 flex-wrap mb-2">
+              <span class="text-xs font-black px-2.5 py-1 rounded-full border ${sideBadgeColor}">
+                ${t.sideName.toUpperCase()}
+              </span>
+              <span class="text-xs font-bold px-2 py-0.5 rounded shadow-sm" style="background-color: ${mainColor}25; color: ${mainColor}; border: 1px solid ${mainColor}60;">
+                🏷️ ${escapeXml(t.customLabel || t.displayCategory)}
+              </span>
+            </div>
+            <h3 class="text-2xl font-black text-white flex items-center gap-2 flex-wrap">
+              <span>BÀN ${t.tableNo}:</span>
+              <span style="color: ${mainColor};">${escapeXml(t.customLabel || t.groupName || t.displayCategory)}</span>
+            </h3>
+            <p class="text-xs text-slate-300 mt-1.5 flex items-center gap-1 font-medium">
+              <span>📍 Vị trí:</span> <span>${t.position}</span>
+            </p>
+          </div>
+
+          <div class="my-3 space-y-2">
+            <div class="text-xs font-bold text-amber-300 uppercase tracking-wider flex items-center justify-between">
+              <span class="flex items-center gap-1.5">👥 <span>Danh Sách Khách Ngồi Cùng Bàn</span></span>
+              <span class="text-slate-400 font-normal">(${t.guestCount} khách)</span>
+            </div>
+            <ul class="divide-y divide-slate-800/80 bg-slate-950/80 rounded-2xl border border-slate-800 p-2">
+              ${t.guests.length === 0 ? `
+                <li class="py-6 text-center text-slate-400 text-xs italic">
+                  Bàn dự bị gồm 10 chỗ ngồi tiếp đón khách thân tình.
+                </li>
+              ` : t.guests.map((g, idx) => `
+                <li class="flex items-center justify-between py-2.5 px-3 hover:bg-slate-800/40 rounded-xl transition">
+                  <div class="flex items-center gap-3">
+                    <span class="w-6 h-6 rounded-full bg-slate-800 text-xs font-black text-amber-400 flex items-center justify-center border border-slate-700 shadow-sm flex-shrink-0">
+                      ${idx + 1}
+                    </span>
+                    <div>
+                      <div class="text-sm font-bold text-white">${g.name}</div>
+                      ${g.note ? `<div class="text-xs text-amber-300/80 font-medium">${g.note}</div>` : ''}
+                    </div>
+                  </div>
+                  <span class="px-2 py-0.5 rounded text-xs font-bold ${g.count > 0 ? 'bg-amber-500/15 text-amber-300 border border-amber-500/30' : 'bg-slate-800 text-slate-400'}">
+                    ${g.count > 0 ? g.count + ' người' : 'Dự bị'}
+                  </span>
+                </li>
+              `).join('')}
+            </ul>
+          </div>
+
+          <div class="bg-amber-950/30 border border-amber-800/40 rounded-xl p-3 text-xs text-amber-200/90 flex items-center gap-2">
+            <span>💡</span>
+            <span>Quý Khách vui lòng đến đúng số bàn để buổi tiệc được đón tiếp chu đáo nhất!</span>
+          </div>
+        `;
+        return;
+      }
+
       let guestListHtml = '';
       if (isSpare && t.guestCount === 0) {
         guestListHtml = `
@@ -2873,6 +3086,67 @@
           <h3 class="text-base font-black text-white mt-1">${t.sideName} - Bàn ${t.tableNo}</h3>
         `;
         modalBody.innerHTML = renderEditFormHtml(tableId, 'mobile');
+        modal.classList.remove('hidden');
+        document.body.classList.add('overflow-hidden');
+        return;
+      }
+
+      // SENIOR MODE MOBILE MODAL (Chữ to, sạch sẽ, không có nút sửa bàn)
+      if (userMode === 'senior') {
+        const isSpare = t.group === 'spare';
+        const mainColor = getTableColor(t);
+        const sideBadgeClass = t.side === 'groom' ? 'bg-amber-500/20 text-amber-300 border-amber-500/50' : 'bg-rose-500/20 text-rose-300 border-rose-500/50';
+        
+        modalHeader.innerHTML = `
+          <div class="flex items-center justify-between w-full">
+            <span class="text-xs font-black px-3 py-1 rounded-full border ${sideBadgeClass}">
+              ${t.sideName.toUpperCase()}
+            </span>
+            <span class="text-xs text-slate-300 font-bold">📍 ${t.position}</span>
+          </div>
+          <h3 class="text-2xl font-black text-white mt-1.5 flex items-center gap-2 flex-wrap">
+            <span>BÀN ${t.tableNo}:</span>
+            <span style="color: ${mainColor};">${escapeXml(t.customLabel || t.groupName || t.displayCategory)}</span>
+          </h3>
+        `;
+
+        modalBody.innerHTML = `
+          <div class="space-y-3">
+            <div class="text-xs font-bold text-amber-300 uppercase tracking-wider flex items-center justify-between">
+              <span class="flex items-center gap-1.5">👥 <span>Danh Sách Khách Ngồi Cùng Bàn</span></span>
+              <span class="text-slate-400 font-medium">(${t.guestCount} người)</span>
+            </div>
+
+            <ul class="divide-y divide-slate-800/80 bg-slate-950/80 rounded-2xl border border-slate-800 p-2">
+              ${t.guests.length === 0 ? `
+                <li class="py-6 text-center text-slate-400 text-sm italic">
+                  Bàn dự bị gồm 10 chỗ ngồi tiếp đón khách thân tình.
+                </li>
+              ` : t.guests.map((g, idx) => `
+                <li class="flex items-center justify-between py-2.5 px-3 hover:bg-slate-800/40 rounded-xl transition">
+                  <div class="flex items-center gap-3">
+                    <span class="w-7 h-7 rounded-full bg-slate-800 text-xs font-black text-amber-400 flex items-center justify-center border border-slate-700 shadow-sm flex-shrink-0">
+                      ${idx + 1}
+                    </span>
+                    <div>
+                      <div class="text-sm sm:text-base font-bold text-white">${g.name}</div>
+                      ${g.note ? `<div class="text-xs text-amber-300/80 font-medium">${g.note}</div>` : ''}
+                    </div>
+                  </div>
+                  <span class="px-2.5 py-1 rounded-lg text-xs font-black ${g.count > 0 ? 'bg-amber-500/15 text-amber-300 border border-amber-500/30' : 'bg-slate-800 text-slate-400'}">
+                    ${g.count > 0 ? g.count + ' người' : 'Dự bị'}
+                  </span>
+                </li>
+              `).join('')}
+            </ul>
+          </div>
+        `;
+
+        modalFooterInfo.innerHTML = `
+          <button onclick="closeMobileModal()" class="w-full py-3 bg-slate-800 hover:bg-slate-700 text-white font-black text-sm rounded-xl transition cursor-pointer shadow">
+            ✕ ĐÓNG LẠI (XEM BẢN ĐỒ)
+          </button>
+        `;
         modal.classList.remove('hidden');
         document.body.classList.add('overflow-hidden');
         return;
@@ -3184,6 +3458,109 @@
       }
     }
 
+    // ==========================================
+    // CHẾ ĐỘ NGƯỜI DÙNG: SENIOR (DỄ DÙNG) vs ADMIN (QUẢN TRỊ)
+    // ==========================================
+    function setUserMode(mode) {
+      userMode = mode;
+      localStorage.setItem('sodo_user_mode', mode);
+      applyUserModeUI();
+      renderHallPlan();
+      if (currentSelectedId) {
+        renderTableInspector(currentSelectedId);
+      }
+      showToast(mode === 'senior' ? '👓 Đã chuyển sang Chế Độ Dễ Dùng (Chữ To)' : '⚙️ Đã chuyển sang Chế Độ Quản Trị Đầy Đủ');
+    }
+
+    function applyUserModeUI() {
+      const isSenior = (userMode === 'senior');
+
+      // 1. Update Mode toggle buttons in header
+      const btnSenior = document.getElementById('btn-mode-senior');
+      const btnAdmin = document.getElementById('btn-mode-admin');
+      if (btnSenior && btnAdmin) {
+        if (isSenior) {
+          btnSenior.className = 'px-2.5 sm:px-3 py-1 rounded-lg text-xs font-black transition flex items-center gap-1.5 cursor-pointer bg-gradient-to-r from-amber-500 to-yellow-400 text-slate-950 shadow';
+          btnAdmin.className = 'px-2.5 sm:px-3 py-1 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition flex items-center gap-1.5 cursor-pointer';
+        } else {
+          btnSenior.className = 'px-2.5 sm:px-3 py-1 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition flex items-center gap-1.5 cursor-pointer';
+          btnAdmin.className = 'px-2.5 sm:px-3 py-1 rounded-lg text-xs font-black transition flex items-center gap-1.5 cursor-pointer bg-slate-800 text-amber-300 border border-amber-500/50 shadow';
+        }
+      }
+
+      // 2. Header subtitle & actions
+      const headerSubtitle = document.getElementById('header-subtitle');
+      const adminActions = document.getElementById('admin-header-actions');
+      if (headerSubtitle) {
+        if (isSenior) {
+          headerSubtitle.innerHTML = '<span class="text-amber-300 font-bold text-xs sm:text-sm">❤️ Kính chúc Quý Khách & Người Thân một buổi tiệc vui vẻ, ấm cúng!</span>';
+        } else {
+          headerSubtitle.innerHTML = '<span class="text-amber-300 font-semibold">Bên Trái: Nhà Trai</span><span>•</span><span class="text-rose-300 font-semibold">Bên Phải: Nhà Gái</span><span>•</span><span>Tiêu chuẩn 1 bàn 10 khách (Chỉ Bàn 17 là Dự Bị)</span>';
+        }
+      }
+      if (adminActions) {
+        if (isSenior) {
+          adminActions.classList.add('hidden');
+        } else {
+          adminActions.classList.remove('hidden');
+        }
+      }
+
+      // 3. Filter / Metrics Bar
+      const adminMetricsBar = document.getElementById('admin-metrics-bar');
+      const seniorQuickBar = document.getElementById('senior-quick-bar');
+      if (adminMetricsBar && seniorQuickBar) {
+        if (isSenior) {
+          adminMetricsBar.classList.add('hidden');
+          seniorQuickBar.classList.remove('hidden');
+        } else {
+          adminMetricsBar.classList.remove('hidden');
+          seniorQuickBar.classList.add('hidden');
+        }
+      }
+
+      // 4. CAD Legend & Bottom notes
+      const seniorLegend = document.getElementById('senior-legend');
+      const adminLegend = document.getElementById('admin-legend');
+      if (seniorLegend && adminLegend) {
+        if (isSenior) {
+          seniorLegend.classList.remove('hidden');
+          adminLegend.classList.add('hidden');
+        } else {
+          seniorLegend.classList.add('hidden');
+          adminLegend.classList.remove('hidden');
+        }
+      }
+
+      // 5. Senior Footer Switcher
+      const seniorFooter = document.getElementById('senior-footer-prompt');
+      if (seniorFooter) {
+        if (isSenior) {
+          seniorFooter.classList.remove('hidden');
+        } else {
+          seniorFooter.classList.add('hidden');
+        }
+      }
+
+      // 6. Stage & Runway text in SVG
+      const stageSub = document.getElementById('stage-sub-text');
+      const runwaySub = document.getElementById('runway-sub-text');
+      if (stageSub) {
+        if (isSenior) {
+          stageSub.style.display = 'none';
+        } else {
+          stageSub.style.display = '';
+        }
+      }
+      if (runwaySub) {
+        if (isSenior) {
+          runwaySub.style.display = 'none';
+        } else {
+          runwaySub.style.display = '';
+        }
+      }
+    }
+
     function filterGroup(group) {
       if (currentFilter === group && group !== 'all') {
         currentFilter = 'all';
@@ -3201,6 +3578,35 @@
           btn.classList.remove('ring-2', 'ring-white/90', 'shadow-lg');
         }
       });
+
+      // Update senior giant side buttons
+      const sGroom = document.getElementById('senior-btn-groom');
+      const sBride = document.getElementById('senior-btn-bride');
+      const sAll = document.getElementById('senior-btn-all');
+
+      if (sGroom) {
+        if (currentFilter === 'groom') {
+          sGroom.className = 'p-3 sm:p-3.5 rounded-2xl bg-gradient-to-r from-amber-500 to-yellow-400 text-slate-950 font-black shadow-lg shadow-amber-500/30 text-left transition transform scale-[1.02] cursor-pointer ring-2 ring-white';
+        } else {
+          sGroom.className = 'p-3 sm:p-3.5 rounded-2xl bg-amber-950/50 hover:bg-amber-900/60 text-amber-200 border border-amber-600/50 text-left transition cursor-pointer';
+        }
+      }
+
+      if (sBride) {
+        if (currentFilter === 'bride') {
+          sBride.className = 'p-3 sm:p-3.5 rounded-2xl bg-gradient-to-r from-rose-500 to-pink-500 text-white font-black shadow-lg shadow-rose-500/30 text-left transition transform scale-[1.02] cursor-pointer ring-2 ring-white';
+        } else {
+          sBride.className = 'p-3 sm:p-3.5 rounded-2xl bg-rose-950/50 hover:bg-rose-900/60 text-rose-200 border border-rose-600/50 text-left transition cursor-pointer';
+        }
+      }
+
+      if (sAll) {
+        if (currentFilter === 'all') {
+          sAll.className = 'col-span-2 sm:col-span-1 p-3 sm:p-3.5 rounded-2xl bg-slate-700 text-white font-bold border border-slate-500 text-left transition cursor-pointer flex items-center justify-between sm:justify-start gap-2 ring-2 ring-slate-300';
+        } else {
+          sAll.className = 'col-span-2 sm:col-span-1 p-3 sm:p-3.5 rounded-2xl bg-slate-800/90 hover:bg-slate-700 text-slate-200 font-bold border border-slate-700 text-left transition cursor-pointer flex items-center justify-between sm:justify-start gap-2';
+        }
+      }
 
       // Update top banner buttons
       const bannerGroom = document.getElementById('banner-btn-groom');
@@ -3253,9 +3659,11 @@
     function handleSearch(query) {
       const q = query.trim().toLowerCase();
       const badge = document.getElementById('search-badge');
+      const badgeAdmin = document.getElementById('search-badge-admin');
 
       if (!q) {
-        badge.classList.add('hidden');
+        if (badge) badge.classList.add('hidden');
+        if (badgeAdmin) badgeAdmin.classList.add('hidden');
         renderHallPlan();
         return;
       }
@@ -3279,8 +3687,14 @@
         }
       });
 
-      badge.textContent = `${matches.length} bàn`;
-      badge.classList.remove('hidden');
+      if (badge) {
+        badge.textContent = `${matches.length} bàn`;
+        badge.classList.remove('hidden');
+      }
+      if (badgeAdmin) {
+        badgeAdmin.textContent = `${matches.length} bàn`;
+        badgeAdmin.classList.remove('hidden');
+      }
 
       if (matches.length > 0) {
         const first = matches[0];
@@ -3293,6 +3707,9 @@
         currentSelectedId = first.id;
         renderHallPlan();
         renderTableInspector(first.id);
+        if (window.innerWidth < 1024) {
+          openMobileModal(first.id);
+        }
       }
     }
 
@@ -3538,6 +3955,7 @@
     document.addEventListener('DOMContentLoaded', () => {
       initPanAndZoom();
       loadCustomizationsFromStorage();
+      applyUserModeUI();
       filterGroup('all');
       renderTableInspector('T_1');
 
