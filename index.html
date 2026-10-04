@@ -1,0 +1,2457 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=3.0, user-scalable=yes">
+  <title>Sơ Đồ Phân Bổ Chỗ Ngồi Tiệc Cưới - Nhà Trai & Nhà Gái</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              gold: '#D4AF37',
+              navy: '#0B1120',
+              card: '#151F32',
+              noi: '#F59E0B',    // Amber
+              ngoai: '#10B981',  // Emerald
+              banma: '#3B82F6',  // Blue
+              spare: '#64748B',  // Slate
+              gai: '#F43F5E'     // Rose
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&display=swap');
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: #0b1120;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #334155;
+      border-radius: 9999px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: #475569;
+    }
+    .table-selected {
+      filter: drop-shadow(0 0 16px rgba(245, 158, 11, 0.95));
+    }
+    .table-hover {
+      cursor: pointer;
+    }
+    .table-hover:hover {
+      filter: drop-shadow(0 0 12px rgba(245, 158, 11, 0.9));
+    }
+    @media print {
+      .no-print { display: none !important; }
+      body { background: white !important; color: black !important; }
+      #cad-svg-container { max-width: 100% !important; background: white !important; }
+      svg text { fill: #000 !important; }
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col selection:bg-amber-500 selection:text-black">
+
+  <header class="border-b border-slate-800 bg-slate-900/90 backdrop-blur sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-3 sm:px-4 py-3 flex flex-wrap items-center justify-between gap-3">
+      <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-500 via-rose-500 to-yellow-300 flex items-center justify-center text-slate-950 font-black text-lg shadow-lg shadow-amber-500/20 flex-shrink-0">
+          TG
+        </div>
+        <div>
+          <h1 class="text-base sm:text-lg md:text-xl font-bold bg-gradient-to-r from-amber-200 via-rose-300 to-yellow-400 bg-clip-text text-transparent">
+            Sơ Đồ Phân Bổ Chỗ Ngồi Sảnh Tiệc Cưới - Nhà Trai & Nhà Gái
+          </h1>
+          <p class="text-xs text-slate-400 flex items-center gap-1.5 sm:gap-2 flex-wrap">
+            <span class="text-amber-300 font-semibold">Bên Trái: Nhà Trai</span>
+            <span>•</span>
+            <span class="text-rose-300 font-semibold">Bên Phải: Nhà Gái</span>
+            <span>•</span>
+            <span>Tiêu chuẩn 1 bàn 10 khách (Chỉ Bàn 17 là Dự Bị)</span>
+          </p>
+        </div>
+      </div>
+
+      <!-- Action buttons -->
+      <div class="flex items-center gap-2 no-print">
+        <button onclick="window.print()" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition flex items-center gap-1.5 shadow">
+          <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
+          <span class="hidden sm:inline">In Sơ Đồ</span>
+        </button>
+        <button id="btn-view-toggle" onclick="toggleListView()" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 transition flex items-center gap-1.5 shadow-lg shadow-amber-500/20">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"></path></svg>
+          <span id="btn-toggle-label">Xem Dạng Bảng</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Filter Pills & Quick Search -->
+  <section class="bg-slate-900/60 border-b border-slate-800 px-3 sm:px-4 py-2.5 no-print">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
+      
+      <!-- Metrics Pills -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 flex-1 max-w-3xl">
+        <button onclick="filterGroup('all')" class="bg-slate-800/80 hover:bg-slate-800 border border-slate-700 rounded-xl p-2 text-left transition group">
+          <div class="text-[10px] text-slate-400 font-medium">Toàn Bộ Sảnh Tiệc</div>
+          <div class="text-base font-bold text-white flex items-baseline gap-1">
+            <span>34 Bàn</span> <span class="text-[10px] text-amber-300 font-semibold">(32 chính + 2 dự bị)</span>
+          </div>
+        </button>
+        <button onclick="filterGroup('groom')" class="bg-amber-950/40 hover:bg-amber-900/50 border border-amber-800/60 rounded-xl p-2 text-left transition">
+          <div class="text-[10px] text-amber-400 font-medium flex items-center gap-1">
+            <span class="w-2 h-2 rounded-full bg-amber-400"></span> Nhà Trai (Bên Trái)
+          </div>
+          <div class="text-base font-bold text-amber-200 flex items-baseline gap-1">
+            <span>16 Bàn</span> <span class="text-[10px] text-amber-400/80 font-normal">+ 1 Dự Bị (B17)</span>
+          </div>
+        </button>
+        <button onclick="filterGroup('bride')" class="bg-rose-950/40 hover:bg-rose-900/50 border border-rose-800/60 rounded-xl p-2 text-left transition">
+          <div class="text-[10px] text-rose-400 font-medium flex items-center gap-1">
+            <span class="w-2 h-2 rounded-full bg-rose-400"></span> Nhà Gái (Bên Phải)
+          </div>
+          <div class="text-base font-bold text-rose-200 flex items-baseline gap-1">
+            <span>16 Bàn</span> <span class="text-[10px] text-rose-400/80 font-normal">+ 1 Dự Bị (B17)</span>
+          </div>
+        </button>
+        <button onclick="filterGroup('vip')" class="bg-purple-950/40 hover:bg-purple-900/50 border border-purple-800/60 rounded-xl p-2 text-left transition">
+          <div class="text-[10px] text-purple-400 font-medium flex items-center gap-1">
+            <span class="w-2 h-2 rounded-full bg-purple-400"></span> Khu Bàn VIP 2 Nhà
+          </div>
+          <div class="text-base font-bold text-purple-200 flex items-baseline gap-1">
+            <span>8 Bàn VIP</span> <span class="text-[10px] text-purple-400/80 font-normal">Gần Sân Khấu</span>
+          </div>
+        </button>
+      </div>
+
+      <!-- Quick Search Box -->
+      <div class="w-full md:w-80 relative">
+        <input 
+          id="search-input" 
+          type="text" 
+          placeholder="🔍 Tìm nhanh: Vip, Chú Rể, Kiệt, Sếp Huy, Duyên..." 
+          class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400 transition"
+          oninput="handleSearch(this.value)"
+        />
+        <div id="search-badge" class="absolute right-3 top-2 text-[10px] px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 font-bold hidden"></div>
+      </div>
+    </div>
+  </section>
+
+  <main class="flex-1 max-w-7xl w-full mx-auto p-2 sm:p-4 flex flex-col lg:flex-row gap-4 sm:gap-5">
+
+    <!-- CAD FLOOR PLAN CANVAS -->
+    <div id="cad-wrapper" class="flex-1 bg-slate-900/80 border border-slate-800 rounded-2xl p-2.5 sm:p-4 flex flex-col shadow-2xl relative">
+      
+      <!-- Top banner & zoom controls -->
+      <div class="flex items-center justify-between text-xs text-slate-300 mb-2 sm:mb-3 border-b border-slate-800 pb-2 sm:pb-2.5 gap-2">
+        <div class="flex items-center gap-1.5 sm:gap-3 flex-wrap">
+          <span class="px-2 sm:px-2.5 py-0.5 sm:py-1 rounded bg-amber-950/60 border border-amber-500 text-amber-300 font-bold text-[11px] sm:text-xs shadow-sm">
+            ← BÊN TRÁI (TÍNH TỪ CỬA): NHÀ TRAI
+          </span>
+          <span class="px-2 sm:px-2.5 py-0.5 sm:py-1 rounded bg-rose-950/60 border border-rose-500 text-rose-300 font-bold text-[11px] sm:text-xs shadow-sm">
+            BÊN PHẢI (TÍNH TỪ CỬA): NHÀ GÁI →
+          </span>
+        </div>
+
+        <div class="flex items-center gap-1.5 no-print flex-shrink-0">
+          <button onclick="zoomMap(1.15)" class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 flex items-center justify-center font-bold text-sm shadow transition" title="Phóng to">+</button>
+          <button onclick="zoomMap(0.85)" class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 flex items-center justify-center font-bold text-sm shadow transition" title="Thu nhỏ">-</button>
+          <button onclick="resetZoom()" class="px-2 sm:px-2.5 h-7 sm:h-8 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-[11px] sm:text-xs font-semibold shadow transition" title="Xem trọn vẹn mặt bằng">Vừa Sảnh</button>
+        </div>
+      </div>
+
+      <!-- SVG Map Canvas (Optimized for Mobile: fits 100% width, no cut-off corners, smooth scrollable & zoomable) -->
+      <div id="cad-scroll-area" class="flex-1 overflow-auto custom-scrollbar p-1 sm:p-3 bg-slate-950/70 rounded-xl border border-slate-800/80 touch-pan-x touch-pan-y text-center">
+        <div id="cad-svg-container" class="inline-block text-left transition-transform duration-200 origin-top w-full max-w-[720px]">
+          <!-- The CAD Floor Plan SVG rendered dynamically -->
+          <svg id="hall-svg" viewBox="0 0 1000 1380" class="w-full h-auto select-none block">
+            <!-- Definitions for gradients & shadow filters -->
+            <defs>
+              <filter id="glow-gold" x="-20%" y="-20%" width="140%" height="140%">
+                <feGaussianBlur stdDeviation="6" result="blur" />
+                <feComposite in="SourceGraphic" in2="blur" operator="over" />
+              </filter>
+              <linearGradient id="stage-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stop-color="#334155" />
+                <stop offset="100%" stop-color="#1e293b" />
+              </linearGradient>
+              <linearGradient id="runway-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stop-color="#f8fafc" />
+                <stop offset="100%" stop-color="#e2e8f0" />
+              </linearGradient>
+            </defs>
+
+            <!-- Background Hall Boundary with subtle grid -->
+            <rect x="50" y="30" width="900" height="1320" rx="16" fill="#0f172a" stroke="#334155" stroke-width="2.5" />
+            <line x1="50" y1="120" x2="950" y2="120" stroke="#334155" stroke-dasharray="6 4" stroke-width="1.5" />
+
+            <!-- STAGE: 7.2 x 3.6 (m) -->
+            <rect x="320" y="60" width="360" height="140" rx="4" fill="url(#stage-grad)" stroke="#64748b" stroke-width="2" />
+            <text x="500" y="140" fill="#f1f5f9" font-size="22" font-weight="bold" text-anchor="middle" font-family="'Plus Jakarta Sans', sans-serif">
+              7,2 x 3,6 (m)
+            </text>
+            <text x="500" y="105" fill="#fbbf24" font-size="14" font-weight="800" text-anchor="middle" letter-spacing="2">
+              SÂN KHẤU CHÍNH
+            </text>
+
+            <!-- RUNWAY CATWALK: 3.6 x 2.4 (m) -->
+            <rect x="410" y="200" width="180" height="120" fill="url(#runway-grad)" stroke="#94a3b8" stroke-width="1.5" />
+            <text x="500" y="265" fill="#0f172a" font-size="19" font-weight="bold" text-anchor="middle">
+              3.6x2.4(m)
+            </text>
+            <text x="500" y="240" fill="#475569" font-size="11" font-weight="700" text-anchor="middle">
+              RUNWAY CATWALK
+            </text>
+
+            <!-- CENTER AISLE: Red/Dark carpet strip running to the entrance -->
+            <rect x="475" y="320" width="50" height="970" fill="#1e1b4b" stroke="#312e81" stroke-width="1" opacity="0.95" />
+            <!-- Vertical label on aisle -->
+            <g transform="translate(500, 800) rotate(-90)">
+              <text x="0" y="4" fill="#a5b4fc" font-size="13" font-weight="700" text-anchor="middle" letter-spacing="4" opacity="0.75">
+                THẢM ĐỎ LỐI ĐI CHÍNH • CÔ DÂU & CHÚ RỂ
+              </text>
+            </g>
+
+            <!-- ENTRANCE DOORS AT BOTTOM WITH ARROWS -->
+            <!-- Left Door -->
+            <rect x="220" y="1290" width="180" height="40" rx="4" fill="#1e293b" stroke="#475569" stroke-width="2" />
+            <!-- Right Door -->
+            <rect x="600" y="1290" width="180" height="40" rx="4" fill="#1e293b" stroke="#475569" stroke-width="2" />
+            
+            <!-- Main Entrance Arrow indicator (Center aligned) -->
+            <g transform="translate(500, 1345)">
+              <text x="0" y="0" fill="#f8fafc" font-size="28" font-weight="bold" text-anchor="middle">⇑</text>
+              <text x="0" y="-22" fill="#94a3b8" font-size="13" font-weight="bold" text-anchor="middle">CỬA VÀO TIỆC CƯỚI</text>
+            </g>
+
+            <!-- INTERACTIVE TABLES ON LEFT SIDE (NHÀ TRAI - BÊN TRÁI TÍNH TỪ CỬA) -->
+            <g id="interactive-tables-left"></g>
+
+            <!-- INTERACTIVE TABLES ON RIGHT SIDE (NHÀ GÁI - BÊN PHẢI TÍNH TỪ CỬA) -->
+            <g id="interactive-tables-right"></g>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Legend below CAD plan -->
+      <div class="mt-2.5 sm:mt-3 pt-2.5 sm:pt-3 border-t border-slate-800 flex flex-wrap items-center justify-between gap-2.5 text-[11px] text-slate-400">
+        <div class="flex flex-wrap items-center gap-2.5 sm:gap-3">
+          <div class="flex items-center gap-1.5">
+            <span class="w-3 h-3 rounded-full bg-amber-500 shadow-sm"></span>
+            <span class="text-slate-200 font-medium">Bàn Nhà Trai</span>
+          </div>
+          <div class="flex items-center gap-1.5">
+            <span class="w-3 h-3 rounded-full bg-rose-500 shadow-sm"></span>
+            <span class="text-slate-200 font-medium">Bàn Nhà Gái</span>
+          </div>
+          <div class="flex items-center gap-1.5">
+            <span class="w-3 h-3 rounded-full bg-slate-700 border border-dashed border-slate-400"></span>
+            <span class="text-slate-400 font-medium">Bàn 17: Dự Bị Duy Nhất</span>
+          </div>
+        </div>
+        <div class="text-amber-300 font-medium">
+          💡 Chạm vào bàn bất kỳ để xem danh sách khách, đổi tên, đổi màu hoặc <strong>đổi bàn</strong>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- RIGHT: TABLE DETAIL INSPECTOR (Desktop Sidebar) -->
+    <div class="w-full lg:w-96 flex flex-col gap-4">
+      
+      <!-- Card Detail (Supports normal view & edit mode) -->
+      <div id="table-inspector" class="bg-slate-900 border border-slate-800 rounded-2xl p-4 sm:p-5 shadow-2xl flex flex-col transition-all">
+        <!-- Rendered by JS -->
+      </div>
+
+      <!-- Banquet Coordinator Quick Notes -->
+      <div class="bg-slate-900/60 border border-slate-800/80 rounded-2xl p-4 text-xs space-y-2 text-slate-300">
+        <h4 class="font-bold text-amber-400 uppercase tracking-wider text-[11px] flex items-center gap-1.5">
+          <span>📋</span> Hướng dẫn bố trí & Tiếp khách
+        </h4>
+        <ul class="space-y-1.5 text-slate-400 text-[11px] leading-relaxed">
+          <li class="flex items-start gap-1.5">
+            <span class="text-amber-400 font-bold">•</span>
+            <span><strong>Chỉ Bàn 17 là Bàn Dự Bị:</strong> Cả 2 bên Nhà Trai và Nhà Gái đều bố trí 16 bàn chính thức (Bàn 1 - 16) và duy nhất Bàn 17 ở cuối hàng giữa là bàn dự bị.</span>
+          </li>
+          <li class="flex items-start gap-1.5">
+            <span class="text-amber-400 font-bold">•</span>
+            <span><strong>Hiển thị 3 thông tin trên mỗi bàn:</strong> Số bàn + Phân loại bàn + Số khách (chuẩn 1 bàn 10 khách).</span>
+          </li>
+          <li class="flex items-start gap-1.5">
+            <span class="text-amber-400 font-bold">•</span>
+            <span><strong>Tính năng Đổi Bàn:</strong> Nhấp vào bàn và bấm <em>"✏️ Sửa Tên, Màu & Đổi Bàn"</em> để hoán đổi vị trí giữa 2 bàn bất kỳ cực kỳ nhanh chóng.</span>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+
+    <!-- FULL TABLE LIST VIEW MODAL -->
+    <div id="full-list-container" class="hidden w-full bg-slate-900 border border-slate-800 rounded-2xl p-4 sm:p-6 shadow-2xl">
+      <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-800 flex-wrap gap-2">
+        <div>
+          <h2 class="text-lg sm:text-xl font-bold text-amber-300">Danh Sách Tổng Hợp 34 Bàn Tiệc Cưới</h2>
+          <p class="text-xs text-slate-400">16 Bàn Nhà Trai + 16 Bàn Nhà Gái (Áp dụng sơ đồ viết tay) + 2 Bàn Dự Bị (Bàn 17)</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <div class="flex bg-slate-800 rounded-lg p-0.5 text-xs font-bold">
+            <button onclick="setListViewFilter('all')" id="btn-list-filter-all" class="px-2.5 py-1 rounded bg-amber-500 text-slate-950">Tất Cả</button>
+            <button onclick="setListViewFilter('groom')" id="btn-list-filter-groom" class="px-2.5 py-1 rounded text-slate-300 hover:text-white">Nhà Trai</button>
+            <button onclick="setListViewFilter('bride')" id="btn-list-filter-bride" class="px-2.5 py-1 rounded text-slate-300 hover:text-white">Nhà Gái</button>
+          </div>
+          <button onclick="toggleListView()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-xs font-bold transition">
+            ✕ Đóng
+          </button>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5 max-h-[72vh] overflow-y-auto custom-scrollbar p-1" id="list-grid">
+        <!-- Rendered via JS -->
+      </div>
+    </div>
+
+  </main>
+
+  <!-- MOBILE POPUP MODAL (Popup danh sách khách & chế độ chỉnh sửa trên điện thoại) -->
+  <div id="mobile-table-modal" class="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/80 backdrop-blur-sm hidden transition-opacity duration-200">
+    <div id="mobile-modal-container" class="bg-slate-900 border border-slate-700/80 rounded-t-3xl sm:rounded-2xl max-w-lg w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
+      <!-- Header -->
+      <div class="p-3.5 sm:p-4 border-b border-slate-800 flex items-start justify-between bg-slate-900 sticky top-0 z-10">
+        <div id="mobile-modal-header" class="flex-1 pr-2">
+          <!-- Rendered by JS -->
+        </div>
+        <button onclick="closeMobileModal()" class="w-8 h-8 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-300 flex items-center justify-center text-sm font-bold transition focus:outline-none flex-shrink-0">
+          ✕
+        </button>
+      </div>
+
+      <!-- Scrollable Body (View or Edit Form) -->
+      <div id="mobile-modal-body" class="p-3.5 sm:p-4 overflow-y-auto custom-scrollbar flex-1 space-y-3">
+        <!-- Rendered by JS -->
+      </div>
+
+      <!-- Footer -->
+      <div class="p-3 border-t border-slate-800 bg-slate-950 flex justify-between items-center text-xs">
+        <div id="mobile-modal-footer-info" class="text-slate-400">
+          Tiêu chuẩn: <strong class="text-amber-400">1 bàn 10 khách</strong>
+        </div>
+        <button onclick="closeMobileModal()" class="px-5 py-2 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-xl transition shadow">
+          Đóng
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST ALERT NOTIFICATION -->
+  <div id="toast-message" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 bg-slate-900 border border-emerald-500 text-emerald-300 text-xs font-bold px-4 py-2.5 rounded-full shadow-2xl transition-all duration-300 opacity-0 pointer-events-none transform translate-y-4 flex items-center gap-2">
+    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+    <span id="toast-text">Thông báo</span>
+  </div>
+
+  <script>
+    // Color presets for tables management
+    const COLOR_PRESETS = [
+      { hex: '#f59e0b', name: 'Vàng Amber (Họ Nội / VIP)' },
+      { hex: '#10b981', name: 'Xanh Ngọc (Họ Ngoại)' },
+      { hex: '#3b82f6', name: 'Xanh Lam (Bạn Má / Vin)' },
+      { hex: '#f43f5e', name: 'Đỏ Hồng (Nhà Gái / Thủy)' },
+      { hex: '#8b5cf6', name: 'Tím Violet (Cen / VIP)' },
+      { hex: '#f97316', name: 'Cam Coral (Bạn Thân)' },
+      { hex: '#06b6d4', name: 'Xanh Cyan (Cấp 2 / Cấp 3)' },
+      { hex: '#eab308', name: 'Vàng Chanh (Họ Hàng)' },
+      { hex: '#64748b', name: 'Xám Bạc (Bàn Dự Bị)' }
+    ];
+
+    // ALL 34 TABLES DEFINITIONS: 17 Groom (Left side) + 17 Bride (Right side)
+    // ONLY TABLE 17 on each side is SPARE ("DỰ BỊ")! Tables 1-16 are official banquet tables.
+    // Bride tables are exactly transcribed from the handwritten floor plan image!
+    const allTablesData = [
+      // ==========================================
+      // NHÀ TRAI (BÊN TRÁI TÍNH TỪ CỬA - GROOM SIDE)
+      // ==========================================
+      {
+        id: "T_1",
+        tableNo: 1,
+        side: "groom",
+        sideName: "Nhà Trai",
+        cx: 390, cy: 330,
+        cadId: "L_INNER_1",
+        displayCategory: "VIP 1",
+        customColor: "#f59e0b",
+        group: "noi",
+        groupName: "VIP Bên Nội 1",
+        position: "Sát Sàn Catwalk Runway (Hàng 1 Cột Trong)",
+        guestCount: 10,
+        maxCapacity: 10,
+        status: "Đủ 10 khách",
+        highlight: "Bàn danh dự Họ Nội ngay sát sàn diễn catwalk và lối đi chính.",
+        guests: [
+          { name: "A Phón", count: 3, note: "Đại diện gia đình" },
+          { name: "A Tài", count: 3, note: "Gia đình" },
+          { name: "A Lủ", count: 1, note: "Khách lẻ" },
+          { name: "Ká Lỳ", count: 2, note: "2 người" },
+          { name: "Chị Sỏi", count: 1, note: "Khách lẻ" }
+        ]
+      },
+      {
+        id: "T_2",
+        tableNo: 2,
+        side: "groom",
+        sideName: "Nhà Trai",
+        cx: 280, cy: 250,
+        cadId: "L_MID_1",
+        displayCategory: "VIP 2",
+        customColor: "#10b981",
+        group: "ngoai",
+        groupName: "VIP Bên Ngoại 1",
+        position: "Cột Giữa Hàng 1 (Chính diện Sân Khấu)",
+        guestCount: 11,
+        maxCapacity: 10,
+        status: "11 khách (Chuẩn 10 khách)",
+        highlight: "Bàn trưởng bối cao niên quý giá nhất của Họ Ngoại.",
+        guests: [
+          { name: "Ngoại Mun", count: 1, note: "Bậc cao niên" },
+          { name: "Tìa Tìa", count: 1, note: "Bậc cao niên" },
+          { name: "Tòa Ché", count: 1, note: "Bậc cao niên" },
+          { name: "Ché Nắt", count: 1, note: "Bậc cao niên" },
+          { name: "Tỷ Cúc", count: 1, note: "Cô/Dì" },
+          { name: "Tỷ Liên", count: 2, note: "2 người" },
+          { name: "Ông Cha", count: 2, note: "2 người" },
+          { name: "A Liêm", count: 2, note: "2 người" }
+        ]
+      },
+      {
+        id: "T_3",
+        tableNo: 3,
+        side: "groom",
+        sideName: "Nhà Trai",
+        cx: 170, cy: 175,
+        cadId: "L_OUTER_1",
+        displayCategory: "VIP 3",
+        customColor: "#10b981",
+        group: "ngoai",
+        groupName: "VIP Bên Ngoại 2",
+        position: "Cột Ngoài Sát Vách Trái (Hàng 1 Góc Trái)",
+        guestCount: 11,
+        maxCapacity: 10,
+        status: "11 khách (Chuẩn 10 khách)",
+        highlight: "Nhánh cô dì, chú bác ruột bên Ngoại.",
+        guests: [
+          { name: "Ché Ngó", count: 2, note: "2 người" },
+          { name: "A Trình", count: 4, note: "Gia đình 4 người" },
+          { name: "A Quảy", count: 3, note: "Gia đình 3 người" },
+          { name: "Chị Hường", count: 1, note: "Khách lẻ" },
+          { name: "Chị Thanh", count: 1, note: "Khách lẻ" }
+        ]
+      },
+      {
+        id: "T_4",
+        tableNo: 4,
+        side: "groom",
+        sideName: "Nhà Trai",
+        cx: 390, cy: 445,
+        cadId: "L_INNER_2",
+        displayCategory: "Bên Nội",
+        customColor: "#f59e0b",
+        group: "noi",
+        groupName: "Gia Đình Bên Nội 2",
+        position: "Hàng 2 • Sát Thảm Đỏ Lối Đi",
+        guestCount: 10,
+        maxCapacity: 10,
+        status: "Đủ 10 khách",
+        highlight: "Họ hàng thân tộc bên Nội.",
+        guests: [
+          { name: "Chị Ngọc Anh", count: 2, note: "2 người" },
+          { name: "A Trúng", count: 2, note: "2 người" },
+          { name: "A Khá", count: 2, note: "2 người" },
+          { name: "Zìn Cô", count: 2, note: "2 người" },
+          { name: "Phụng Như", count: 2, note: "2 người" }
+        ]
+      },
+      {
+        id: "T_5",
+        tableNo: 5,
+        side: "groom",
+        sideName: "Nhà Trai",
+        cx: 280, cy: 375,
+        cadId: "L_MID_2",
+        displayCategory: "Bên Ngoại",
+        customColor: "#10b981",
+        group: "ngoai",
+        groupName: "Bên Ngoại 3 (Gia đình A Sẻn)",
+        position: "Hàng 2 • Cột Giữa So Le",
+        guestCount: 10,
+        maxCapacity: 10,
+        status: "Đủ 10 khách",
+        highlight: "Nhánh gia đình Anh Sẻn và các cháu ruột thịt.",
+        guests: [
+          { name: "Anh Sẻn", count: 3, note: "Gia đình 3 người" },
+          { name: "Cháu Hải", count: 4, note: "Gia đình 4 người" },
+          { name: "Cháu Hoàng", count: 3, note: "Gia đình 3 người" }
+        ]
+      },
+      {
+        id: "T_6",
+        tableNo: 6,
+        side: "groom",
+        sideName: "Nhà Trai",
+        cx: 170, cy: 310,
+        cadId: "L_OUTER_2",
+        displayCategory: "Bên Ngoại",
+        customColor: "#10b981",
+        group: "ngoai",
+        groupName: "Bên Ngoại 4 (Lai & Hưng)",
+        position: "Hàng 2 • Cột Ngoài Sát Vách Trái",
+        guestCount: 11,
+        maxCapacity: 10,
+        status: "11 khách (Chuẩn 10 khách)",
+        highlight: "Nhánh con cháu và bạn thân thiết gia đình.",
+        guests: [
+          { name: "Cháu Lai", count: 2, note: "2 người" },
+          { name: "Cháu Long", count: 2, note: "2 người" },
+          { name: "Cháu Hùng", count: 2, note: "2 người" },
+          { name: "Cháu Hưng", count: 4, note: "Gia đình 4 người" },
+          { name: "Bạn Lan", count: 1, note: "Khách thân quen" }
+        ]
+      },
+      {
+        id: "T_7",
+        tableNo: 7,
+        side: "groom",
+        sideName: "Nhà Trai",
+        cx: 390, cy: 565,
+        cadId: "L_INNER_3",
+        displayCategory: "Thanh Niên",
+        customColor: "#f59e0b",
+        group: "noi",
+        groupName: "Bên Nội 3 (Thanh Niên & Cháu Trẻ)",
+        position: "Hàng 3 • Sát Thảm Đỏ Lối Đi",
+        guestCount: 9,
+        maxCapacity: 10,
+        status: "9 khách (+1 dự bị A Thành)",
+        highlight: "Nhóm anh em trẻ gần thảm đỏ để dễ dàng hoạt náo, chụp ảnh.",
+        guests: [
+          { name: "Anh Hai", count: 1, note: "Anh Hai" },
+          { name: "Em Thụy", count: 2, note: "2 người" },
+          { name: "Vĩnh", count: 1, note: "1 người" },
+          { name: "Hiền", count: 2, note: "2 người" },
+          { name: "Lộc", count: 1, note: "1 người" },
+          { name: "Tài", count: 2, note: "2 người" },
+          { name: "A Thành (Dự bị)", count: 0, note: "Chờ xác nhận dự tiệc" }
+        ]
+      },
+      {
+        id: "T_8",
+        tableNo: 8,
+        side: "groom",
+        sideName: "Nhà Trai",
+        cx: 280, cy: 500,
+        cadId: "L_MID_3",
+        displayCategory: "Bên Ngoại",
+        customColor: "#10b981",
+        group: "ngoai",
+        groupName: "Bên Ngoại 5 (Mỹ & Phong)",
+        position: "Hàng 3 • Cột Giữa So Le",
+        guestCount: 11,
+        maxCapacity: 10,
+        status: "11 khách (Chuẩn 10 khách)",
+        highlight: "Gia đình các cháu và anh chị em trẻ bên Ngoại.",
+        guests: [
+          { name: "Cháu Mỹ", count: 4, note: "Gia đình 4 người" },
+          { name: "Cháu Phong", count: 3, note: "Gia đình 3 người" },
+          { name: "Em Tý", count: 2, note: "2 người" },
+          { name: "Út em Phường", count: 1, note: "1 người" },
+          { name: "Bạn Nữ", count: 1, note: "1 người" }
+        ]
+      },
+      {
+        id: "T_9",
+        tableNo: 9,
+        side: "groom",
+        sideName: "Nhà Trai",
+        cx: 170, cy: 440,
+        cadId: "L_OUTER_3",
+        displayCategory: "Bên Ngoại",
+        customColor: "#10b981",
+        group: "ngoai",
+        groupName: "Bên Ngoại 6 (Tâm & Tín)",
+        position: "Hàng 3 • Cột Ngoài Sát Vách Trái",
+        guestCount: 10,
+        maxCapacity: 10,
+        status: "Đủ 10 khách",
+        highlight: "Gia đình trẻ có con nhỏ ngồi cạnh vách rộng rãi, thoải mái.",
+        guests: [
+          { name: "Cháu Tâm", count: 4, note: "Gia đình 4 người" },
+          { name: "Cháu Tín", count: 4, note: "Gia đình 4 người" },
+          { name: "Bé An", count: 2, note: "2 người" }
+        ]
+      },
+      {
+        id: "T_10",
+        tableNo: 10,
+        side: "groom",
+        sideName: "Nhà Trai",
+        cx: 390, cy: 690,
+        cadId: "L_INNER_4",
+        displayCategory: "Bên Ngoại",
+        customColor: "#10b981",
+        group: "ngoai",
+        groupName: "Bên Ngoại 7 (Ngọc, Yên, Tuyền)",
+        position: "Hàng 4 • Sát Thảm Đỏ Lối Đi",
+        guestCount: 11,
+        maxCapacity: 10,
+        status: "11 khách (Chuẩn 10 khách)",
+        highlight: "Đại gia đình 3 chị em Bé Ngọc, Bé Yên, Bé Tuyền.",
+        guests: [
+          { name: "Bé Ngọc", count: 3, note: "Gia đình 3 người" },
+          { name: "Bé Yên", count: 4, note: "Gia đình 4 người" },
+          { name: "Bé Tuyền", count: 4, note: "Gia đình 4 người" }
+        ]
+      },
+      {
+        id: "T_11",
+        tableNo: 11,
+        side: "groom",
+        sideName: "Nhà Trai",
+        cx: 280, cy: 625,
+        cadId: "L_MID_4",
+        displayCategory: "Bạn Má",
+        customColor: "#3b82f6",
+        group: "banma",
+        groupName: "Bạn Má 1 (Bạn Thân & Làm Ăn)",
+        position: "Hàng 4 • Cột Giữa So Le",
+        guestCount: 10,
+        maxCapacity: 10,
+        status: "Đủ 10 khách",
+        highlight: "Hội bạn thân thiết lâu năm của Má.",
+        guests: [
+          { name: "San Cô", count: 4, note: "Gia đình 4 người" },
+          { name: "Em chồng San Cô", count: 1, note: "1 người" },
+          { name: "Bán thuốc tây", count: 1, note: "1 người" },
+          { name: "Mũi Đầm Sen", count: 1, note: "1 người" },
+          { name: "GĐ Thanh Điện Lạnh", count: 3, note: "Gia đình 3 người" }
+        ]
+      },
+      {
+        id: "T_12",
+        tableNo: 12,
+        side: "groom",
+        sideName: "Nhà Trai",
+        cx: 170, cy: 565,
+        cadId: "L_OUTER_4",
+        displayCategory: "Bạn Má",
+        customColor: "#3b82f6",
+        group: "banma",
+        groupName: "Bạn Má 2 (Khu Chung Cư)",
+        position: "Hàng 4 • Cột Ngoài Sát Vách Trái",
+        guestCount: 10,
+        maxCapacity: 10,
+        status: "Đủ 10 khách",
+        highlight: "Hội các chị hàng xóm thân thương Lô A, B, C, D.",
+        guests: [
+          { name: "Chị Mỹ (Lô D)", count: 1, note: "Lô D" },
+          { name: "Chị Ba (Lô D)", count: 1, note: "Lô D" },
+          { name: "Chị Hà (Lô D)", count: 1, note: "Lô D" },
+          { name: "Em Trân (Lô D)", count: 2, note: "2 người" },
+          { name: "Chị Hai (Lô B)", count: 1, note: "Lô B" },
+          { name: "Em Yến (Lô B)", count: 1, note: "Lô B" },
+          { name: "Phượng (Lô A)", count: 1, note: "Lô A" },
+          { name: "Chị Lan (Lô C)", count: 1, note: "Lô C" },
+          { name: "Thúy Gạo", count: 1, note: "1 người" }
+        ]
+      },
+      // Bàn chính thức 13, 14, 15, 16 Nhà Trai (Trước đây là dự phòng, nay là bàn chính thức!)
+      {
+        id: "T_13",
+        tableNo: 13,
+        side: "groom",
+        sideName: "Nhà Trai",
+        cx: 280, cy: 755,
+        cadId: "L_MID_5",
+        displayCategory: "Bàn 13",
+        customColor: "#f97316",
+        group: "other",
+        groupName: "Bàn Chính Thức 13 (Nhà Trai)",
+        position: "Hàng 5 • Cột Giữa",
+        guestCount: 10,
+        maxCapacity: 10,
+        status: "Đủ 10 khách",
+        highlight: "Bàn chính thức Nhà Trai phục vụ khách mời phát sinh & bạn bè.",
+        guests: [
+          { name: "Nhóm Bạn Trẻ 1", count: 4, note: "Bạn thân thiết" },
+          { name: "Khách Mời Họ Hàng", count: 4, note: "Khách mời" },
+          { name: "Khách Dự Tiệc", count: 2, note: "2 người" }
+        ]
+      },
+      {
+        id: "T_14",
+        tableNo: 14,
+        side: "groom",
+        sideName: "Nhà Trai",
+        cx: 170, cy: 690,
+        cadId: "L_OUTER_5",
+        displayCategory: "A Vĩ",
+        customColor: "#3b82f6",
+        group: "other",
+        groupName: "Nhóm Bạn A Vĩ",
+        position: "Hàng 5 • Cột Ngoài Sát Vách Trái",
+        guestCount: 10,
+        maxCapacity: 10,
+        status: "Đủ 10 khách",
+        highlight: "Bàn nhóm bạn A Vĩ Nhà Trai.",
+        guests: [
+          { name: "A Vĩ", count: 2, note: "Chủ nhóm" },
+          { name: "Bạn A Vĩ 1", count: 2, note: "Bạn thân" },
+          { name: "Bạn A Vĩ 2", count: 2, note: "Bạn thân" },
+          { name: "Bạn A Vĩ 3", count: 2, note: "Bạn thân" },
+          { name: "Bạn A Vĩ 4", count: 2, note: "Bạn thân" }
+        ]
+      },
+      {
+        id: "T_15",
+        tableNo: 15,
+        side: "groom",
+        sideName: "Nhà Trai",
+        cx: 390, cy: 815,
+        cadId: "L_INNER_5",
+        displayCategory: "Khách Mời",
+        customColor: "#8b5cf6",
+        group: "other",
+        groupName: "Bàn Chính Thức 15 (Nhà Trai)",
+        position: "Hàng 5 • Sát Thảm Đỏ",
+        guestCount: 10,
+        maxCapacity: 10,
+        status: "Đủ 10 khách",
+        highlight: "Bàn chính thức gần lối đi thảm đỏ.",
+        guests: [
+          { name: "Nhóm Đồng Nghiệp 1", count: 4, note: "Công ty" },
+          { name: "Nhóm Đồng Nghiệp 2", count: 4, note: "Công ty" },
+          { name: "Khách Mời Thân Thiết", count: 2, note: "2 người" }
+        ]
+      },
+      {
+        id: "T_16",
+        tableNo: 16,
+        side: "groom",
+        sideName: "Nhà Trai",
+        cx: 170, cy: 820,
+        cadId: "L_OUTER_6",
+        displayCategory: "Đồng Nghiệp",
+        customColor: "#06b6d4",
+        group: "other",
+        groupName: "Bàn Chính Thức 16 (Nhà Trai)",
+        position: "Hàng 6 • Cột Ngoài Sát Vách Trái",
+        guestCount: 10,
+        maxCapacity: 10,
+        status: "Đủ 10 khách",
+        highlight: "Bàn chính thức khu vực vách gần cửa.",
+        guests: [
+          { name: "Nhóm Bạn Đại Học", count: 5, note: "Bạn bè" },
+          { name: "Nhóm Bạn Cũ", count: 5, note: "Bạn bè" }
+        ]
+      },
+      // BÀN 17 NHÀ TRAI: BÀN DỰ BỊ DUY NHẤT! (Vị trí khoanh đỏ trong ảnh)
+      {
+        id: "T_17",
+        tableNo: 17,
+        side: "groom",
+        sideName: "Nhà Trai",
+        cx: 280, cy: 885,
+        cadId: "L_MID_6",
+        displayCategory: "DỰ BỊ",
+        customColor: "#64748b",
+        group: "spare",
+        groupName: "Bàn Dự Bị Nhà Trai (Duy Nhất)",
+        position: "Hàng 6 • Cột Giữa (Gần Cửa Chính)",
+        guestCount: 0,
+        maxCapacity: 10,
+        status: "Bàn Dự Bị (Trống)",
+        highlight: "Bàn dự bị duy nhất của Nhà Trai sẵn sàng tiếp đón khách phát sinh.",
+        guests: []
+      },
+
+      // ==========================================
+      // NHÀ GÁI (BÊN PHẢI TÍNH TỪ CỬA - BRIDE SIDE)
+      // ÁP DỤNG CHÍNH XÁC SƠ ĐỒ VIẾT TAY CỦA NHÀ GÁI
+      // ==========================================
+      {
+        id: "G_1",
+        tableNo: 1,
+        side: "bride",
+        sideName: "Nhà Gái",
+        cx: 610, cy: 330,
+        cadId: "R_INNER_1",
+        displayCategory: "VIP 1 GĐ",
+        customColor: "#f43f5e",
+        group: "bride_vip",
+        groupName: "VIP 1 Gia Đình Nhà Gái",
+        position: "Sát Sàn Catwalk Runway (Hàng 1 Cột Trong)",
+        guestCount: 10,
+        maxCapacity: 10,
+        status: "Đủ 10 khách",
+        highlight: "Bàn trưởng bối cao niên quý giá nhất của Gia Đình Nhà Gái ngay sát sàn Catwalk.",
+        guests: [
+          { name: "Thím 7", count: 1, note: "Gia đình" },
+          { name: "Chú 7", count: 1, note: "Gia đình" },
+          { name: "Chú Thành", count: 1, note: "Gia đình" },
+          { name: "Chú 6", count: 1, note: "Gia đình" },
+          { name: "Bác 2", count: 1, note: "Bác 2" },
+          { name: "Bác 2 (Vợ/Chồng)", count: 1, note: "Bác 2" },
+          { name: "Thím 3", count: 1, note: "Gia đình" },
+          { name: "Cậu 3", count: 1, note: "Gia đình" },
+          { name: "Dượng 5", count: 1, note: "Gia đình" },
+          { name: "Cô 5", count: 1, note: "Gia đình" }
+        ]
+      },
+      {
+        id: "G_2",
+        tableNo: 2,
+        side: "bride",
+        sideName: "Nhà Gái",
+        cx: 720, cy: 250,
+        cadId: "R_MID_1",
+        displayCategory: "VIP 2 GĐ",
+        customColor: "#f43f5e",
+        group: "bride_vip",
+        groupName: "VIP 2 Gia Đình Nhà Gái",
+        position: "Cột Giữa Hàng 1 (Chính diện Sân Khấu)",
+        guestCount: 10,
+        maxCapacity: 10,
+        status: "Đủ 10 khách",
+        highlight: "Bàn VIP 2 gia đình ruột thịt Nhà Gái.",
+        guests: [
+          { name: "Kiệt", count: 1, note: "Gia đình" },
+          { name: "Anh Dzice", count: 1, note: "Gia đình" },
+          { name: "Con 2", count: 1, note: "Con" },
+          { name: "Con 1", count: 1, note: "Con" },
+          { name: "Chị Dân", count: 1, note: "Chị" },
+          { name: "A2 (Anh Hai)", count: 1, note: "Anh Hai" },
+          { name: "Dì Hương", count: 1, note: "Dì Hương" },
+          { name: "Má", count: 1, note: "Má" },
+          { name: "Vợ Kiệt", count: 1, note: "Gia đình" },
+          { name: "Xập Phẩy", count: 1, note: "Gia đình" }
+        ]
+      },
+      {
+        id: "G_3",
+        tableNo: 3,
+        side: "bride",
+        sideName: "Nhà Gái",
+        cx: 830, cy: 175,
+        cadId: "R_OUTER_1",
+        displayCategory: "VIP 3",
+        customColor: "#f59e0b",
+        group: "bride_vip",
+        groupName: "VIP 3 Họ Hàng Nhà Gái",
+        position: "Cột Ngoài Sát Vách Phải (Hàng 1 Góc Phải)",
+        guestCount: 10,
+        maxCapacity: 10,
+        status: "Đủ 10 khách",
+        highlight: "Nhánh Bác Loan, Chú Tiến và anh chị em ruột thịt.",
+        guests: [
+          { name: "Tác Bác", count: 1, note: "Họ hàng" },
+          { name: "Tài Bác Loan", count: 1, note: "Bác Loan" },
+          { name: "Chị Trang", count: 1, note: "Chị Trang" },
+          { name: "Con 1", count: 1, note: "Con" },
+          { name: "Con 2", count: 1, note: "Con" },
+          { name: "Con 3", count: 1, note: "Con" },
+          { name: "Chú Tiến", count: 1, note: "Chú Tiến" },
+          { name: "Con CT (Con Chú Tiến)", count: 1, note: "Con CT" },
+          { name: "Vợ chồng Chú 6", count: 1, note: "Chú 6" },
+          { name: "Chú 5", count: 1, note: "Chú 5" }
+        ]
+      },
+      {
+        id: "G_4",
+        tableNo: 4,
+        side: "bride",
+        sideName: "Nhà Gái",
+        cx: 610, cy: 445,
+        cadId: "R_INNER_2",
+        displayCategory: "Lìn Có",
+        customColor: "#f43f5e",
+        group: "bride_family",
+        groupName: "Bàn Lìn Có (Nhà Gái)",
+        position: "Hàng 2 • Sát Thảm Đỏ Lối Đi",
+        guestCount: 10,
+        maxCapacity: 10,
+        status: "Đủ 10 khách",
+        highlight: "Nhóm gia đình và người thân Lìn Có.",
+        guests: [
+          { name: "Đại diện Lìn Có", count: 4, note: "Gia đình" },
+          { name: "Người thân Lìn Có 1", count: 3, note: "Gia đình" },
+          { name: "Người thân Lìn Có 2", count: 3, note: "Gia đình" }
+        ]
+      },
+      {
+        id: "G_5",
+        tableNo: 5,
+        side: "bride",
+        sideName: "Nhà Gái",
+        cx: 720, cy: 375,
+        cadId: "R_MID_2",
+        displayCategory: "VIP 4",
+        customColor: "#f59e0b",
+        group: "bride_vip",
+        groupName: "VIP 4 (Bạn Lợi + Sức)",
+        position: "Hàng 2 • Cột Giữa So Le",
+        guestCount: 10,
+        maxCapacity: 10,
+        status: "Đủ 10 khách",
+        highlight: "Bàn VIP 4 dành cho nhóm Bạn Lợi & Sức.",
+        guests: [
+          { name: "Bạn Lợi", count: 5, note: "Nhóm Bạn Lợi" },
+          { name: "Bạn Sức", count: 5, note: "Nhóm Bạn Sức" }
+        ]
+      },
+      {
+        id: "G_6",
+        tableNo: 6,
+        side: "bride",
+        sideName: "Nhà Gái",
+        cx: 830, cy: 310,
+        cadId: "R_OUTER_2",
+        displayCategory: "VIP 5 GĐ",
+        customColor: "#f59e0b",
+        group: "bride_vip",
+        groupName: "VIP 5 Gia Đình",
+        position: "Hàng 2 • Cột Ngoài Sát Vách Phải",
+        guestCount: 10,
+        maxCapacity: 10,
+        status: "Đủ 10 khách",
+        highlight: "Nhánh Chị Hà, Anh Toàn, A. Dinh và con cháu.",
+        guests: [
+          { name: "Chị Hà", count: 1, note: "Chị Hà" },
+          { name: "Dì Hà (Ché Hà)", count: 1, note: "Ché Hà" },
+          { name: "Dành Ché", count: 1, note: "Dành Ché" },
+          { name: "Anh Toàn", count: 1, note: "Anh Toàn" },
+          { name: "A. Dinh", count: 1, note: "A. Dinh" },
+          { name: "Con 1", count: 1, note: "Con" },
+          { name: "Con 2", count: 1, note: "Con" },
+          { name: "Con 1 (nhánh 2)", count: 1, note: "Con" },
+          { name: "Con 2 (nhánh 2)", count: 1, note: "Con" },
+          { name: "Linh Đào", count: 1, note: "Linh Đào" }
+        ]
+      },
+      {
+        id: "G_7",
+        tableNo: 7,
+        side: "bride",
+        sideName: "Nhà Gái",
+        cx: 610, cy: 565,
+        cadId: "R_INNER_3",
+        displayCategory: "Cấp 3",
+        customColor: "#06b6d4",
+        group: "bride_friends",
+        groupName: "Bàn Bạn Cấp 3 (Cô Dâu)",
+        position: "Hàng 3 • Sát Thảm Đỏ Lối Đi",
+        guestCount: 10,
+        maxCapacity: 10,
+        status: "Đủ 10 khách",
+        highlight: "Hội bạn thân cấp 3 của Cô Dâu.",
+        guests: [
+          { name: "Linh", count: 1, note: "Bạn cấp 3" },
+          { name: "Duyên", count: 1, note: "Bạn cấp 3" },
+          { name: "Tín", count: 1, note: "Bạn cấp 3" },
+          { name: "C1 (Con 1)", count: 1, note: "Con" },
+          { name: "Trí", count: 1, note: "Bạn cấp 3" },
+          { name: "Chương", count: 1, note: "Bạn cấp 3" },
+          { name: "An", count: 1, note: "Bạn cấp 3" },
+          { name: "Thuận", count: 1, note: "Bạn cấp 3" },
+          { name: "Phúc", count: 1, note: "Bạn cấp 3" },
+          { name: "Bạn Cấp 3", count: 1, note: "Bạn cấp 3" }
+        ]
+      },
+      {
+        id: "G_8",
+        tableNo: 8,
+        side: "bride",
+        sideName: "Nhà Gái",
+        cx: 720, cy: 500,
+        cadId: "R_MID_3",
+        displayCategory: "Cấp 2",
+        customColor: "#06b6d4",
+        group: "bride_friends",
+        groupName: "Bàn Bạn Cấp 2 (Cô Dâu)",
+        position: "Hàng 3 • Cột Giữa So Le",
+        guestCount: 10,
+        maxCapacity: 10,
+        status: "Đủ 10 khách",
+        highlight: "Hội bạn thân cấp 2 của Cô Dâu.",
+        guests: [
+          { name: "Phước", count: 1, note: "Bạn cấp 2" },
+          { name: "Tâm", count: 1, note: "Bạn cấp 2" },
+          { name: "Tài", count: 1, note: "Bạn cấp 2" },
+          { name: "Quân", count: 1, note: "Bạn cấp 2" },
+          { name: "Pé", count: 1, note: "Bạn cấp 2" },
+          { name: "Ngọc", count: 1, note: "Bạn cấp 2" },
+          { name: "Trân", count: 1, note: "Bạn cấp 2" },
+          { name: "Bạn Cấp 2 (A)", count: 1, note: "Bạn cấp 2" },
+          { name: "Bạn Cấp 2 (B)", count: 1, note: "Bạn cấp 2" },
+          { name: "Bạn Cấp 2 (C)", count: 1, note: "Bạn cấp 2" }
+        ]
+      },
+      {
+        id: "G_9",
+        tableNo: 9,
+        side: "bride",
+        sideName: "Nhà Gái",
+        cx: 830, cy: 440,
+        cadId: "R_OUTER_3",
+        displayCategory: "Ngoại",
+        customColor: "#10b981",
+        group: "bride_family",
+        groupName: "Bên Ngoại Nhà Gái",
+        position: "Hàng 3 • Cột Ngoài Sát Vách Phải",
+        guestCount: 10,
+        maxCapacity: 10,
+        status: "Đủ 10 khách",
+        highlight: "Nhánh Ché Thoán, Anh Nguyên, Ché Mai bên Ngoại Nhà Gái.",
+        guests: [
+          { name: "Ché Thoán", count: 1, note: "Bên Ngoại" },
+          { name: "Anh Nguyên", count: 1, note: "Bên Ngoại" },
+          { name: "Con 1", count: 1, note: "Con" },
+          { name: "Con 2", count: 1, note: "Con" },
+          { name: "Ché Mai", count: 1, note: "Bên Ngoại" },
+          { name: "Dì Thúy", count: 1, note: "Bên Ngoại" },
+          { name: "Con 1 (nhánh 2)", count: 1, note: "Con" },
+          { name: "Con 2 (nhánh 2)", count: 1, note: "Con" },
+          { name: "Người thân Ngoại 1", count: 1, note: "Họ hàng" },
+          { name: "Người thân Ngoại 2", count: 1, note: "Họ hàng" }
+        ]
+      },
+      {
+        id: "G_10",
+        tableNo: 10,
+        side: "bride",
+        sideName: "Nhà Gái",
+        cx: 610, cy: 690,
+        cadId: "R_INNER_4",
+        displayCategory: "Vin 1",
+        customColor: "#3b82f6",
+        group: "bride_colleagues",
+        groupName: "Đồng Nghiệp Vin 1",
+        position: "Hàng 4 • Sát Thảm Đỏ Lối Đi",
+        guestCount: 10,
+        maxCapacity: 10,
+        status: "Đủ 10 khách",
+        highlight: "Hội đồng nghiệp Vin nhánh Sếp Huy, Sếp Trọng, Mai Anh.",
+        guests: [
+          { name: "Duyên", count: 1, note: "Vin" },
+          { name: "Sếp Huy", count: 1, note: "Vin" },
+          { name: "Mai Anh", count: 1, note: "Vin" },
+          { name: "Sếp Trọng", count: 1, note: "Vin" },
+          { name: "Ngọc", count: 1, note: "Vin" },
+          { name: "Bắp", count: 1, note: "Vin" },
+          { name: "Minh", count: 1, note: "Vin" },
+          { name: "Vk Minh (Vợ Minh)", count: 1, note: "Vin" },
+          { name: "Con 1", count: 1, note: "Con" },
+          { name: "Huy", count: 1, note: "Vin" }
+        ]
+      },
+      {
+        id: "G_11",
+        tableNo: 11,
+        side: "bride",
+        sideName: "Nhà Gái",
+        cx: 720, cy: 625,
+        cadId: "R_MID_4",
+        displayCategory: "Vin 2",
+        customColor: "#3b82f6",
+        group: "bride_colleagues",
+        groupName: "Đồng Nghiệp Vin 2",
+        position: "Hàng 4 • Cột Giữa So Le",
+        guestCount: 10,
+        maxCapacity: 10,
+        status: "Đủ 10 khách",
+        highlight: "Hội đồng nghiệp Vin nhánh Chị Vinh, Bé Nhì, Phương, Uyên.",
+        guests: [
+          { name: "C. Vinh", count: 1, note: "Vin" },
+          { name: "Bé Nhì", count: 1, note: "Vin" },
+          { name: "Liên", count: 1, note: "Vin" },
+          { name: "Vân", count: 1, note: "Vin" },
+          { name: "Ân", count: 1, note: "Vin" },
+          { name: "Khách", count: 1, note: "Vin" },
+          { name: "CK Khánh", count: 1, note: "Vin" },
+          { name: "Phương", count: 1, note: "Vin" },
+          { name: "Uyên", count: 1, note: "Vin" },
+          { name: "Trâm", count: 1, note: "Vin" }
+        ]
+      },
+      {
+        id: "G_12",
+        tableNo: 12,
+        side: "bride",
+        sideName: "Nhà Gái",
+        cx: 830, cy: 565,
+        cadId: "R_OUTER_4",
+        displayCategory: "NVL",
+        customColor: "#8b5cf6",
+        group: "bride_friends",
+        groupName: "Nhóm Bạn NVL",
+        position: "Hàng 4 • Cột Ngoài Sát Vách Phải",
+        guestCount: 10,
+        maxCapacity: 10,
+        status: "Đủ 10 khách",
+        highlight: "Nhóm bạn NVL thân thiết của Cô Dâu.",
+        guests: [
+          { name: "C. Ánh", count: 1, note: "NVL" },
+          { name: "Trẻ Nhỏ", count: 1, note: "NVL" },
+          { name: "Chị Q.Anh", count: 1, note: "NVL" },
+          { name: "Giang", count: 1, note: "NVL" },
+          { name: "Tấn", count: 1, note: "NVL" },
+          { name: "Hơn", count: 1, note: "NVL" },
+          { name: "Đạt", count: 1, note: "NVL" },
+          { name: "Kiều", count: 1, note: "NVL" },
+          { name: "Ngọc", count: 1, note: "NVL" },
+          { name: "Bạn NVL", count: 1, note: "NVL" }
+        ]
+      },
+      {
+        id: "G_13",
+        tableNo: 13,
+        side: "bride",
+        sideName: "Nhà Gái",
+        cx: 720, cy: 755,
+        cadId: "R_MID_5",
+        displayCategory: "Cen",
+        customColor: "#8b5cf6",
+        group: "bride_colleagues",
+        groupName: "Đồng Nghiệp Cen",
+        position: "Hàng 5 • Cột Giữa",
+        guestCount: 10,
+        maxCapacity: 10,
+        status: "Đủ 10 khách",
+        highlight: "Hội bạn bè và đồng nghiệp Cen.",
+        guests: [
+          { name: "An", count: 1, note: "Cen" },
+          { name: "Nam", count: 1, note: "Cen" },
+          { name: "Liên", count: 1, note: "Cen" },
+          { name: "Quý", count: 1, note: "Cen" },
+          { name: "Nụ", count: 1, note: "Cen" },
+          { name: "Yến", count: 1, note: "Cen" },
+          { name: "Lợi", count: 1, note: "Cen" },
+          { name: "CK Nụ", count: 1, note: "Cen" },
+          { name: "Ché Nụ", count: 1, note: "Cen" },
+          { name: "2 Hài", count: 1, note: "Cen" }
+        ]
+      },
+      {
+        id: "G_14",
+        tableNo: 14,
+        side: "bride",
+        sideName: "Nhà Gái",
+        cx: 830, cy: 690,
+        cadId: "R_OUTER_5",
+        displayCategory: "Vin 3",
+        customColor: "#3b82f6",
+        group: "bride_colleagues",
+        groupName: "Đồng Nghiệp Vin 3",
+        position: "Hàng 5 • Cột Ngoài Sát Vách Phải",
+        guestCount: 10,
+        maxCapacity: 10,
+        status: "Đủ 10 khách",
+        highlight: "Hội đồng nghiệp Vin nhánh Bé Hoa, C. Hồng, C. Lãnh, Ché Hoa.",
+        guests: [
+          { name: "Bé Hoa", count: 1, note: "Vin" },
+          { name: "A Liên", count: 1, note: "Vin" },
+          { name: "C. Hồng", count: 1, note: "Vin" },
+          { name: "C. Lãnh", count: 1, note: "Vin" },
+          { name: "Nhàn", count: 1, note: "Vin" },
+          { name: "Ngân", count: 1, note: "Vin" },
+          { name: "Như", count: 1, note: "Vin" },
+          { name: "Nguyên", count: 1, note: "Vin" },
+          { name: "Thư", count: 1, note: "Vin" },
+          { name: "Ché Hoa", count: 1, note: "Vin" }
+        ]
+      },
+      {
+        id: "G_15",
+        tableNo: 15,
+        side: "bride",
+        sideName: "Nhà Gái",
+        cx: 610, cy: 815,
+        cadId: "R_INNER_5",
+        displayCategory: "Khách Iu",
+        customColor: "#f43f5e",
+        group: "bride_friends",
+        groupName: "Bàn Khách Iu (Nhà Gái)",
+        position: "Hàng 5 • Sát Thảm Đỏ",
+        guestCount: 10,
+        maxCapacity: 10,
+        status: "Đủ 10 khách",
+        highlight: "Hội khách quý thân thương Nhà Gái (Ché Chi, Chị Lan, Anh Dũng, Cô Thục...).",
+        guests: [
+          { name: "Ché Chi", count: 1, note: "Khách Iu" },
+          { name: "Chị Lan", count: 1, note: "Khách Iu" },
+          { name: "Anh Dũng", count: 1, note: "Khách Iu" },
+          { name: "Chị Vân", count: 1, note: "Khách Iu" },
+          { name: "Anh Chuyên", count: 1, note: "Khách Iu" },
+          { name: "A Tuấn (Thay Nơi)", count: 1, note: "Khách Iu" },
+          { name: "Chị Mới", count: 1, note: "Khách Iu" },
+          { name: "Cô Thục", count: 1, note: "Khách Iu" },
+          { name: "Linh", count: 1, note: "Khách Iu" },
+          { name: "Anh Bình", count: 1, note: "Khách Iu" }
+        ]
+      },
+      {
+        id: "G_16",
+        tableNo: 16,
+        side: "bride",
+        sideName: "Nhà Gái",
+        cx: 830, cy: 820,
+        cadId: "R_OUTER_6",
+        displayCategory: "Nail Thủy",
+        customColor: "#f43f5e",
+        group: "bride_friends",
+        groupName: "Nhóm Nail & Bạn Thủy",
+        position: "Hàng 6 • Cột Ngoài Sát Vách Phải",
+        guestCount: 10,
+        maxCapacity: 10,
+        status: "Đủ 10 khách",
+        highlight: "Hội bạn bè thân thiết làm Nail & Nhóm bạn Thủy.",
+        guests: [
+          { name: "Anh Toàn", count: 1, note: "Bạn thân" },
+          { name: "Ché Mai", count: 1, note: "Bạn thân" },
+          { name: "C. Thúy", count: 1, note: "Nail" },
+          { name: "C. Út", count: 1, note: "Nail" },
+          { name: "C. Hà", count: 1, note: "Nail" },
+          { name: "C. Kiều", count: 1, note: "Nail" },
+          { name: "C. Trang", count: 1, note: "Nail" },
+          { name: "CK C. Trang", count: 1, note: "Nail" },
+          { name: "Bạn Nail 1", count: 1, note: "Nail" },
+          { name: "Bạn Nail 2", count: 1, note: "Nail" }
+        ]
+      },
+      // BÀN 17 NHÀ GÁI: BÀN DỰ BỊ DUY NHẤT NHÀ GÁI!
+      {
+        id: "G_17",
+        tableNo: 17,
+        side: "bride",
+        sideName: "Nhà Gái",
+        cx: 720, cy: 885,
+        cadId: "R_MID_6",
+        displayCategory: "DỰ BỊ",
+        customColor: "#64748b",
+        group: "spare",
+        groupName: "Bàn Dự Bị Nhà Gái (Duy Nhất)",
+        position: "Hàng 6 • Cột Giữa (Gần Cửa Chính)",
+        guestCount: 0,
+        maxCapacity: 10,
+        status: "Bàn Dự Bị (Trống)",
+        highlight: "Bàn dự bị duy nhất của Nhà Gái sẵn sàng tiếp đón khách phát sinh.",
+        guests: []
+      }
+    ];
+
+    let currentSelectedId = "T_1";
+    let currentFilter = 'all';
+    let currentZoom = 1;
+    let listViewFilter = 'all';
+
+    let activeEditSession = {
+      mobile: { isEditing: false, tableId: null, selectedColor: '', tempLabel: '', tempGroup: '', tempGuests: [] },
+      desktop: { isEditing: false, tableId: null, selectedColor: '', tempLabel: '', tempGroup: '', tempGuests: [] }
+    };
+
+    function escapeXml(unsafe) {
+      if (!unsafe) return '';
+      return String(unsafe).replace(/[<>&'"]/g, function (c) {
+        switch (c) {
+          case '<': return '&lt;';
+          case '>': return '&gt;';
+          case '&': return '&amp;';
+          case '\'': return '&apos;';
+          case '"': return '&quot;';
+        }
+      });
+    }
+
+    // LocalStorage management
+    function saveCustomizationsToStorage() {
+      try {
+        const customMap = {};
+        allTablesData.forEach(t => {
+          customMap[t.id] = {
+            customLabel: t.customLabel || '',
+            displayCategory: t.displayCategory,
+            customColor: t.customColor,
+            groupName: t.groupName,
+            guestCount: t.guestCount,
+            status: t.status,
+            highlight: t.highlight,
+            guests: t.guests
+          };
+        });
+        localStorage.setItem('sodo_all_tables_v2', JSON.stringify(customMap));
+      } catch (e) {
+        console.error('Storage error', e);
+      }
+    }
+
+    function loadCustomizationsFromStorage() {
+      try {
+        const raw = localStorage.getItem('sodo_all_tables_v2');
+        if (!raw) return;
+        const customMap = JSON.parse(raw);
+        allTablesData.forEach(t => {
+          if (customMap[t.id]) {
+            const data = customMap[t.id];
+            if (data.customLabel !== undefined) t.customLabel = data.customLabel;
+            if (data.displayCategory) t.displayCategory = data.displayCategory;
+            if (data.customColor) t.customColor = data.customColor;
+            if (data.groupName) t.groupName = data.groupName;
+            if (data.guestCount !== undefined) t.guestCount = data.guestCount;
+            if (data.status) t.status = data.status;
+            if (data.highlight) t.highlight = data.highlight;
+            if (data.guests) t.guests = data.guests;
+          }
+        });
+      } catch (e) {
+        console.error('Error loading customizations', e);
+      }
+    }
+
+    // Toast alert helper
+    let toastTimer = null;
+    function showToast(text) {
+      const toast = document.getElementById('toast-message');
+      const toastText = document.getElementById('toast-text');
+      if (!toast || !toastText) return;
+      toastText.textContent = text;
+      toast.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-4');
+      toast.classList.add('opacity-100', 'translate-y-0');
+      if (toastTimer) clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        toast.classList.add('opacity-0', 'pointer-events-none', 'translate-y-4');
+        toast.classList.remove('opacity-100', 'translate-y-0');
+      }, 2500);
+    }
+
+    // Generate exactly 10 banquet chairs around circle table
+    function generateChairPath(cx, cy, radius, numChairs = 10, chairFill = "#475569") {
+      let chairsSvg = "";
+      const chairW = 18;
+      const chairH = 10;
+      for (let i = 0; i < numChairs; i++) {
+        const angle = (i * 2 * Math.PI) / numChairs;
+        const chairDistance = radius + 11;
+        const x = cx + chairDistance * Math.cos(angle);
+        const y = cy + chairDistance * Math.sin(angle);
+        const deg = (angle * 180) / Math.PI + 90;
+
+        chairsSvg += `
+          <g transform="translate(${x.toFixed(1)}, ${y.toFixed(1)}) rotate(${deg.toFixed(1)})">
+            <rect x="${(-chairW / 2).toFixed(1)}" y="${(-chairH / 2).toFixed(1)}" width="${chairW}" height="${chairH}" rx="4" fill="${chairFill}" stroke="#0f172a" stroke-width="1.5" />
+          </g>
+        `;
+      }
+      return chairsSvg;
+    }
+
+    function getTableColor(t) {
+      if (t.customColor) return t.customColor;
+      if (t.group === 'spare') return '#64748b';
+      if (t.side === 'groom') {
+        if (t.group === 'noi') return '#f59e0b';
+        if (t.group === 'ngoai') return '#10b981';
+        if (t.group === 'banma') return '#3b82f6';
+        return '#f97316';
+      } else {
+        if (t.group === 'bride_vip') return '#f59e0b';
+        if (t.group === 'bride_colleagues') return '#3b82f6';
+        return '#f43f5e';
+      }
+    }
+
+    // RENDER A SINGLE TABLE NODE ON SVG
+    function renderTableNode(t) {
+      const isSelected = t.id === currentSelectedId;
+      const isSpare = t.group === 'spare';
+      const mainColor = getTableColor(t);
+      const chairColor = mainColor;
+      const badgeBg = '#0b1120';
+      const tableRadius = 38;
+
+      // Filter dimming
+      let opacity = '1';
+      if (currentFilter === 'groom' && t.side !== 'groom') opacity = '0.2';
+      else if (currentFilter === 'bride' && t.side !== 'bride') opacity = '0.2';
+      else if (currentFilter === 'vip' && !t.displayCategory.includes('VIP')) opacity = '0.2';
+
+      // 3 Info Lines on Table:
+      // Line 1: Table Number ("BÀN 1" ...)
+      // Line 2: Phân loại bàn ("VIP 1", "Bên Nội", "Vin 1", "Cấp 3", "A Vĩ"...)
+      // Line 3: Số khách ("10 khách", "Trống"...)
+      const categoryStr = (t.customLabel || t.displayCategory || 'Chính thức').trim();
+      const catLen = categoryStr.length;
+      const fontSize = catLen > 11 ? 7.5 : (catLen > 7 ? 9 : 10.5);
+
+      const tableLabel = isSpare ? `BÀN ${t.tableNo}` : `BÀN ${t.tableNo}`;
+      const guestText = isSpare && t.guestCount === 0 ? 'Trống' : `${t.guestCount} khách`;
+
+      return `
+        <g id="svg-table-${t.id}" 
+           onclick="selectTable('${t.id}')" 
+           class="cursor-pointer table-hover transition-opacity duration-200" 
+           style="opacity: ${opacity}">
+          
+          <!-- Exactly 10 Chairs surrounding table -->
+          ${generateChairPath(t.cx, t.cy, tableRadius, 10, isSelected ? '#fbbf24' : chairColor)}
+
+          <!-- Glow effect if selected -->
+          ${isSelected ? `
+            <circle cx="${t.cx}" cy="${t.cy}" r="${tableRadius + 6}" fill="none" stroke="#fbbf24" stroke-width="4" filter="url(#glow-gold)" opacity="0.95" />
+          ` : ''}
+
+          <!-- Round Table Body -->
+          <circle 
+            cx="${t.cx}" 
+            cy="${t.cy}" 
+            r="${tableRadius}" 
+            fill="${isSelected ? '#1e293b' : '#0b1120'}" 
+            stroke="${isSelected ? '#fbbf24' : mainColor}" 
+            stroke-width="${isSelected ? 3.5 : 2.5}" 
+            stroke-dasharray="${isSpare ? '4 3' : 'none'}"
+          />
+
+          <!-- 1. SỐ BÀN -->
+          <text 
+            x="${t.cx}" 
+            y="${t.cy - 12}" 
+            fill="${mainColor}" 
+            font-size="9" 
+            font-weight="800" 
+            text-anchor="middle"
+            letter-spacing="0.5">
+            ${tableLabel}
+          </text>
+
+          <!-- 2. PHÂN LOẠI BÀN -->
+          <text 
+            x="${t.cx}" 
+            y="${t.cy + 1.5}" 
+            fill="${isSelected ? '#fbbf24' : '#ffffff'}" 
+            font-size="${fontSize}" 
+            font-weight="900" 
+            text-anchor="middle"
+            letter-spacing="0.3">
+            ${escapeXml(categoryStr.toUpperCase())}
+          </text>
+
+          <!-- 3. SỐ KHÁCH -->
+          <rect 
+            x="${t.cx - 24}" 
+            y="${t.cy + 9}" 
+            width="48" 
+            height="14" 
+            rx="7" 
+            fill="${badgeBg}" 
+            stroke="${mainColor}" 
+            stroke-width="1.2"
+          />
+          <text 
+            x="${t.cx}" 
+            y="${t.cy + 19.5}" 
+            fill="#ffffff" 
+            font-size="8.5" 
+            font-weight="700" 
+            text-anchor="middle">
+            ${guestText}
+          </text>
+
+        </g>
+      `;
+    }
+
+    function renderHallPlan() {
+      // 1. Render Left Side (Nhà Trai) Tables
+      const leftContainer = document.getElementById('interactive-tables-left');
+      const groomTables = allTablesData.filter(t => t.side === 'groom');
+      leftContainer.innerHTML = groomTables.map(t => renderTableNode(t)).join('');
+
+      // 2. Render Right Side (Nhà Gái) Tables (From Handwritten Scheme!)
+      const rightContainer = document.getElementById('interactive-tables-right');
+      const brideTables = allTablesData.filter(t => t.side === 'bride');
+      rightContainer.innerHTML = brideTables.map(t => renderTableNode(t)).join('');
+    }
+
+    // Build the Edit Form HTML for a target ('mobile' or 'desktop')
+    function renderEditFormHtml(tableId, target) {
+      const t = allTablesData.find(item => item.id === tableId);
+      if (!t) return '';
+
+      const session = activeEditSession[target] || {};
+      const currentColor = session.selectedColor || getTableColor(t);
+      const currentLabel = (session.tempLabel !== undefined) ? session.tempLabel : (t.customLabel || t.displayCategory || '');
+      const currentGroup = (session.tempGroup !== undefined) ? session.tempGroup : (t.groupName || '');
+      const tempGuests = session.tempGuests !== undefined ? session.tempGuests : (t.guests || []);
+      const totalGuests = tempGuests.reduce((sum, g) => sum + (parseInt(g.count, 10) || 0), 0);
+
+      // List of all other tables for Swapping / Đổi bàn
+      const otherTables = allTablesData.filter(item => item.id !== t.id);
+
+      return `
+        <div class="bg-slate-950/90 border border-amber-500/40 rounded-2xl p-3.5 sm:p-4 space-y-3.5">
+          <div class="flex items-center justify-between border-b border-slate-800 pb-2.5">
+            <div class="flex items-center gap-2">
+              <span class="text-amber-400 font-bold text-sm">✏️ Chỉnh Sửa Bàn & Danh Sách Khách</span>
+              <span class="text-xs text-slate-400 font-normal">(${t.sideName} - Bàn ${t.tableNo})</span>
+            </div>
+            <button type="button" onclick="cancelTableEdit('${target}')" class="text-slate-400 hover:text-white text-xs px-2.5 py-1 rounded-lg bg-slate-800 transition">
+              ✕ Hủy
+            </button>
+          </div>
+
+          <!-- 1. Tên phân loại đại diện hiển thị trên bàn -->
+          <div>
+            <label class="block text-xs font-bold text-slate-200 mb-1">
+              🏷️ Phân loại / Tên đại diện <span class="text-[11px] font-normal text-amber-300">(Hiển thị trực tiếp trên bàn)</span>:
+            </label>
+            <input 
+              id="input-edit-label-${target}" 
+              type="text" 
+              value="${escapeXml(currentLabel)}" 
+              placeholder="Vd: VIP, Chú Rể, Cô Dâu, Vin 1, Cấp 3..." 
+              maxlength="18"
+              class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400 transition"
+              oninput="updateEditPreview('${target}', '${t.id}')"
+            />
+            <!-- Quick Chips -->
+            <div class="flex flex-wrap gap-1.5 mt-2">
+              <span class="text-[10px] text-slate-400 self-center">Gợi ý nhanh:</span>
+              ${['VIP 1', 'VIP 2', 'Họ Nội', 'Họ Ngoại', 'Bạn Má', 'Chú Rể', 'Cô Dâu', 'Cấp 3', 'Cấp 2', 'Vin 1', 'Vin 2', 'Cen', 'NVL', 'Nail Thủy', 'DỰ BỊ'].map(tag => `
+                <button type="button" onclick="setLabelTag('${target}', '${tag}')" class="px-2 py-0.5 rounded-md bg-slate-800 hover:bg-slate-700 text-[10px] text-slate-300 hover:text-amber-300 border border-slate-700 transition">
+                  ${tag}
+                </button>
+              `).join('')}
+            </div>
+          </div>
+
+          <!-- 2. Chọn màu sắc của bàn -->
+          <div>
+            <label class="block text-xs font-bold text-slate-200 mb-1.5">
+              🎨 Màu sắc bàn <span class="text-[11px] font-normal text-slate-400">(Quản lý phân nhóm trực quan)</span>:
+            </label>
+            <div class="flex flex-wrap items-center gap-2">
+              ${COLOR_PRESETS.map(c => `
+                <button 
+                  type="button" 
+                  onclick="setColorChoice('${target}', '${c.hex}')" 
+                  class="w-7 h-7 rounded-full border-2 transition-all flex items-center justify-center ${currentColor.toLowerCase() === c.hex.toLowerCase() ? 'border-white scale-110 shadow-lg' : 'border-transparent opacity-80 hover:opacity-100 hover:scale-105'}" 
+                  style="background-color: ${c.hex};" 
+                  title="${c.name}">
+                  ${currentColor.toLowerCase() === c.hex.toLowerCase() ? '<span class="text-white text-[10px] font-black">✓</span>' : ''}
+                </button>
+              `).join('')}
+              
+              <!-- Custom Color Picker -->
+              <label class="relative w-7 h-7 rounded-full overflow-hidden border-2 border-slate-600 hover:border-amber-400 cursor-pointer flex items-center justify-center bg-gradient-to-tr from-pink-500 via-amber-400 to-cyan-400 transition" title="Tùy chọn màu bất kỳ">
+                <input 
+                  id="input-edit-color-custom-${target}" 
+                  type="color" 
+                  value="${currentColor}" 
+                  class="opacity-0 absolute inset-0 cursor-pointer w-full h-full" 
+                  onchange="setColorChoice('${target}', this.value)"
+                />
+                <span class="text-[10px]">🌈</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- 3. Tên phân nhóm chi tiết -->
+          <div>
+            <label class="block text-xs font-bold text-slate-200 mb-1">
+              👥 Tên phân nhóm chi tiết:
+            </label>
+            <input 
+              id="input-edit-group-${target}" 
+              type="text" 
+              value="${escapeXml(currentGroup)}" 
+              placeholder="Vd: VIP 1 Gia Đình Nhà Gái, Bạn Cấp 3..." 
+              class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400 transition"
+              oninput="syncCurrentFormInputs('${target}')"
+            />
+          </div>
+
+          <!-- 4. CHỈNH SỬA DANH SÁCH KHÁCH MỜI TRONG BÀN -->
+          <div class="pt-3 border-t border-slate-800">
+            <div class="flex items-center justify-between mb-2">
+              <div class="flex items-center gap-1.5 flex-wrap">
+                <span class="text-xs font-bold text-amber-300">👥 Khách Mời:</span>
+                <span id="edit-guest-total-badge-${target}" class="text-[11px] font-bold px-2 py-0.5 rounded-full border ${totalGuests === 10 ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40' : (totalGuests > 10 ? 'bg-amber-500/20 text-amber-300 border-amber-500/40' : 'bg-blue-500/20 text-blue-300 border-blue-500/40')}">
+                  ${totalGuests} / 10 khách ${totalGuests === 10 ? '(Đủ chuẩn ✓)' : (totalGuests > 10 ? '(Vượt chuẩn ⚠)' : '(Còn trống)')}
+                </span>
+              </div>
+              <button type="button" onclick="addGuestRow('${target}')" class="px-2.5 py-1 bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 hover:text-amber-200 border border-amber-500/40 font-bold text-xs rounded-lg transition flex items-center gap-1 shadow-sm">
+                <span>➕</span> <span>Thêm Khách</span>
+              </button>
+            </div>
+
+            <div class="space-y-2 max-h-[260px] sm:max-h-[300px] overflow-y-auto custom-scrollbar pr-1" id="edit-guest-list-${target}">
+              ${tempGuests.length === 0 ? `
+                <div class="py-4 text-center text-slate-500 text-xs italic bg-slate-900/60 rounded-xl border border-dashed border-slate-800">
+                  Chưa có khách mời trong bàn này.<br>Nhấn nút <strong>"➕ Thêm Khách"</strong> ở trên để thêm người!
+                </div>
+              ` : tempGuests.map((g, idx) => `
+                <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-2 sm:p-2.5 flex items-start gap-2 hover:border-slate-700 transition">
+                  <span class="w-5 h-5 rounded-full bg-slate-800 text-[10px] font-bold text-amber-400 flex items-center justify-center border border-slate-700 flex-shrink-0 mt-1">
+                    ${idx + 1}
+                  </span>
+                  <div class="flex-1 space-y-1.5 min-w-0">
+                    <div class="flex items-center gap-1.5">
+                      <input 
+                        type="text" 
+                        value="${escapeXml(g.name)}" 
+                        placeholder="Tên khách mời / gia đình..." 
+                        class="flex-1 min-w-0 bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-400"
+                        oninput="updateGuestRowField('${target}', ${idx}, 'name', this.value)"
+                      />
+                      <div class="flex items-center gap-1 bg-slate-950 border border-slate-700 rounded-lg px-1.5 py-1 flex-shrink-0">
+                        <input 
+                          type="number" 
+                          min="0" 
+                          max="20" 
+                          value="${g.count !== undefined ? g.count : 1}" 
+                          class="w-8 bg-transparent text-center text-xs font-bold text-amber-300 focus:outline-none"
+                          oninput="updateGuestRowField('${target}', ${idx}, 'count', this.value)"
+                        />
+                        <span class="text-[10px] text-slate-400 pr-1">người</span>
+                      </div>
+                    </div>
+                    <div>
+                      <input 
+                        type="text" 
+                        value="${escapeXml(g.note || '')}" 
+                        placeholder="Ghi chú (vd: 2 lớn 1 bé, bạn thân, Vincom...)" 
+                        class="w-full bg-slate-950/70 border border-slate-800/80 rounded-lg px-2.5 py-1 text-[11px] text-slate-300 placeholder-slate-500 focus:outline-none focus:border-slate-600"
+                        oninput="updateGuestRowField('${target}', ${idx}, 'note', this.value)"
+                      />
+                    </div>
+                  </div>
+                  <button 
+                    type="button" 
+                    onclick="removeGuestRow('${target}', ${idx})" 
+                    class="text-slate-500 hover:text-rose-400 hover:bg-rose-500/10 p-1.5 rounded-lg transition mt-0.5 flex-shrink-0" 
+                    title="Xóa khách này">
+                    ✕
+                  </button>
+                </div>
+              `).join('')}
+            </div>
+
+            <div class="flex items-center justify-between pt-1.5">
+              <button type="button" onclick="addGuestRow('${target}')" class="text-xs text-amber-400 hover:text-amber-300 font-semibold flex items-center gap-1 hover:underline">
+                <span>➕ Thêm người tiếp theo</span>
+              </button>
+              ${tempGuests.length > 0 ? `
+                <button type="button" onclick="clearAllGuests('${target}')" class="text-[10px] text-slate-500 hover:text-rose-400 transition hover:underline">
+                  Dọn trống bàn (0 khách)
+                </button>
+              ` : ''}
+            </div>
+          </div>
+
+          <!-- 5. TÍNH NĂNG ĐỔI BÀN (HOÁN ĐỔI VỊ TRÍ VỚI BÀN KHÁC) -->
+          <div class="pt-3 border-t border-slate-800">
+            <label class="block text-xs font-bold text-amber-300 mb-1.5 flex items-center justify-between">
+              <span>🔄 Hoán đổi vị trí (Đổi bàn):</span>
+              <span class="text-[10px] text-slate-400 font-normal">Chuyển toàn bộ sang vị trí bàn khác</span>
+            </label>
+            <div class="flex items-center gap-2">
+              <select id="select-swap-table-${target}" class="flex-1 min-w-0 bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-400">
+                <option value="">-- Chọn bàn muốn đổi vị trí --</option>
+                ${otherTables.map(o => `
+                  <option value="${o.id}">
+                    [${o.sideName}] Bàn ${o.tableNo}: ${o.displayCategory} (${o.guestCount} khách)
+                  </option>
+                `).join('')}
+              </select>
+              <button type="button" onclick="swapTables('${t.id}', '${target}')" class="px-3 py-2 bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs rounded-xl transition flex items-center gap-1 shadow flex-shrink-0">
+                <span>⇄</span> <span>Đổi bàn</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Live Preview -->
+          <div class="bg-slate-900/90 p-2.5 rounded-xl border border-slate-800 flex items-center justify-between">
+            <div class="text-[11px] text-slate-400">Xem trước 3 thông tin:</div>
+            <div id="preview-badge-${target}" class="flex items-center gap-2 px-3 py-1 rounded-full border transition-all" style="background-color: ${currentColor}22; border-color: ${currentColor};">
+              <span class="w-3 h-3 rounded-full" style="background-color: ${currentColor};"></span>
+              <span class="text-xs font-bold text-white" id="preview-label-${target}">
+                BÀN ${t.tableNo} • ${escapeXml(currentLabel)} • ${totalGuests}k
+              </span>
+            </div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="flex items-center justify-between pt-2 border-t border-slate-800">
+            <button type="button" onclick="resetTableCustomization('${t.id}', '${target}')" class="text-[11px] text-rose-400 hover:text-rose-300 hover:underline">
+              Khôi phục gốc
+            </button>
+            <div class="flex items-center gap-2">
+              <button type="button" onclick="cancelTableEdit('${target}')" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold rounded-lg transition">
+                Hủy
+              </button>
+              <button type="button" onclick="saveTableEdit('${t.id}', '${target}')" class="px-4 py-1.5 bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-bold rounded-lg transition shadow-md shadow-amber-500/20">
+                💾 Lưu Thay Đổi
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function startEditMode(target, tableId) {
+      const t = allTablesData.find(item => item.id === tableId);
+      if (!t) return;
+      activeEditSession[target] = {
+        isEditing: true,
+        tableId: tableId,
+        selectedColor: getTableColor(t),
+        tempLabel: t.customLabel || t.displayCategory || '',
+        tempGroup: t.groupName || '',
+        tempGuests: JSON.parse(JSON.stringify(t.guests || []))
+      };
+      if (target === 'mobile') {
+        openMobileModal(tableId);
+      } else {
+        renderTableInspector(tableId);
+      }
+    }
+
+    function cancelTableEdit(target) {
+      const tableId = activeEditSession[target].tableId || currentSelectedId;
+      activeEditSession[target] = { isEditing: false, tableId: null, selectedColor: '', tempLabel: '', tempGroup: '', tempGuests: [] };
+      if (target === 'mobile') {
+        openMobileModal(tableId);
+      } else {
+        renderTableInspector(tableId);
+      }
+    }
+
+    function syncCurrentFormInputs(target) {
+      const session = activeEditSession[target];
+      if (!session) return;
+      const inputLabel = document.getElementById('input-edit-label-' + target);
+      const inputGroup = document.getElementById('input-edit-group-' + target);
+      if (inputLabel) session.tempLabel = inputLabel.value;
+      if (inputGroup) session.tempGroup = inputGroup.value;
+    }
+
+    function setLabelTag(target, tag) {
+      const input = document.getElementById('input-edit-label-' + target);
+      if (input) {
+        input.value = tag;
+        if (activeEditSession[target]) activeEditSession[target].tempLabel = tag;
+        updateEditPreview(target, activeEditSession[target].tableId);
+      }
+    }
+
+    function setColorChoice(target, color) {
+      syncCurrentFormInputs(target);
+      activeEditSession[target].selectedColor = color;
+      updateEditPreview(target, activeEditSession[target].tableId);
+      
+      const previewBadge = document.getElementById('preview-badge-' + target);
+      if (previewBadge) {
+        previewBadge.style.backgroundColor = color + '22';
+        previewBadge.style.borderColor = color;
+        const dot = previewBadge.querySelector('span:first-child');
+        if (dot) dot.style.backgroundColor = color;
+      }
+
+      if (target === 'mobile') {
+        const modalBody = document.getElementById('mobile-modal-body');
+        if (modalBody) modalBody.innerHTML = renderEditFormHtml(activeEditSession[target].tableId, 'mobile');
+      } else {
+        const container = document.getElementById('table-inspector');
+        if (container) container.innerHTML = renderEditFormHtml(activeEditSession[target].tableId, 'desktop');
+      }
+    }
+
+    function updateEditPreview(target, tableId) {
+      const t = allTablesData.find(item => item.id === tableId);
+      if (!t) return;
+      const session = activeEditSession[target];
+      const input = document.getElementById('input-edit-label-' + target);
+      const previewLabel = document.getElementById('preview-label-' + target);
+      if (!input || !previewLabel) return;
+      if (session) session.tempLabel = input.value;
+      const val = input.value.trim() || t.displayCategory;
+      const total = (session && session.tempGuests) ? session.tempGuests.reduce((sum, g) => sum + (parseInt(g.count, 10) || 0), 0) : t.guestCount;
+      previewLabel.textContent = `BÀN ${t.tableNo} • ${val} • ${total}k`;
+    }
+
+    function updateGuestRowField(target, index, field, value) {
+      const session = activeEditSession[target];
+      if (!session || !session.tempGuests || !session.tempGuests[index]) return;
+      
+      if (field === 'count') {
+        const parsed = parseInt(value, 10);
+        session.tempGuests[index].count = isNaN(parsed) ? 0 : Math.max(0, parsed);
+      } else {
+        session.tempGuests[index][field] = value;
+      }
+      
+      updateLiveGuestTotal(target);
+    }
+
+    function updateLiveGuestTotal(target) {
+      const session = activeEditSession[target];
+      if (!session || !session.tempGuests) return;
+      
+      const total = session.tempGuests.reduce((sum, g) => sum + (parseInt(g.count, 10) || 0), 0);
+      
+      // Update badge in edit form
+      const totalBadge = document.getElementById('edit-guest-total-badge-' + target);
+      if (totalBadge) {
+        if (total === 10) {
+          totalBadge.className = 'text-[11px] font-bold px-2 py-0.5 rounded-full border bg-emerald-500/20 text-emerald-300 border-emerald-500/40';
+          totalBadge.textContent = '10 / 10 khách (Đủ chuẩn ✓)';
+        } else if (total > 10) {
+          totalBadge.className = 'text-[11px] font-bold px-2 py-0.5 rounded-full border bg-amber-500/20 text-amber-300 border-amber-500/40';
+          totalBadge.textContent = `${total} / 10 khách (Vượt chuẩn ⚠)`;
+        } else {
+          totalBadge.className = 'text-[11px] font-bold px-2 py-0.5 rounded-full border bg-blue-500/20 text-blue-300 border-blue-500/40';
+          totalBadge.textContent = `${total} / 10 khách (Còn trống)`;
+        }
+      }
+      
+      // Update preview badge
+      const previewLabel = document.getElementById('preview-label-' + target);
+      const inputLabel = document.getElementById('input-edit-label-' + target);
+      const t = allTablesData.find(item => item.id === session.tableId);
+      if (previewLabel && t) {
+        const labelVal = (inputLabel && inputLabel.value.trim()) ? inputLabel.value.trim() : (session.tempLabel || t.displayCategory);
+        previewLabel.textContent = `BÀN ${t.tableNo} • ${labelVal} • ${total}k`;
+      }
+    }
+
+    function addGuestRow(target) {
+      syncCurrentFormInputs(target);
+      const session = activeEditSession[target];
+      if (!session) return;
+      if (!session.tempGuests) session.tempGuests = [];
+      session.tempGuests.push({ name: '', count: 1, note: '' });
+      
+      if (target === 'mobile') {
+        const modalBody = document.getElementById('mobile-modal-body');
+        if (modalBody) modalBody.innerHTML = renderEditFormHtml(session.tableId, 'mobile');
+      } else {
+        const container = document.getElementById('table-inspector');
+        if (container) container.innerHTML = renderEditFormHtml(session.tableId, 'desktop');
+      }
+
+      // Auto-focus new name input
+      setTimeout(() => {
+        const container = target === 'mobile' ? document.getElementById('mobile-modal-body') : document.getElementById('table-inspector');
+        if (container) {
+          const inputs = container.querySelectorAll('input[placeholder^="Tên khách"]');
+          if (inputs.length > 0) {
+            inputs[inputs.length - 1].focus();
+          }
+        }
+      }, 50);
+    }
+
+    function removeGuestRow(target, index) {
+      syncCurrentFormInputs(target);
+      const session = activeEditSession[target];
+      if (!session || !session.tempGuests) return;
+      session.tempGuests.splice(index, 1);
+      
+      if (target === 'mobile') {
+        const modalBody = document.getElementById('mobile-modal-body');
+        if (modalBody) modalBody.innerHTML = renderEditFormHtml(session.tableId, 'mobile');
+      } else {
+        const container = document.getElementById('table-inspector');
+        if (container) container.innerHTML = renderEditFormHtml(session.tableId, 'desktop');
+      }
+    }
+
+    function clearAllGuests(target) {
+      if (!confirm('Bạn có chắc muốn xóa tất cả khách mời trong bàn này để chuyển thành bàn trống?')) return;
+      syncCurrentFormInputs(target);
+      const session = activeEditSession[target];
+      if (!session) return;
+      session.tempGuests = [];
+      
+      if (target === 'mobile') {
+        const modalBody = document.getElementById('mobile-modal-body');
+        if (modalBody) modalBody.innerHTML = renderEditFormHtml(session.tableId, 'mobile');
+      } else {
+        const container = document.getElementById('table-inspector');
+        if (container) container.innerHTML = renderEditFormHtml(session.tableId, 'desktop');
+      }
+    }
+
+    function saveTableEdit(tableId, target) {
+      const t = allTablesData.find(item => item.id === tableId);
+      if (!t) return;
+      const session = activeEditSession[target];
+
+      const inputLabel = document.getElementById('input-edit-label-' + target);
+      const inputGroup = document.getElementById('input-edit-group-' + target);
+      const newLabel = inputLabel ? inputLabel.value.trim() : (session ? session.tempLabel || '' : '');
+      const newGroup = inputGroup ? inputGroup.value.trim() : (session ? session.tempGroup || t.groupName : t.groupName);
+      const newColor = (session && session.selectedColor) ? session.selectedColor : t.customColor;
+
+      t.customLabel = newLabel;
+      t.displayCategory = newLabel || t.displayCategory;
+      t.customColor = newColor;
+      if (newGroup) t.groupName = newGroup;
+
+      // Save guest list from session.tempGuests
+      if (session && session.tempGuests) {
+        // Keep rows that have a name or count > 0
+        const cleanGuests = session.tempGuests.filter(g => (g.name && g.name.trim() !== '') || (parseInt(g.count, 10) > 0));
+        t.guests = cleanGuests.map(g => ({
+          name: (g.name || '').trim() || 'Khách mời',
+          count: Math.max(0, parseInt(g.count, 10) || 0),
+          note: (g.note || '').trim()
+        }));
+        const newGuestTotal = t.guests.reduce((sum, g) => sum + (parseInt(g.count, 10) || 0), 0);
+        t.guestCount = newGuestTotal;
+
+        // Update status text accordingly
+        if (t.group === 'spare' && newGuestTotal === 0) {
+          t.status = 'Bàn Dự Bị (Trống)';
+        } else if (newGuestTotal === 10) {
+          t.status = 'Đủ 10 khách (Chuẩn)';
+        } else if (newGuestTotal > 10) {
+          t.status = `${newGuestTotal}/10 khách (Vượt chuẩn)`;
+        } else if (newGuestTotal > 0) {
+          t.status = `${newGuestTotal}/10 khách`;
+        } else {
+          t.status = 'Bàn trống (0 khách)';
+        }
+      }
+
+      saveCustomizationsToStorage();
+      activeEditSession[target] = { isEditing: false, tableId: null, selectedColor: '', tempLabel: '', tempGroup: '', tempGuests: [] };
+
+      renderHallPlan();
+      renderTableInspector(tableId);
+      if (target === 'mobile' || (document.getElementById('mobile-table-modal') && !document.getElementById('mobile-table-modal').classList.contains('hidden'))) {
+        openMobileModal(tableId);
+      }
+      renderListGrid();
+
+      showToast(`✓ Đã lưu thành công Bàn ${t.tableNo} (${t.guestCount} khách)!`);
+    }
+
+    // TÍNH NĂNG HOÁN ĐỔI BÀN (SWAP TABLES)
+    function swapTables(sourceId, target) {
+      const select = document.getElementById('select-swap-table-' + target);
+      if (!select || !select.value) {
+        alert('Vui lòng chọn bàn muốn hoán đổi vị trí!');
+        return;
+      }
+
+      const destId = select.value;
+      const tableA = allTablesData.find(item => item.id === sourceId);
+      const tableB = allTablesData.find(item => item.id === destId);
+
+      if (!tableA || !tableB) return;
+
+      // Swap contents: customLabel, displayCategory, customColor, group, groupName, guestCount, status, highlight, guests
+      const tempContent = {
+        customLabel: tableA.customLabel,
+        displayCategory: tableA.displayCategory,
+        customColor: tableA.customColor,
+        group: tableA.group,
+        groupName: tableA.groupName,
+        guestCount: tableA.guestCount,
+        maxCapacity: tableA.maxCapacity,
+        status: tableA.status,
+        highlight: tableA.highlight,
+        guests: JSON.parse(JSON.stringify(tableA.guests))
+      };
+
+      tableA.customLabel = tableB.customLabel;
+      tableA.displayCategory = tableB.displayCategory;
+      tableA.customColor = tableB.customColor;
+      tableA.group = tableB.group;
+      tableA.groupName = tableB.groupName;
+      tableA.guestCount = tableB.guestCount;
+      tableA.maxCapacity = tableB.maxCapacity;
+      tableA.status = tableB.status;
+      tableA.highlight = tableB.highlight;
+      tableA.guests = JSON.parse(JSON.stringify(tableB.guests));
+
+      tableB.customLabel = tempContent.customLabel;
+      tableB.displayCategory = tempContent.displayCategory;
+      tableB.customColor = tempContent.customColor;
+      tableB.group = tempContent.group;
+      tableB.groupName = tempContent.groupName;
+      tableB.guestCount = tempContent.guestCount;
+      tableB.maxCapacity = tempContent.maxCapacity;
+      tableB.status = tempContent.status;
+      tableB.highlight = tempContent.highlight;
+      tableB.guests = tempContent.guests;
+
+      saveCustomizationsToStorage();
+      activeEditSession[target] = { isEditing: false, tableId: null, selectedColor: '' };
+
+      renderHallPlan();
+      renderTableInspector(tableA.id);
+      if (target === 'mobile' || (document.getElementById('mobile-table-modal') && !document.getElementById('mobile-table-modal').classList.contains('hidden'))) {
+        openMobileModal(tableA.id);
+      }
+      renderListGrid();
+
+      showToast(`✓ Đã đổi vị trí Bàn ${tableA.tableNo} (${tableA.sideName}) và Bàn ${tableB.tableNo} (${tableB.sideName})!`);
+    }
+
+    function resetTableCustomization(tableId, target) {
+      localStorage.removeItem('sodo_all_tables_v2');
+      location.reload();
+    }
+
+    function renderTableInspector(tableId) {
+      const t = allTablesData.find(item => item.id === tableId);
+      if (!t) return;
+
+      const container = document.getElementById('table-inspector');
+      if (activeEditSession.desktop.isEditing && activeEditSession.desktop.tableId === tableId) {
+        container.innerHTML = renderEditFormHtml(tableId, 'desktop');
+        return;
+      }
+
+      const isSpare = t.group === 'spare';
+      const mainColor = getTableColor(t);
+
+      let guestListHtml = '';
+      if (isSpare && t.guestCount === 0) {
+        guestListHtml = `
+          <div class="py-8 text-center text-slate-500 text-xs italic bg-slate-950/40 rounded-xl border border-dashed border-slate-800 p-4">
+            Bàn dự bị duy nhất (${t.sideName}).<br>Kê sẵn 10 chén đũa dự phòng tiếp đón khách phát sinh.
+            <div class="mt-2.5">
+              <button onclick="startEditMode('desktop', '${t.id}')" class="px-3 py-1 bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 rounded-lg text-xs font-bold border border-amber-500/40 transition">
+                ➕ Thêm khách vào bàn
+              </button>
+            </div>
+          </div>
+        `;
+      } else if (t.guests.length === 0) {
+        guestListHtml = `
+          <div class="py-8 text-center text-slate-500 text-xs italic bg-slate-950/40 rounded-xl border border-dashed border-slate-800 p-4">
+            Bàn hiện chưa có khách nào.
+            <div class="mt-2.5">
+              <button onclick="startEditMode('desktop', '${t.id}')" class="px-3 py-1 bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 rounded-lg text-xs font-bold border border-amber-500/40 transition">
+                ➕ Thêm khách vào bàn
+              </button>
+            </div>
+          </div>
+        `;
+      } else {
+        guestListHtml = t.guests.map((g, idx) => `
+          <li class="flex items-center justify-between py-2 border-b border-slate-800/80 last:border-0 hover:bg-slate-800/40 px-2 rounded-lg transition">
+            <div class="flex items-center gap-2.5">
+              <span class="w-5 h-5 rounded-full bg-slate-800 text-[10px] font-bold text-slate-400 flex items-center justify-center border border-slate-700">
+                ${idx + 1}
+              </span>
+              <div>
+                <div class="text-xs font-bold text-slate-100">${g.name}</div>
+                <div class="text-[10px] text-slate-400">${g.note}</div>
+              </div>
+            </div>
+            <span class="px-2 py-0.5 rounded text-xs font-bold ${g.count > 0 ? 'bg-amber-500/10 text-amber-300 border border-amber-500/30' : 'bg-slate-800 text-slate-500'}">
+              ${g.count > 0 ? g.count + ' người' : 'Dự bị'}
+            </span>
+          </li>
+        `).join('');
+      }
+
+      const badgeSideColor = t.side === 'groom' ? 'border-amber-500/50 bg-amber-500/20 text-amber-300' : 'border-rose-500/50 bg-rose-500/20 text-rose-300';
+
+      container.innerHTML = `
+        <div class="flex items-start justify-between border-b border-slate-800 pb-3">
+          <div>
+            <div class="flex items-center gap-2 flex-wrap">
+              <span class="text-xs font-bold px-2 py-0.5 rounded border ${badgeSideColor}">
+                ${t.sideName.toUpperCase()}
+              </span>
+              <span class="text-xs font-black px-2 py-0.5 rounded shadow-sm" style="background-color: ${mainColor}25; color: ${mainColor}; border: 1px solid ${mainColor}60;">
+                🏷️ ${escapeXml(t.customLabel || t.displayCategory)}
+              </span>
+              <span class="text-[11px] text-slate-400 font-medium">${t.status}</span>
+            </div>
+            <h3 class="text-xl font-black text-white mt-1.5 flex items-center gap-1.5">
+              <span>BÀN ${t.tableNo}:</span>
+              <span style="color: ${mainColor};">${t.groupName}</span>
+            </h3>
+            <p class="text-xs text-slate-400 mt-1 flex items-center gap-1">
+              <span>📍</span> <span>${t.position}</span>
+            </p>
+          </div>
+
+          <div class="flex flex-col items-end gap-2">
+            <button onclick="startEditMode('desktop', '${t.id}')" class="px-2.5 py-1.5 rounded-lg bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/40 text-amber-300 font-bold text-xs flex items-center gap-1 transition shadow" title="Đặt tên, chọn màu, sửa khách & đổi bàn">
+              <span>✏️</span> <span>Sửa Bàn & Khách</span>
+            </button>
+            <div class="text-right">
+              <div class="text-2xl font-black text-amber-400 leading-none">${t.guestCount}</div>
+              <div class="text-[10px] text-slate-400 uppercase font-semibold">Khách / 10</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-slate-950/70 rounded-xl p-3 my-3 border border-slate-800/80 text-xs text-slate-300 leading-relaxed">
+          <span class="text-amber-400 font-bold">★ Vị trí & Đặc điểm:</span> ${t.highlight}
+        </div>
+
+        <div class="flex-1 flex flex-col">
+          <div class="flex items-center justify-between text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2">
+            <div class="flex items-center gap-2">
+              <span>Danh sách thành viên (${t.guests.length} nhóm)</span>
+              <button onclick="startEditMode('desktop', '${t.id}')" class="text-[10px] text-amber-400 hover:text-amber-300 font-bold px-2 py-0.5 rounded bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 transition lowercase" title="Sửa danh sách khách mời">
+                ✏️ sửa khách
+              </button>
+            </div>
+            <span>Số lượng</span>
+          </div>
+
+          <ul class="divide-y divide-slate-800/60 overflow-y-auto max-h-[280px] custom-scrollbar pr-1">
+            ${guestListHtml}
+          </ul>
+        </div>
+
+        <div class="mt-4 pt-3 border-t border-slate-800 flex items-center justify-between text-xs">
+          <span class="text-slate-400">Tiêu chuẩn: <strong class="text-amber-300">1 bàn 10 khách</strong></span>
+          <span class="${t.guestCount === 10 ? 'text-emerald-400' : (t.guestCount > 10 ? 'text-amber-400' : 'text-slate-400')} font-bold">
+            ${isSpare ? 'Bàn Dự Bị Sẵn Sàng' : (t.guestCount === 10 ? '✓ Đủ 10 khách' : (t.guestCount > 10 ? '⚠ Vượt tiêu chuẩn' : 'Còn trống chỗ'))}
+          </span>
+        </div>
+      `;
+    }
+
+    // Modal Popup on mobile phones / tablets (< 1024px)
+    function openMobileModal(tableId) {
+      const t = allTablesData.find(item => item.id === tableId);
+      if (!t) return;
+
+      const modal = document.getElementById('mobile-table-modal');
+      const modalHeader = document.getElementById('mobile-modal-header');
+      const modalBody = document.getElementById('mobile-modal-body');
+      const modalFooterInfo = document.getElementById('mobile-modal-footer-info');
+
+      // Check if in edit mode
+      if (activeEditSession.mobile.isEditing && activeEditSession.mobile.tableId === tableId) {
+        modalHeader.innerHTML = `
+          <div class="flex items-center gap-2">
+            <span class="text-xs font-bold px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/40">CHẾ ĐỘ CHỈNH SỬA & ĐỔI BÀN</span>
+          </div>
+          <h3 class="text-base font-black text-white mt-1">${t.sideName} - Bàn ${t.tableNo}</h3>
+        `;
+        modalBody.innerHTML = renderEditFormHtml(tableId, 'mobile');
+        modal.classList.remove('hidden');
+        document.body.classList.add('overflow-hidden');
+        return;
+      }
+
+      const isSpare = t.group === 'spare';
+      const mainColor = getTableColor(t);
+      const badgeSideColor = t.side === 'groom' ? 'border-amber-500/50 bg-amber-500/20 text-amber-300' : 'border-rose-500/50 bg-rose-500/20 text-rose-300';
+
+      modalHeader.innerHTML = `
+        <div class="flex items-center gap-1.5 flex-wrap">
+          <span class="text-[11px] font-bold px-2 py-0.5 rounded border ${badgeSideColor}">${t.sideName.toUpperCase()}</span>
+          <span class="text-[11px] font-black px-2 py-0.5 rounded shadow-sm" style="background-color: ${mainColor}25; color: ${mainColor}; border: 1px solid ${mainColor}60;">
+            🏷️ ${escapeXml(t.customLabel || t.displayCategory)}
+          </span>
+          <span class="text-xs text-slate-400">${t.status}</span>
+        </div>
+        <h3 class="text-lg font-black text-white mt-1 flex items-center gap-1.5 flex-wrap">
+          <span>BÀN ${t.tableNo}:</span>
+          <span style="color: ${mainColor};">${t.groupName}</span>
+        </h3>
+        <p class="text-[11px] text-slate-400 mt-0.5">📍 ${t.position}</p>
+      `;
+
+      let guestsHtml = '';
+      if (isSpare && t.guestCount === 0) {
+        guestsHtml = `
+          <div class="py-6 text-center text-slate-500 text-xs italic bg-slate-950/40 rounded-xl border border-dashed border-slate-800 p-3">
+            Bàn dự bị duy nhất (${t.sideName}).<br>Kê sẵn 10 chén đũa dự phòng tiếp đón khách phát sinh.
+            <div class="mt-2.5">
+              <button onclick="startEditMode('mobile', '${t.id}')" class="px-3 py-1.5 bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 rounded-lg text-xs font-bold border border-amber-500/40 transition">
+                ➕ Thêm khách vào bàn
+              </button>
+            </div>
+          </div>
+        `;
+      } else if (t.guests.length === 0) {
+        guestsHtml = `
+          <div class="py-6 text-center text-slate-500 text-xs italic bg-slate-950/40 rounded-xl border border-dashed border-slate-800 p-3">
+            Bàn hiện chưa có khách nào.
+            <div class="mt-2.5">
+              <button onclick="startEditMode('mobile', '${t.id}')" class="px-3 py-1.5 bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 rounded-lg text-xs font-bold border border-amber-500/40 transition">
+                ➕ Thêm khách vào bàn
+              </button>
+            </div>
+          </div>
+        `;
+      } else {
+        guestsHtml = `
+          <div class="flex items-center justify-between text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1 px-1">
+            <div class="flex items-center gap-2">
+              <span>Danh sách khách (${t.guests.length} nhóm)</span>
+              <button onclick="startEditMode('mobile', '${t.id}')" class="text-[10px] text-amber-400 hover:text-amber-300 font-bold px-1.5 py-0.5 rounded bg-amber-500/10 border border-amber-500/30 lowercase">
+                ✏️ sửa
+              </button>
+            </div>
+            <span>Số lượng</span>
+          </div>
+          <ul class="divide-y divide-slate-800/80 bg-slate-950/70 rounded-xl border border-slate-800/80 p-1">
+            ${t.guests.map((g, idx) => `
+              <li class="flex items-center justify-between py-2 px-2.5 hover:bg-slate-800/40 rounded-lg">
+                <div class="flex items-center gap-2">
+                  <span class="w-5 h-5 rounded-full bg-slate-800 text-[10px] font-bold text-amber-300 flex items-center justify-center border border-slate-700">
+                    ${idx + 1}
+                  </span>
+                  <div>
+                    <div class="text-xs font-bold text-slate-100">${g.name}</div>
+                    <div class="text-[10px] text-slate-400">${g.note}</div>
+                  </div>
+                </div>
+                <span class="px-2 py-0.5 rounded text-xs font-bold ${g.count > 0 ? 'bg-amber-500/10 text-amber-300 border border-amber-500/30' : 'bg-slate-800 text-slate-500'}">
+                  ${g.count > 0 ? g.count + ' người' : 'Dự bị'}
+                </span>
+              </li>
+            `).join('')}
+          </ul>
+        `;
+      }
+
+      modalBody.innerHTML = `
+        <!-- Edit Mode Trigger Button -->
+        <div class="flex items-center gap-2">
+          <button onclick="startEditMode('mobile', '${t.id}')" class="flex-1 py-2.5 px-3 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 border border-amber-500/50 text-amber-300 font-bold text-xs flex items-center justify-center gap-1.5 transition shadow">
+            <span>✏️</span> <span>Chỉnh Sửa Bàn, Danh Sách Khách & Đổi Bàn</span>
+          </button>
+        </div>
+
+        <div class="flex items-center justify-between bg-slate-950/80 rounded-xl p-3 border border-slate-800">
+          <div>
+            <div class="text-[10px] text-slate-400 uppercase font-semibold">Khách đang xếp</div>
+            <div class="text-2xl font-black text-amber-400">${t.guestCount} <span class="text-xs font-normal text-slate-400">/ 10 khách</span></div>
+          </div>
+          <div class="text-right">
+            <div class="text-[10px] text-slate-400 uppercase font-semibold">Tiêu chuẩn bàn</div>
+            <div class="text-xs font-bold ${t.guestCount === 10 ? 'text-emerald-400' : (t.guestCount > 10 ? 'text-amber-400' : 'text-blue-400')}">
+              ${isSpare ? 'Bàn Dự Bị Sẵn Sàng' : (t.guestCount === 10 ? '✓ Đủ 10 khách' : (t.guestCount > 10 ? '⚠ Vượt tiêu chuẩn' : 'Còn trống chỗ'))}
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-slate-950/70 rounded-xl p-2.5 border border-slate-800/80 text-xs text-slate-300">
+          <span class="text-amber-400 font-bold">★ Vị trí:</span> ${t.highlight}
+        </div>
+
+        ${guestsHtml}
+      `;
+
+      modalFooterInfo.innerHTML = `
+        <span>Tiêu chuẩn: <strong class="text-amber-400">1 bàn 10 khách</strong></span>
+      `;
+
+      modal.classList.remove('hidden');
+      document.body.classList.add('overflow-hidden');
+    }
+
+    function closeMobileModal() {
+      const modal = document.getElementById('mobile-table-modal');
+      if (modal) {
+        modal.classList.add('hidden');
+        document.body.classList.remove('overflow-hidden');
+      }
+      activeEditSession.mobile = { isEditing: false, tableId: null, selectedColor: '' };
+    }
+
+    function selectTable(id) {
+      currentSelectedId = id;
+      renderHallPlan();
+      renderTableInspector(id);
+
+      if (window.innerWidth < 1024) {
+        openMobileModal(id);
+      }
+    }
+
+    function filterGroup(group) {
+      currentFilter = group;
+      renderHallPlan();
+    }
+
+    function zoomMap(factor) {
+      currentZoom = Math.min(Math.max(currentZoom * factor, 0.65), 2.2);
+      document.getElementById('cad-svg-container').style.transform = `scale(${currentZoom})`;
+    }
+
+    function resetZoom() {
+      currentZoom = 1;
+      const container = document.getElementById('cad-svg-container');
+      if (container) {
+        container.style.transform = 'scale(1)';
+      }
+      const scrollArea = document.getElementById('cad-scroll-area');
+      if (scrollArea) {
+        scrollArea.scrollLeft = 0;
+        scrollArea.scrollTop = 0;
+      }
+    }
+
+    function handleSearch(query) {
+      const q = query.trim().toLowerCase();
+      const badge = document.getElementById('search-badge');
+
+      if (!q) {
+        badge.classList.add('hidden');
+        renderHallPlan();
+        return;
+      }
+
+      let matches = [];
+      allTablesData.forEach(t => {
+        const tableMatch = t.displayCategory.toLowerCase().includes(q) || 
+                           t.groupName.toLowerCase().includes(q) ||
+                           (t.customLabel && t.customLabel.toLowerCase().includes(q)) ||
+                           `bàn ${t.tableNo}`.includes(q);
+        const guestMatch = t.guests.some(g => g.name.toLowerCase().includes(q) || g.note.toLowerCase().includes(q));
+
+        const node = document.getElementById(`svg-table-${t.id}`);
+        if (!node) return;
+
+        if (tableMatch || guestMatch) {
+          matches.push(t);
+          node.style.opacity = '1';
+        } else {
+          node.style.opacity = '0.15';
+        }
+      });
+
+      badge.textContent = `${matches.length} bàn`;
+      badge.classList.remove('hidden');
+
+      if (matches.length > 0) {
+        currentSelectedId = matches[0].id;
+        renderHallPlan();
+        renderTableInspector(matches[0].id);
+      }
+    }
+
+    function setListViewFilter(filter) {
+      listViewFilter = filter;
+      ['all', 'groom', 'bride'].forEach(f => {
+        const btn = document.getElementById('btn-list-filter-' + f);
+        if (btn) {
+          if (f === filter) {
+            btn.className = 'px-2.5 py-1 rounded bg-amber-500 text-slate-950';
+          } else {
+            btn.className = 'px-2.5 py-1 rounded text-slate-300 hover:text-white';
+          }
+        }
+      });
+      renderListGrid();
+    }
+
+    function renderListGrid() {
+      const grid = document.getElementById('list-grid');
+      let filtered = allTablesData;
+      if (listViewFilter === 'groom') filtered = allTablesData.filter(t => t.side === 'groom');
+      else if (listViewFilter === 'bride') filtered = allTablesData.filter(t => t.side === 'bride');
+
+      grid.innerHTML = filtered.map(t => {
+        const mainColor = getTableColor(t);
+        const badgeSide = t.side === 'groom' ? 'Nhà Trai' : 'Nhà Gái';
+        return `
+          <div onclick="jumpFromListToTable('${t.id}')" class="bg-slate-950 border border-slate-800 hover:border-amber-400/80 rounded-xl p-3.5 flex flex-col justify-between cursor-pointer transition">
+            <div>
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold px-2 py-0.5 rounded border" style="border-color: ${mainColor}60; background-color: ${mainColor}20; color: ${mainColor};">
+                  [${badgeSide}] BÀN ${t.tableNo} • ${escapeXml(t.customLabel || t.displayCategory)}
+                </span>
+                <span class="text-xs font-bold text-amber-400">${t.guestCount} / 10 khách</span>
+              </div>
+              <h4 class="font-bold text-sm text-white">${t.groupName}</h4>
+              <p class="text-[11px] text-slate-400 mb-2">${t.position}</p>
+
+              <div class="space-y-1 text-xs border-t border-slate-800/80 pt-2">
+                ${t.guests.length === 0 ? `<div class="text-slate-500 text-[11px] italic">Bàn dự bị sẵn sàng</div>` : t.guests.map(g => `
+                  <div class="flex items-center justify-between text-slate-300 text-[11px]">
+                    <span class="truncate">${g.name}</span>
+                    <span class="text-amber-300/90 font-semibold">${g.count > 0 ? g.count + ' ng' : 'Dự bị'}</span>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+            <div class="mt-3 pt-2 border-t border-slate-800 text-[11px] text-amber-400 font-semibold text-right">
+              Xem vị trí trên sơ đồ →
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function toggleListView() {
+      const cadWrapper = document.getElementById('cad-wrapper');
+      const listContainer = document.getElementById('full-list-container');
+      const btnLabel = document.getElementById('btn-toggle-label');
+
+      if (listContainer.classList.contains('hidden')) {
+        cadWrapper.classList.add('hidden');
+        listContainer.classList.remove('hidden');
+        btnLabel.textContent = 'Xem Sơ Đồ Mặt Bằng';
+        renderListGrid();
+      } else {
+        listContainer.classList.add('hidden');
+        cadWrapper.classList.remove('hidden');
+        btnLabel.textContent = 'Xem Dạng Bảng';
+      }
+    }
+
+    function jumpFromListToTable(id) {
+      toggleListView();
+      selectTable(id);
+    }
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => {
+      loadCustomizationsFromStorage();
+      renderHallPlan();
+      renderTableInspector('T_1');
+
+      const modal = document.getElementById('mobile-table-modal');
+      if (modal) {
+        modal.addEventListener('click', (e) => {
+          if (e.target.id === 'mobile-table-modal') {
+            closeMobileModal();
+          }
+        });
+      }
+
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          closeMobileModal();
+        }
+      });
+    });
+  </script>
+</body>
+</html>
