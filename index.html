@@ -27,23 +27,26 @@
     }
   </script>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&display=swap');
     body {
       font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    .font-serif-luxury {
+      font-family: 'Cinzel', serif;
     }
     .custom-scrollbar::-webkit-scrollbar {
       width: 6px;
       height: 6px;
     }
     .custom-scrollbar::-webkit-scrollbar-track {
-      background: #0b1120;
+      background: #14100d;
     }
     .custom-scrollbar::-webkit-scrollbar-thumb {
-      background: #334155;
+      background: #3d3227;
       border-radius: 9999px;
     }
     .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-      background: #475569;
+      background: #544536;
     }
     .table-selected {
       filter: drop-shadow(0 0 16px rgba(255, 255, 255, 0.95));
@@ -52,7 +55,7 @@
       cursor: pointer;
     }
     .table-hover:hover {
-      filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.7));
+      filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.7));
     }
     #cad-scroll-area {
       cursor: grab;
@@ -70,234 +73,317 @@
     }
   </style>
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col selection:bg-amber-500 selection:text-black">
+<body class="bg-[#120f0d] text-[#f5f2eb] min-h-screen flex flex-col selection:bg-[#d4af37] selection:text-black">
 
-  <header class="border-b border-slate-800 bg-slate-900/90 backdrop-blur sticky top-0 z-40">
-    <div class="max-w-7xl mx-auto px-3 sm:px-4 py-2 flex items-center justify-between gap-3">
-      <!-- Mode Switcher Pill & Action buttons -->
-      <div class="flex items-center gap-2 sm:gap-3 flex-wrap no-print w-full justify-between sm:justify-start">
-        <!-- MODE TOGGLE PILL: DỄ DÙNG vs QUẢN TRỊ -->
-        <div class="flex items-center bg-slate-950 p-1 rounded-xl border border-slate-700 shadow-inner">
-          <button id="btn-mode-senior" onclick="setUserMode('senior')" class="px-3 sm:px-3.5 py-1.5 rounded-lg text-xs font-black transition flex items-center cursor-pointer bg-gradient-to-r from-amber-500 to-yellow-400 text-slate-950 shadow" title="Giao diện tối giản, chữ to, siêu nét cho người lớn tuổi">
-            <span>Chế Độ Dễ Dùng</span>
+  <!-- TOP UNIFIED APP BAR (Sticky, Ultra-Compact, Minimal Space Consumption) -->
+  <header class="border-b border-[#362b20] bg-[#181310]/95 backdrop-blur-md sticky top-0 z-40 shadow-xl no-print">
+    <div class="max-w-7xl mx-auto px-2.5 sm:px-4 py-1.5 flex flex-col gap-1.5">
+
+      <!-- VENUE BRANDING (Riverside Palace Wedding & Convention) -->
+      <div class="flex items-center justify-center gap-2 pt-0.5 text-center">
+        <span class="text-[#c5a059] text-xs">✻</span>
+        <span class="font-serif-luxury tracking-[0.22em] sm:tracking-[0.28em] text-[11px] sm:text-xs font-bold text-[#e5c07b] uppercase">RIVERSIDE PALACE</span>
+        <span class="text-[9px] text-[#a89f91] font-sans font-medium tracking-widest hidden sm:inline">• WEDDING & CONVENTION</span>
+        <span class="text-[#c5a059] text-xs">✻</span>
+      </div>
+
+      <!-- ROW 1: PRIMARY SIDE NAVIGATION & MODE CONTROLS (Single row on mobile, zero clutter) -->
+      <div class="flex items-center justify-between gap-1.5 sm:gap-3">
+        <!-- 3 Side Tabs (Nhà Trai, Nhà Gái, Toàn Sảnh - Ultra-clear segmented pill control) -->
+        <div class="grid grid-cols-3 gap-1 bg-[#100d0b] p-0.5 rounded-xl border border-[#362b20] shadow-inner flex-1 max-w-sm sm:max-w-md">
+          <button id="senior-btn-groom" onclick="filterGroup('groom')" class="py-1.5 sm:py-2 px-1 rounded-lg bg-gradient-to-r from-[#d4af37] via-[#e5c07b] to-[#c5a059] text-[#18110b] font-black shadow transition transform active:scale-95 cursor-pointer text-center text-xs sm:text-sm uppercase tracking-wide leading-tight">
+            NHÀ TRAI
           </button>
-          <button id="btn-mode-admin" onclick="requestAdminMode()" class="px-3 sm:px-3.5 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition flex items-center cursor-pointer" title="Giao diện đầy đủ công cụ quản lý, đổi bàn, đổi màu, Google Sheets">
-            <span>Chế Độ Quản Trị</span>
+          <button id="senior-btn-bride" onclick="filterGroup('bride')" class="py-1.5 sm:py-2 px-1 rounded-lg bg-transparent hover:bg-[#251e18] text-[#c5baa8] hover:text-white font-semibold transition cursor-pointer text-center text-xs sm:text-sm uppercase tracking-wide leading-tight">
+            NHÀ GÁI
+          </button>
+          <button id="senior-btn-all" onclick="filterGroup('all')" class="py-1.5 sm:py-2 px-1 rounded-lg bg-transparent hover:bg-[#251e18] text-[#c5baa8] hover:text-white font-semibold transition cursor-pointer text-center text-xs sm:text-sm uppercase tracking-wide leading-tight">
+            TOÀN SẢNH
           </button>
         </div>
 
-        <!-- ADMIN ONLY HEADER ACTIONS (Hidden in Senior Mode) -->
-        <div id="admin-header-actions" class="hidden flex items-center gap-2 flex-wrap">
-          <button onclick="window.print()" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition flex items-center shadow">
-            <span>In Sơ Đồ</span>
+        <!-- Mode Toggle Pill: Dễ Dùng vs Quản Trị -->
+        <div class="flex items-center bg-[#100d0b] p-0.5 rounded-xl border border-[#362b20] shadow-inner flex-shrink-0">
+          <button id="btn-mode-senior" onclick="setUserMode('senior')" class="px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg text-xs font-black transition cursor-pointer bg-gradient-to-r from-[#d4af37] to-[#e5c07b] text-[#18110b] shadow" title="Giao diện tối giản, trực quan">
+            Dễ Dùng
           </button>
-          <div id="admin-status-badge">
-            <button onclick="handleAdminBadgeClick()" id="btn-admin-auth" class="px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition flex items-center shadow" title="Đăng nhập mã PIN để có quyền chỉnh sửa">
-              <span id="admin-auth-dot" class="w-2 h-2 rounded-full bg-slate-500 mr-1.5"></span>
-              <span id="admin-auth-text">Đăng Nhập PIN</span>
-            </button>
-          </div>
-          <button onclick="openSyncModal()" class="px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-950/70 hover:bg-emerald-900 text-emerald-300 border border-emerald-700/80 transition flex items-center shadow" title="Xuất / Nhập dữ liệu hoặc đồng bộ lên Vercel & Điện thoại">
-            <span>Đồng Bộ Dữ Liệu</span>
-          </button>
-          <button id="btn-view-toggle" onclick="toggleListView()" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 transition flex items-center shadow-lg shadow-amber-500/20">
-            <span id="btn-toggle-label">Xem Dạng Bảng</span>
+          <button id="btn-mode-admin" onclick="requestAdminMode()" class="px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg text-xs font-semibold text-[#a89f91] hover:text-white transition cursor-pointer" title="Giao diện quản lý & đồng bộ">
+            Quản Trị
           </button>
         </div>
       </div>
-    </div>
-  </header>
 
-  <!-- Filter Pills & Quick Search -->
-  <section class="bg-slate-900/60 border-b border-slate-800 px-3 sm:px-4 py-2.5 no-print">
-    <div class="max-w-7xl mx-auto">
-      
-      <!-- 1. SENIOR / GUEST QUICK BAR (Dành cho Người Lớn Tuổi & Khách Mời - Mặc định) -->
-      <div id="senior-quick-bar" class="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
-        <!-- 3 Side Navigation Buttons (Neatly aligned on 1 row even on mobile, no logos) -->
-        <div class="grid grid-cols-3 gap-1.5 sm:gap-2.5 flex-1">
-          <button id="senior-btn-groom" onclick="filterGroup('groom')" class="p-2 sm:p-2.5 rounded-xl sm:rounded-2xl bg-gradient-to-r from-amber-500 to-yellow-400 text-slate-950 font-black shadow-lg shadow-amber-500/25 transition transform active:scale-95 cursor-pointer ring-2 ring-white text-center flex flex-col items-center justify-center">
-            <div class="text-xs sm:text-sm font-black uppercase tracking-wider leading-tight">NHÀ TRAI</div>
-            <div class="text-[10px] font-bold text-amber-950/80 hidden sm:block">Bên Trái (Phóng to)</div>
-          </button>
-
-          <button id="senior-btn-bride" onclick="filterGroup('bride')" class="p-2 sm:p-2.5 rounded-xl sm:rounded-2xl bg-rose-950/60 hover:bg-rose-900/80 text-rose-200 font-bold border border-rose-600/60 transition transform active:scale-95 cursor-pointer text-center flex flex-col items-center justify-center">
-            <div class="text-xs sm:text-sm font-black uppercase tracking-wider leading-tight">NHÀ GÁI</div>
-            <div class="text-[10px] font-semibold text-rose-300/80 hidden sm:block">Bên Phải (Phóng to)</div>
-          </button>
-
-          <button id="senior-btn-all" onclick="filterGroup('all')" class="p-2 sm:p-2.5 rounded-xl sm:rounded-2xl bg-slate-800/90 hover:bg-slate-700 text-slate-200 font-bold border border-slate-700 transition cursor-pointer text-center flex flex-col items-center justify-center">
-            <div class="text-xs sm:text-sm font-bold uppercase tracking-wider leading-tight">TOÀN SẢNH</div>
-            <div class="text-[10px] text-slate-400 font-normal hidden sm:block">Xem cả 2 bên</div>
-          </button>
-        </div>
-
-        <!-- Big Search Box for Elders -->
-        <div class="w-full md:w-80 relative">
+      <!-- ROW 2 (SENIOR VIEW): ULTRA-SLIM SEARCH BAR -->
+      <div id="senior-quick-bar" class="w-full">
+        <div class="relative w-full">
           <input 
             id="search-input" 
             type="text" 
-            placeholder="Tìm tên khách hoặc số bàn..." 
-            class="w-full bg-slate-950 border-2 border-amber-500/60 focus:border-amber-400 rounded-xl sm:rounded-2xl px-3.5 sm:px-4 py-2 sm:py-2.5 text-xs sm:text-base text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-400/50 transition font-medium shadow-inner"
+            placeholder="🔍 Tìm tên khách hoặc số bàn..." 
+            class="w-full bg-[#100d0b] border border-[#3a2e22] focus:border-[#d4af37] rounded-xl px-3 py-1 text-xs sm:text-sm text-[#f5f2eb] placeholder-[#8c7f72] focus:outline-none focus:ring-1 focus:ring-[#d4af37]/50 transition font-medium shadow-inner h-8 sm:h-9"
             oninput="handleSearch(this.value)"
           />
-          <div id="search-badge" class="absolute right-3.5 top-2.5 sm:top-3 text-[11px] px-2 py-0.5 rounded-full bg-amber-500 text-slate-950 font-black hidden"></div>
+          <div id="search-badge" class="absolute right-2.5 top-1.5 sm:top-2 text-[10px] px-2 py-0.5 rounded-full bg-[#d4af37] text-[#18110b] font-black hidden"></div>
         </div>
       </div>
 
-      <!-- 2. ADMIN METRICS BAR (5 thẻ quản trị: Toàn Bộ Sảnh, Nhà Trai, Nhà Gái, Bàn VIP, Bàn Còn Trống Chỗ) -->
-      <div id="admin-metrics-bar" class="hidden flex flex-col xl:flex-row items-stretch xl:items-center justify-between gap-3">
-        <div class="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-5 gap-2 flex-1">
-          <button id="btn-filter-all" onclick="filterGroup('all')" class="bg-slate-800/80 hover:bg-slate-800 border border-slate-700 rounded-xl p-2 text-left transition group">
-            <div class="text-[10px] text-slate-400 font-medium">Toàn Bộ Sảnh Tiệc</div>
-            <div class="text-base font-bold text-white flex items-baseline gap-1">
-              <span>34 Bàn</span> <span class="text-[10px] text-amber-300 font-semibold">(32 chính + 2 dự bị)</span>
+      <!-- ROW 2 & 3 (ADMIN VIEW ONLY): ADMIN CONTROLS & METRIC CARDS -->
+      <div id="admin-metrics-bar" class="hidden flex flex-col gap-1.5">
+        <!-- Admin header actions -->
+        <div id="admin-header-actions" class="flex items-center justify-between gap-1.5 flex-wrap">
+          <div class="flex items-center gap-1.5 flex-wrap">
+            <button onclick="window.print()" class="px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-[#241c16] hover:bg-[#34271d] text-[#e8cf9c] border border-[#3e2f22] transition shadow">
+              In Sơ Đồ
+            </button>
+            <div id="admin-status-badge">
+              <button onclick="handleAdminBadgeClick()" id="btn-admin-auth" class="px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-[#241c16] hover:bg-[#34271d] text-[#c5baa8] border border-[#3e2f22] transition flex items-center shadow" title="Đăng nhập mã PIN để có quyền chỉnh sửa">
+                <span id="admin-auth-dot" class="w-1.5 h-1.5 rounded-full bg-[#786b5f] mr-1"></span>
+                <span id="admin-auth-text">Đăng Nhập PIN</span>
+              </button>
+            </div>
+            <button onclick="openSyncModal()" class="px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-[#18281d] hover:bg-[#203627] text-emerald-300 border border-[#2b5239] transition shadow" title="Xuất / Nhập / Đồng bộ">
+              Đồng Bộ Dữ Liệu
+            </button>
+            <button id="btn-style-mode-toggle" onclick="toggleTableStyleMode()" class="px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-[#241c16] hover:bg-[#34271d] text-[#e8cf9c] border border-[#3e2f22] transition shadow flex items-center gap-1" title="Chuyển đổi kiểu phối màu bàn">
+              <span>🎨 Bàn:</span> <strong id="style-mode-label" class="text-white">Ánh Sắc Nhóm</strong>
+            </button>
+            <button id="btn-view-toggle" onclick="toggleListView()" class="px-2.5 py-1 rounded-lg text-[11px] font-bold bg-gradient-to-r from-[#d4af37] to-[#e5c07b] text-[#18110b] hover:brightness-110 transition shadow">
+              <span id="btn-toggle-label">Xem Dạng Bảng</span>
+            </button>
+          </div>
+
+          <!-- Admin Search Box -->
+          <div class="w-full sm:w-64 relative">
+            <input 
+              id="search-input-admin" 
+              type="text" 
+              placeholder="🔍 Tìm: Vip, Kiệt, Sếp..." 
+              class="w-full bg-[#100d0b] border border-[#3a2e22] rounded-xl px-2.5 py-1 text-xs text-[#f5f2eb] placeholder-[#8c7f72] focus:outline-none focus:border-[#d4af37] transition h-7"
+              oninput="handleSearch(this.value)"
+            />
+            <div id="search-badge-admin" class="absolute right-2 top-1 text-[10px] px-1.5 py-0.5 rounded bg-[#d4af37]/20 text-[#e5c07b] font-bold border border-[#d4af37]/40 hidden"></div>
+          </div>
+        </div>
+
+        <!-- 5 Admin Metric Cards -->
+        <div class="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-5 gap-1.5 pt-1 border-t border-[#362b20]">
+          <button id="btn-filter-all" onclick="filterGroup('all')" class="bg-[#1e1713] hover:bg-[#292019] border border-[#3e3023] rounded-xl p-1.5 text-left transition group">
+            <div class="text-[10px] text-[#a89f91] font-medium">Toàn Sảnh Tiệc</div>
+            <div class="text-xs font-bold text-white flex items-baseline gap-1">
+              <span>34 Bàn</span> <span class="text-[9px] text-[#e5c07b] font-semibold">(32+2)</span>
             </div>
           </button>
-          <button id="btn-filter-groom" onclick="filterGroup('groom')" class="bg-amber-950/40 hover:bg-amber-900/50 border border-amber-800/60 rounded-xl p-2 text-left transition">
-            <div class="text-[10px] text-amber-400 font-medium flex items-center gap-1">
-              <span class="w-2 h-2 rounded-full bg-amber-400"></span> Nhà Trai (Bên Trái)
+          <button id="btn-filter-groom" onclick="filterGroup('groom')" class="bg-[#291e12] hover:bg-[#352717] border border-[#4d3a22] rounded-xl p-1.5 text-left transition">
+            <div class="text-[10px] text-[#e5c07b] font-medium flex items-center gap-1">
+              <span class="w-1.5 h-1.5 rounded-full bg-[#d4af37]"></span> Nhà Trai
             </div>
-            <div class="text-base font-bold text-amber-200 flex items-baseline gap-1">
-              <span>16 Bàn</span> <span class="text-[10px] text-amber-400/80 font-normal">+ 1 Dự Bị (B17)</span>
-            </div>
-          </button>
-          <button id="btn-filter-bride" onclick="filterGroup('bride')" class="bg-rose-950/40 hover:bg-rose-900/50 border border-rose-800/60 rounded-xl p-2 text-left transition">
-            <div class="text-[10px] text-rose-400 font-medium flex items-center gap-1">
-              <span class="w-2 h-2 rounded-full bg-rose-400"></span> Nhà Gái (Bên Phải)
-            </div>
-            <div class="text-base font-bold text-rose-200 flex items-baseline gap-1">
-              <span>16 Bàn</span> <span class="text-[10px] text-rose-400/80 font-normal">+ 1 Dự Bị (B17)</span>
+            <div class="text-xs font-bold text-[#f3e5ab] flex items-baseline gap-1">
+              <span>16 Bàn</span> <span class="text-[9px] text-[#c5a059] font-normal">+1 Dự Bị</span>
             </div>
           </button>
-          <button id="btn-filter-vip" onclick="filterGroup('vip')" class="bg-purple-950/40 hover:bg-purple-900/50 border border-purple-800/60 rounded-xl p-2 text-left transition">
-            <div class="text-[10px] text-purple-400 font-medium flex items-center gap-1">
-              <span class="w-2 h-2 rounded-full bg-purple-400"></span> Khu Bàn VIP 2 Nhà
+          <button id="btn-filter-bride" onclick="filterGroup('bride')" class="bg-[#28151b] hover:bg-[#361d24] border border-[#4f2834] rounded-xl p-1.5 text-left transition">
+            <div class="text-[10px] text-[#e8a598] font-medium flex items-center gap-1">
+              <span class="w-1.5 h-1.5 rounded-full bg-[#d97d8f]"></span> Nhà Gái
             </div>
-            <div class="text-base font-bold text-purple-200 flex items-baseline gap-1">
-              <span>8 Bàn VIP</span> <span class="text-[10px] text-purple-400/80 font-normal">Gần Sân Khấu</span>
+            <div class="text-xs font-bold text-[#fed7aa] flex items-baseline gap-1">
+              <span>16 Bàn</span> <span class="text-[9px] text-[#fda4af] font-normal">+1 Dự Bị</span>
             </div>
           </button>
-          <button id="btn-filter-available" onclick="filterGroup('available')" class="bg-emerald-950/40 hover:bg-emerald-900/50 border border-emerald-800/60 rounded-xl p-2 text-left transition" title="Lọc xem các bàn còn trống chỗ để tiếp đón khách phát sinh">
+          <button id="btn-filter-vip" onclick="filterGroup('vip')" class="bg-[#241624] hover:bg-[#331f33] border border-[#4a2b4a] rounded-xl p-1.5 text-left transition">
+            <div class="text-[10px] text-[#d8b4e2] font-medium flex items-center gap-1">
+              <span class="w-1.5 h-1.5 rounded-full bg-[#c084fc]"></span> Khu VIP
+            </div>
+            <div class="text-xs font-bold text-[#f3e8ff] flex items-baseline gap-1">
+              <span>8 Bàn VIP</span>
+            </div>
+          </button>
+          <button id="btn-filter-available" onclick="filterGroup('available')" class="bg-[#14231b] hover:bg-[#1c3025] border border-[#244c36] rounded-xl p-1.5 text-left transition" title="Lọc xem các bàn còn trống chỗ">
             <div class="text-[10px] text-emerald-400 font-medium flex items-center gap-1">
-              <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> Bàn Còn Trống Chỗ
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> Còn Trống Chỗ
             </div>
-            <div class="text-base font-bold text-emerald-200 flex items-baseline gap-1">
-              <span id="metric-available-tables">3 Bàn</span> <span id="metric-available-seats" class="text-[10px] text-emerald-300 font-semibold">(21 chỗ trống)</span>
+            <div class="text-xs font-bold text-emerald-200 flex items-baseline gap-1">
+              <span id="metric-available-tables">3 Bàn</span> <span id="metric-available-seats" class="text-[9px] text-emerald-300 font-semibold">(21 chỗ)</span>
             </div>
           </button>
         </div>
-
-        <!-- Admin Search Box -->
-        <div class="w-full xl:w-72 relative">
-          <input 
-            id="search-input-admin" 
-            type="text" 
-            placeholder="🔍 Tìm nhanh: Vip, Chú Rể, Kiệt, Sếp Huy..." 
-            class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400 transition"
-            oninput="handleSearch(this.value)"
-          />
-          <div id="search-badge-admin" class="absolute right-3 top-2 text-[10px] px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 font-bold hidden"></div>
-        </div>
       </div>
-    </div>
-  </section>
 
-  <main class="flex-1 max-w-7xl w-full mx-auto p-2 sm:p-4 flex flex-col lg:flex-row gap-4 sm:gap-5">
+    </div>
+  </header>
+
+  <main class="flex-1 max-w-7xl w-full mx-auto px-1 sm:px-4 py-1 sm:py-3 flex flex-col lg:flex-row gap-3 sm:gap-5">
 
     <!-- CAD FLOOR PLAN CANVAS -->
-    <div id="cad-wrapper" class="flex-1 bg-slate-900/80 border border-slate-800 rounded-2xl p-2.5 sm:p-4 flex flex-col shadow-2xl relative">
+    <div id="cad-wrapper" class="flex-1 bg-[#16120f]/95 border border-[#382d22] rounded-2xl p-1 sm:p-3 flex flex-col shadow-2xl relative">
       
-      <!-- Top banner & zoom controls -->
-      <div class="flex items-center justify-between text-xs text-slate-300 mb-2 sm:mb-3 border-b border-slate-800 pb-2 sm:pb-2.5 gap-2">
-        <div class="flex items-center gap-1.5 sm:gap-2">
-          <span class="font-bold text-amber-300 text-xs sm:text-sm">Sơ Đồ Mặt Bằng Sảnh Tiệc</span>
-        </div>
-
-        <div class="flex items-center gap-1.5 no-print flex-shrink-0">
-          <span id="zoom-badge" class="hidden sm:inline-block text-[11px] font-mono font-bold text-slate-300 px-1.5 py-1 rounded bg-slate-800/80 border border-slate-700/60">100%</span>
-          <button onclick="zoomMap(1.2)" class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 flex items-center justify-center font-bold text-base shadow transition cursor-pointer active:scale-95" title="Phóng to">+</button>
-          <button onclick="zoomMap(0.8)" class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 flex items-center justify-center font-bold text-base shadow transition cursor-pointer active:scale-95" title="Thu nhỏ">-</button>
-          <button onclick="resetZoom()" class="px-2 sm:px-2.5 h-7 sm:h-8 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-[11px] sm:text-xs font-semibold shadow transition cursor-pointer active:scale-95" title="Xem trọn vẹn mặt bằng">Vừa Sảnh</button>
-        </div>
+      <!-- FLOATING ZOOM & FIT HUD (Glassmorphic, 0px vertical layout consumption!) -->
+      <div class="absolute top-2.5 right-2.5 z-20 flex items-center gap-1 bg-[#181310]/95 backdrop-blur-md border border-[#382d22] p-1 rounded-xl shadow-xl no-print">
+        <span id="zoom-badge" class="text-[10px] sm:text-[11px] font-mono font-bold text-[#c5baa8] px-1 sm:px-1.5">100%</span>
+        <button onclick="zoomMap(1.2)" class="w-6 h-6 sm:w-7 sm:h-7 rounded-lg bg-[#241c16] hover:bg-[#34271d] text-[#f5f2eb] border border-[#3e2f22] flex items-center justify-center font-black text-sm shadow transition cursor-pointer active:scale-95" title="Phóng to">+</button>
+        <button onclick="zoomMap(0.8)" class="w-6 h-6 sm:w-7 sm:h-7 rounded-lg bg-[#241c16] hover:bg-[#34271d] text-[#f5f2eb] border border-[#3e2f22] flex items-center justify-center font-black text-sm shadow transition cursor-pointer active:scale-95" title="Thu nhỏ">-</button>
+        <button onclick="resetZoom()" class="px-1.5 sm:px-2 h-6 sm:h-7 rounded-lg bg-[#241c16] hover:bg-[#34271d] text-[#e5c07b] border border-[#3e2f22] text-[10px] sm:text-xs font-bold shadow transition cursor-pointer active:scale-95" title="Xem trọn vẹn mặt bằng">Vừa Sảnh</button>
       </div>
 
-      <!-- Quick Pan & Drag Hint -->
-      <div id="pan-hint" class="text-[11px] text-amber-300/90 bg-amber-950/40 border border-amber-800/40 px-2.5 py-1 rounded-lg text-center mb-2 hidden flex items-center justify-center gap-1.5">
-        <span>✋ Giữ chuột hoặc vuốt ngón tay để kéo di chuyển xem toàn bộ khu vực bàn</span>
+      <!-- Quick Pan Hint (Floating Toast at bottom, 0px vertical layout height) -->
+      <div id="pan-hint" class="hidden absolute bottom-3 left-1/2 -translate-x-1/2 z-20 pointer-events-none text-[11px] bg-[#181310]/95 backdrop-blur border border-[#d4af37]/60 text-[#f3e5ab] px-3 py-1 rounded-full shadow-2xl flex items-center gap-1.5 whitespace-nowrap">
+        <span>✋ Vuốt để di chuyển xem các bàn</span>
       </div>
 
-      <!-- SVG Map Canvas (Optimized for Mobile: fits 100% width, no cut-off corners, smooth scrollable & zoomable) -->
-      <div id="cad-scroll-area" class="flex-1 overflow-auto custom-scrollbar p-1 sm:p-3 bg-slate-950/70 rounded-xl border border-slate-800/80 touch-pan-x touch-pan-y text-center min-h-[480px] max-h-[82vh]">
-        <div id="cad-svg-container" class="inline-block text-left transition-[width] duration-150 origin-top w-full max-w-[720px]">
+      <!-- SVG Map Canvas (Optimized for Mobile: fits 100% width, maximized screen space) -->
+      <div id="cad-scroll-area" class="flex-1 overflow-auto custom-scrollbar p-0.5 sm:p-2 bg-[#100d0b] rounded-xl border border-[#2e241b] touch-pan-x touch-pan-y text-center min-h-[520px] max-h-[calc(100dvh-105px)] sm:max-h-[85vh]">
+        <div id="cad-svg-container" class="inline-block text-left transition-[width] duration-150 origin-top w-full max-w-[920px] xl:max-w-[960px]">
           <!-- The CAD Floor Plan SVG rendered dynamically -->
-          <svg id="hall-svg" viewBox="0 0 1000 1380" class="w-full h-auto select-none block">
+          <svg id="hall-svg" viewBox="15 10 970 1150" class="w-full h-auto select-none block">
             <!-- Definitions for gradients & shadow filters -->
             <defs>
               <filter id="glow-white" x="-30%" y="-30%" width="160%" height="160%">
                 <feGaussianBlur stdDeviation="5" result="blur" />
                 <feComposite in="SourceGraphic" in2="blur" operator="over" />
               </filter>
+              <filter id="glow-search" x="-40%" y="-40%" width="180%" height="180%">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="6" result="blur" />
+                <feMerge>
+                  <feMergeNode in="blur" />
+                  <feMergeNode in="SourceGraphic" />
+                </feMerge>
+              </filter>
               <radialGradient id="selected-table-fill" cx="50%" cy="50%" r="50%">
-                <stop offset="0%" stop-color="#334155" />
-                <stop offset="100%" stop-color="#1e293b" />
+                <stop offset="0%" stop-color="#3d3126" />
+                <stop offset="100%" stop-color="#241c15" />
               </radialGradient>
-              <linearGradient id="stage-grad" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stop-color="#334155" />
-                <stop offset="100%" stop-color="#1e293b" />
+              <linearGradient id="hall-bg-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stop-color="#181310" />
+                <stop offset="50%" stop-color="#130f0c" />
+                <stop offset="100%" stop-color="#0f0c0a" />
               </linearGradient>
-              <linearGradient id="runway-grad" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stop-color="#f8fafc" />
-                <stop offset="100%" stop-color="#e2e8f0" />
+              <linearGradient id="stage-deck-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#261d16" />
+                <stop offset="50%" stop-color="#362920" />
+                <stop offset="100%" stop-color="#261d16" />
               </linearGradient>
+              <linearGradient id="led-screen-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stop-color="#241e1b" />
+                <stop offset="100%" stop-color="#151210" />
+              </linearGradient>
+              <linearGradient id="led-screen-border" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#c5a059" />
+                <stop offset="50%" stop-color="#fcedbe" />
+                <stop offset="100%" stop-color="#c5a059" />
+              </linearGradient>
+              <linearGradient id="runway-palace-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stop-color="#2c221a" />
+                <stop offset="100%" stop-color="#1c1612" />
+              </linearGradient>
+              <!-- White/Ivory Linen Tablecloth Gradients (Riverside Palace authentic banquet style) -->
+              <radialGradient id="tablecloth-white" cx="44%" cy="38%" r="62%">
+                <stop offset="0%" stop-color="#ffffff" />
+                <stop offset="70%" stop-color="#fdfcf9" />
+                <stop offset="100%" stop-color="#f3ede2" />
+              </radialGradient>
+              <radialGradient id="tablecloth-selected" cx="44%" cy="38%" r="62%">
+                <stop offset="0%" stop-color="#ffffff" />
+                <stop offset="60%" stop-color="#fff8e7" />
+                <stop offset="100%" stop-color="#fcedbe" />
+              </radialGradient>
+              <radialGradient id="tablecloth-search" cx="44%" cy="38%" r="62%">
+                <stop offset="0%" stop-color="#ffffff" />
+                <stop offset="60%" stop-color="#fef3c7" />
+                <stop offset="100%" stop-color="#fde68a" />
+              </radialGradient>
+              <filter id="table-shadow" x="-20%" y="-20%" width="140%" height="140%">
+                <feDropShadow dx="0" dy="2.5" stdDeviation="3.5" flood-color="#000000" flood-opacity="0.45" />
+              </filter>
+              <filter id="chair-shadow" x="-30%" y="-30%" width="160%" height="160%">
+                <feDropShadow dx="0" dy="1.2" stdDeviation="1.5" flood-color="#000000" flood-opacity="0.32" />
+              </filter>
+              <!-- Starlight ceiling pin-lights pattern (like Riverside Palace lattice ceiling) -->
+              <pattern id="starlight-pattern" width="60" height="60" patternUnits="userSpaceOnUse">
+                <circle cx="15" cy="15" r="0.75" fill="#d4af37" opacity="0.25" />
+                <circle cx="45" cy="20" r="0.6" fill="#f3e5ab" opacity="0.2" />
+                <circle cx="30" cy="45" r="0.85" fill="#f59e0b" opacity="0.22" />
+                <circle cx="55" cy="50" r="0.5" fill="#ffffff" opacity="0.18" />
+              </pattern>
             </defs>
 
-            <!-- Background Hall Boundary with subtle grid -->
-            <rect x="50" y="30" width="900" height="1320" rx="16" fill="#0f172a" stroke="#334155" stroke-width="2.5" />
-            <line x1="50" y1="120" x2="950" y2="120" stroke="#334155" stroke-dasharray="6 4" stroke-width="1.5" />
+            <!-- Background Hall Boundary with Starlight Ambiance -->
+            <rect x="25" y="15" width="950" height="1125" rx="16" fill="url(#hall-bg-grad)" stroke="#453629" stroke-width="2.5" />
+            <rect x="25" y="15" width="950" height="1125" rx="16" fill="url(#starlight-pattern)" opacity="0.85" pointer-events="none" />
 
-            <!-- STAGE: 7.2 x 3.6 (m) -->
-            <rect x="320" y="60" width="360" height="140" rx="4" fill="url(#stage-grad)" stroke="#64748b" stroke-width="2" />
-            <text id="stage-sub-text" x="500" y="140" fill="#f1f5f9" font-size="22" font-weight="bold" text-anchor="middle" font-family="'Plus Jakarta Sans', sans-serif">
-              7,2 x 3,6 (m)
+            <!-- RIVERSIDE PALACE STAGE: 7.2 x 3.6 (m) with Single Large Center LED Screen -->
+            <g id="stage-group">
+              <!-- Main Stage Deck Frame -->
+              <rect x="240" y="18" width="520" height="52" rx="8" fill="url(#stage-deck-grad)" stroke="#d4af37" stroke-width="2" />
+              
+              <!-- Left Stage Wing (Cánh gà Nhà Trai - Nan gỗ trang trí, không có màn hình) -->
+              <g id="stage-wing-left" opacity="0.6">
+                <line x1="255" y1="24" x2="255" y2="64" stroke="#c5a059" stroke-width="1.5" />
+                <line x1="267" y1="24" x2="267" y2="64" stroke="#c5a059" stroke-width="1.5" />
+                <line x1="279" y1="24" x2="279" y2="64" stroke="#c5a059" stroke-width="1.5" />
+                <line x1="291" y1="24" x2="291" y2="64" stroke="#c5a059" stroke-width="1.5" />
+              </g>
+
+              <!-- SINGLE LARGE CENTER LED SCREEN (1 Màn hình to duy nhất ở giữa) -->
+              <g id="led-screen-center">
+                <!-- Outer Bezel Frame of the Big Center LED Screen -->
+                <rect id="led-screen-rect" x="310" y="22" width="380" height="44" rx="5" fill="url(#led-screen-grad)" stroke="url(#led-screen-border)" stroke-width="1.8" />
+                <!-- Inner Bezel Ring -->
+                <rect id="led-screen-inner" x="313" y="24" width="374" height="40" rx="3" fill="none" stroke="#d4af37" stroke-width="0.6" stroke-opacity="0.4" />
+                
+                <!-- LED Screen Brand Text -->
+                <text id="stage-brand-text" x="500" y="34" fill="#c5a059" font-size="8" font-weight="800" text-anchor="middle" letter-spacing="2.5" font-family="'Cinzel', serif">RIVERSIDE PALACE</text>
+                <!-- LED Screen Main Title -->
+                <text id="stage-main-text" x="500" y="49" fill="#f3e5ab" font-size="13" font-weight="900" text-anchor="middle" letter-spacing="1.5">MÀN HÌNH LED SÂN KHẤU</text>
+                <!-- Stage Dimension & Subtitle -->
+                <text id="stage-sub-text" x="500" y="61" fill="#a89f91" font-size="8.5" font-weight="700" text-anchor="middle">7,2 x 3,6 (m)</text>
+              </g>
+
+              <!-- Right Stage Wing (Cánh gà Nhà Gái - Nan gỗ trang trí, không có màn hình) -->
+              <g id="stage-wing-right" opacity="0.6">
+                <line x1="709" y1="24" x2="709" y2="64" stroke="#d97d8f" stroke-width="1.5" />
+                <line x1="721" y1="24" x2="721" y2="64" stroke="#d97d8f" stroke-width="1.5" />
+                <line x1="733" y1="24" x2="733" y2="64" stroke="#d97d8f" stroke-width="1.5" />
+                <line x1="745" y1="24" x2="745" y2="64" stroke="#d97d8f" stroke-width="1.5" />
+              </g>
+            </g>
+
+            <!-- RUNWAY CATWALK (Classy dark wood platform with champagne gold edge & lights) -->
+            <rect x="420" y="70" width="160" height="75" rx="4" fill="url(#runway-palace-grad)" stroke="#d4af37" stroke-width="1.5" />
+            <!-- Catwalk edge warm uplights -->
+            <circle cx="426" cy="80" r="2" fill="#fbbf24" opacity="0.7" />
+            <circle cx="426" cy="107" r="2" fill="#fbbf24" opacity="0.7" />
+            <circle cx="426" cy="134" r="2" fill="#fbbf24" opacity="0.7" />
+            <circle cx="574" cy="80" r="2" fill="#fbbf24" opacity="0.7" />
+            <circle cx="574" cy="107" r="2" fill="#fbbf24" opacity="0.7" />
+            <circle cx="574" cy="134" r="2" fill="#fbbf24" opacity="0.7" />
+            <text id="runway-main-text" x="500" y="103" fill="#f3e5ab" font-size="11" font-weight="900" text-anchor="middle" letter-spacing="2">
+              CATWALK
             </text>
-            <text id="stage-main-text" x="500" y="105" fill="#fbbf24" font-size="14" font-weight="800" text-anchor="middle" letter-spacing="2">
-              SÂN KHẤU CHÍNH
+            <text id="runway-sub-text" x="500" y="122" fill="#d4af37" font-size="9.5" font-weight="bold" text-anchor="middle">
+              3.6 x 2.4 (m)
             </text>
 
-            <!-- RUNWAY CATWALK: 3.6 x 2.4 (m) -->
-            <rect x="410" y="200" width="180" height="120" fill="url(#runway-grad)" stroke="#94a3b8" stroke-width="1.5" />
-            <text id="runway-sub-text" x="500" y="265" fill="#0f172a" font-size="19" font-weight="bold" text-anchor="middle">
-              3.6x2.4(m)
-            </text>
-            <text id="runway-main-text" x="500" y="240" fill="#475569" font-size="11" font-weight="700" text-anchor="middle">
-              RUNWAY CATWALK
-            </text>
-
-            <!-- CENTER AISLE: Red/Dark carpet strip running to the entrance -->
-            <rect x="475" y="320" width="50" height="970" fill="#1e1b4b" stroke="#312e81" stroke-width="1" opacity="0.95" />
+            <!-- CENTER AISLE: Riverside Palace center aisle carpet -->
+            <rect x="475" y="145" width="50" height="895" fill="#1b1512" stroke="#362a1f" stroke-width="1" />
+            <line x1="475" y1="145" x2="475" y2="1040" stroke="#c5a059" stroke-width="1.2" stroke-dasharray="8 4" opacity="0.6" />
+            <line x1="525" y1="145" x2="525" y2="1040" stroke="#c5a059" stroke-width="1.2" stroke-dasharray="8 4" opacity="0.6" />
             <!-- Vertical label on aisle -->
-            <g id="aisle-label-group" transform="translate(500, 800) rotate(-90)">
-              <text x="0" y="4" fill="#a5b4fc" font-size="13" font-weight="700" text-anchor="middle" letter-spacing="4" opacity="0.75">
-                THẢM ĐỎ LỐI ĐI CHÍNH • CÔ DÂU & CHÚ RỂ
+            <g id="aisle-label-group" transform="translate(500, 580) rotate(-90)">
+              <text x="0" y="4" fill="#e5c07b" font-size="11.5" font-weight="700" text-anchor="middle" letter-spacing="4" opacity="0.8">
+                LỐI ĐI CHÍNH • CÔ DÂU & CHÚ RỂ
               </text>
             </g>
 
-            <!-- ENTRANCE DOORS AT BOTTOM (CỬA RA VÀO PHÍA BÊN TRÁI NHƯ BAN ĐẦU) -->
-            <!-- Left Door: Cửa vào tiệc chính (phía bên trái) -->
-            <rect x="210" y="1290" width="200" height="40" rx="4" fill="#1e293b" stroke="#f59e0b" stroke-width="2" />
-            <!-- Main Entrance Arrow indicator (Left Side) -->
-            <g id="groom-door-indicator" transform="translate(310, 1345)">
-              <text x="0" y="0" fill="#f8fafc" font-size="28" font-weight="bold" text-anchor="middle">⇑</text>
-              <text x="0" y="-22" fill="#fbbf24" font-size="13" font-weight="bold" text-anchor="middle">CỬA VÀO TIỆC</text>
+            <!-- ENTRANCE DOORS AT BOTTOM -->
+            <rect x="210" y="1040" width="200" height="35" rx="4" fill="#241c16" stroke="#d4af37" stroke-width="2" />
+            <g id="groom-door-indicator" transform="translate(310, 1095)">
+              <text x="0" y="0" fill="#f3e5ab" font-size="24" font-weight="bold" text-anchor="middle">⇑</text>
+              <text x="0" y="-18" fill="#d4af37" font-size="12" font-weight="bold" text-anchor="middle">CỬA VÀO TIỆC</text>
             </g>
 
-            <!-- Right Door -->
-            <rect x="600" y="1290" width="180" height="40" rx="4" fill="#1e293b" stroke="#334155" stroke-width="1.5" stroke-dasharray="4 3" />
-            <!-- Right Door indicator -->
-            <g id="bride-door-indicator" transform="translate(690, 1345)">
-              <text x="0" y="0" fill="#f8fafc" font-size="28" font-weight="bold" text-anchor="middle">⇑</text>
-              <text x="0" y="-22" fill="#cbd5e1" font-size="13" font-weight="bold" text-anchor="middle">CỬA PHỤ</text>
+            <rect x="600" y="1040" width="180" height="35" rx="4" fill="#241c16" stroke="#4a3b2c" stroke-width="1.5" stroke-dasharray="4 3" />
+            <g id="bride-door-indicator" transform="translate(690, 1095)">
+              <text x="0" y="0" fill="#e2d9cf" font-size="24" font-weight="bold" text-anchor="middle">⇑</text>
+              <text x="0" y="-18" fill="#a89f91" font-size="12" font-weight="bold" text-anchor="middle">CỬA PHỤ</text>
             </g>
 
             <!-- INTERACTIVE TABLES ON LEFT SIDE (NHÀ TRAI - BÊN TRÁI TÍNH TỪ CỬA) -->
@@ -311,26 +397,26 @@
 
 
       <!-- 2. ADMIN LEGEND (Hiển thị chi tiết trong Chế Độ Quản Trị) -->
-      <div id="admin-legend" class="hidden mt-2.5 sm:mt-3 pt-2.5 sm:pt-3 border-t border-slate-800 flex flex-wrap items-center justify-between gap-2.5 text-[11px] text-slate-400">
+      <div id="admin-legend" class="hidden mt-2.5 sm:mt-3 pt-2.5 sm:pt-3 border-t border-[#382d22] flex flex-wrap items-center justify-between gap-2.5 text-[11px] text-[#a89f91]">
         <div class="flex flex-wrap items-center gap-2.5 sm:gap-3">
           <div class="flex items-center gap-1.5">
-            <span class="w-3 h-3 rounded-full bg-amber-500 shadow-sm"></span>
-            <span class="text-slate-200 font-medium">Bàn Nhà Trai</span>
+            <span class="w-3 h-3 rounded-full bg-[#d4af37] shadow-sm"></span>
+            <span class="text-[#f5f2eb] font-medium">Bàn Nhà Trai</span>
           </div>
           <div class="flex items-center gap-1.5">
-            <span class="w-3 h-3 rounded-full bg-rose-500 shadow-sm"></span>
-            <span class="text-slate-200 font-medium">Bàn Nhà Gái</span>
+            <span class="w-3 h-3 rounded-full bg-[#d97d8f] shadow-sm"></span>
+            <span class="text-[#f5f2eb] font-medium">Bàn Nhà Gái</span>
           </div>
           <div class="flex items-center gap-1.5">
-            <span class="w-3 h-3 rounded-full bg-slate-700 border border-dashed border-slate-400"></span>
-            <span class="text-slate-400 font-medium">Bàn 17: Dự Bị Duy Nhất</span>
+            <span class="w-3 h-3 rounded-full bg-[#261d16] border border-dashed border-[#786b5f]"></span>
+            <span class="text-[#a89f91] font-medium">Bàn 17: Dự Bị</span>
           </div>
           <div class="flex items-center gap-1.5">
             <span class="w-3 h-3 rounded-full bg-white shadow-sm ring-2 ring-white/50"></span>
-            <span class="text-white font-bold">Bàn Đang Chọn (Màu trắng)</span>
+            <span class="text-white font-bold">Bàn Đang Chọn</span>
           </div>
         </div>
-        <div class="text-amber-300 font-medium">
+        <div class="text-[#e5c07b] font-medium">
           💡 Chạm vào bàn bất kỳ để xem danh sách khách, đổi tên, đổi màu hoặc <strong>đổi bàn</strong>
         </div>
       </div>
@@ -341,27 +427,27 @@
     <div class="w-full lg:w-96 flex flex-col gap-4">
       
       <!-- Card Detail (Supports normal view & edit mode) -->
-      <div id="table-inspector" class="bg-slate-900 border border-slate-800 rounded-2xl p-4 sm:p-5 shadow-2xl flex flex-col transition-all">
+      <div id="table-inspector" class="bg-[#181310]/95 border border-[#382d22] rounded-2xl p-4 sm:p-5 shadow-2xl flex flex-col transition-all">
         <!-- Rendered by JS -->
       </div>
 
     </div>
 
     <!-- FULL TABLE LIST VIEW MODAL -->
-    <div id="full-list-container" class="hidden w-full bg-slate-900 border border-slate-800 rounded-2xl p-4 sm:p-6 shadow-2xl">
-      <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-800 flex-wrap gap-2">
+    <div id="full-list-container" class="hidden w-full bg-[#181310]/95 border border-[#382d22] rounded-2xl p-4 sm:p-6 shadow-2xl">
+      <div class="flex items-center justify-between mb-4 pb-3 border-b border-[#382d22] flex-wrap gap-2">
         <div>
-          <h2 class="text-lg sm:text-xl font-bold text-amber-300">Danh Sách Tổng Hợp 34 Bàn Tiệc Cưới</h2>
-          <p class="text-xs text-slate-400">16 Bàn Nhà Trai + 16 Bàn Nhà Gái (Áp dụng sơ đồ viết tay) + 2 Bàn Dự Bị (Bàn 17)</p>
+          <h2 class="text-lg sm:text-xl font-serif-luxury font-bold text-[#e5c07b]">Danh Sách Tổng Hợp 34 Bàn Tiệc Cưới</h2>
+          <p class="text-xs text-[#a89f91]">16 Bàn Nhà Trai + 16 Bàn Nhà Gái (Áp dụng sơ đồ viết tay) + 2 Bàn Dự Bị (Bàn 17)</p>
         </div>
         <div class="flex items-center gap-2">
-          <div class="flex bg-slate-800 rounded-lg p-0.5 text-xs font-bold">
-            <button onclick="setListViewFilter('all')" id="btn-list-filter-all" class="px-2.5 py-1 rounded bg-amber-500 text-slate-950">Tất Cả</button>
-            <button onclick="setListViewFilter('groom')" id="btn-list-filter-groom" class="px-2.5 py-1 rounded text-slate-300 hover:text-white">Nhà Trai</button>
-            <button onclick="setListViewFilter('bride')" id="btn-list-filter-bride" class="px-2.5 py-1 rounded text-slate-300 hover:text-white">Nhà Gái</button>
+          <div class="flex bg-[#100d0b] border border-[#362b20] rounded-lg p-0.5 text-xs font-bold">
+            <button onclick="setListViewFilter('all')" id="btn-list-filter-all" class="px-2.5 py-1 rounded bg-[#d4af37] text-[#18110b]">Tất Cả</button>
+            <button onclick="setListViewFilter('groom')" id="btn-list-filter-groom" class="px-2.5 py-1 rounded text-[#c5baa8] hover:text-white">Nhà Trai</button>
+            <button onclick="setListViewFilter('bride')" id="btn-list-filter-bride" class="px-2.5 py-1 rounded text-[#c5baa8] hover:text-white">Nhà Gái</button>
             <button onclick="setListViewFilter('available')" id="btn-list-filter-available" class="px-2.5 py-1 rounded text-emerald-400 hover:text-white">Còn Trống</button>
           </div>
-          <button onclick="toggleListView()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-xs font-bold transition">
+          <button onclick="toggleListView()" class="px-3 py-1.5 bg-[#241c16] hover:bg-[#34271d] text-[#e8cf9c] border border-[#3e2f22] rounded-lg text-xs font-bold transition">
             ✕ Đóng
           </button>
         </div>
@@ -374,18 +460,18 @@
 
   </main>
 
-  <div id="sync-data-modal" class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-sm hidden transition-opacity duration-200">
-    <div class="bg-slate-900 border border-slate-700 rounded-2xl max-w-2xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
+  <div id="sync-data-modal" class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/85 backdrop-blur-sm hidden transition-opacity duration-200">
+    <div class="bg-[#181310] border border-[#382d22] rounded-2xl max-w-2xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
       <!-- Modal Header -->
-      <div class="p-4 border-b border-slate-800 flex items-center justify-between bg-slate-900/90">
+      <div class="p-4 border-b border-[#382d22] flex items-center justify-between bg-[#140f0d]">
         <div class="flex items-center gap-2">
           <span class="text-xl">🔄</span>
           <div>
-            <h3 class="text-base font-bold text-white">Đồng Bộ & Xuất / Nhập Dữ Liệu</h3>
-            <p class="text-xs text-slate-400">Đưa danh sách khách đã chỉnh sửa từ máy tính lên Vercel & Điện thoại</p>
+            <h3 class="text-base font-bold text-[#f5f2eb]">Đồng Bộ & Xuất / Nhập Dữ Liệu</h3>
+            <p class="text-xs text-[#a89f91]">Đưa danh sách khách đã chỉnh sửa từ máy tính lên Vercel & Điện thoại</p>
           </div>
         </div>
-        <button onclick="closeSyncModal()" class="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition">
+        <button onclick="closeSyncModal()" class="p-1.5 rounded-lg text-[#c5baa8] hover:text-white hover:bg-[#251e18] transition">
           ✕
         </button>
       </div>
@@ -394,22 +480,22 @@
       <div class="p-4 sm:p-5 overflow-y-auto space-y-4 custom-scrollbar text-xs">
         
         <!-- KẾT NỐI GOOGLE SHEETS -->
-        <div class="bg-gradient-to-r from-emerald-950/50 to-slate-950 border border-emerald-500/40 rounded-2xl p-4 space-y-3">
+        <div class="bg-gradient-to-r from-[#18281d] to-[#120f0d] border border-[#2b5239] rounded-2xl p-4 space-y-3">
           <div class="flex items-center justify-between flex-wrap gap-2">
             <div class="flex items-center gap-2">
               <span class="text-lg">📊</span>
               <div>
                 <h4 class="font-bold text-emerald-400 text-sm">Kết Nối Trực Tiếp Với Google Sheets</h4>
-                <p class="text-[11px] text-slate-400">Đồng bộ 2 chiều: chỉnh sửa trên web hoặc trên Google Sheets đều tự động cập nhật</p>
+                <p class="text-[11px] text-[#a89f91]">Đồng bộ 2 chiều: chỉnh sửa trên web hoặc trên Google Sheets đều tự động cập nhật</p>
               </div>
             </div>
-            <div id="gs-status-badge" class="px-2.5 py-0.5 rounded-full text-[10px] font-bold border bg-slate-800 text-slate-400 border-slate-700">
+            <div id="gs-status-badge" class="px-2.5 py-0.5 rounded-full text-[10px] font-bold border bg-[#241c16] text-[#c5baa8] border-[#382d22]">
               Chưa kết nối
             </div>
           </div>
 
           <div class="space-y-1.5 pt-1">
-            <label class="block text-[11px] font-bold text-slate-200">
+            <label class="block text-[11px] font-bold text-[#f5f2eb]">
               🔗 Link Web App Google Apps Script:
             </label>
             <div class="flex items-center gap-2">
@@ -417,7 +503,7 @@
                 id="input-gs-url" 
                 type="text" 
                 placeholder="https://script.google.com/macros/s/.../exec" 
-                class="flex-1 bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-emerald-400 focus:ring-1 focus:ring-emerald-400 font-mono"
+                class="flex-1 bg-[#100d0b] border border-[#3a2e22] rounded-xl px-3 py-2 text-xs text-[#f5f2eb] placeholder-[#8c7f72] focus:outline-none focus:border-emerald-400 focus:ring-1 focus:ring-emerald-400 font-mono"
               />
               <button onclick="saveAndTestGoogleSheetUrl()" class="px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs flex-shrink-0 transition shadow">
                 Lưu & Kiểm Tra
@@ -425,40 +511,40 @@
             </div>
           </div>
 
-          <div class="flex flex-wrap items-center gap-2 pt-1 border-t border-slate-800/80">
+          <div class="flex flex-wrap items-center gap-2 pt-1 border-t border-[#2b5239]/60">
             <button onclick="initDataToGoogleSheet()" class="px-3 py-1.5 rounded-lg bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 text-xs font-bold transition flex items-center gap-1.5">
               <span>📤</span> <span>Khởi Tạo 34 Bàn Lên Google Sheet Mới</span>
             </button>
-            <button onclick="fetchFromGoogleSheet(true)" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold transition flex items-center gap-1.5">
+            <button onclick="fetchFromGoogleSheet(true)" class="px-3 py-1.5 rounded-lg bg-[#241c16] hover:bg-[#34271d] text-[#c5baa8] border border-[#382d22] text-xs font-bold transition flex items-center gap-1.5">
               <span>📥</span> <span>Tải Lại Dữ Liệu Từ Google Sheet</span>
             </button>
           </div>
           
-          <div class="text-[10px] text-slate-400 leading-relaxed bg-slate-900/60 p-2.5 rounded-xl border border-slate-800">
-            📖 <strong>Cách lấy link Web App:</strong> Mở Google Sheet -> vào <em>Tiện ích mở rộng > Apps Script</em> -> Dán mã trong file <code class="text-amber-300">GoogleAppsScript.js</code> -> Bấm <em>Triển khai > Quản lý bản triển khai mới > Ứng dụng web (Ai có quyền truy cập: Bất kỳ ai)</em> -> Copy URL dán vào ô trên!
+          <div class="text-[10px] text-[#a89f91] leading-relaxed bg-[#100d0b]/80 p-2.5 rounded-xl border border-[#2e241b]">
+            📖 <strong>Cách lấy link Web App:</strong> Mở Google Sheet -> vào <em>Tiện ích mở rộng > Apps Script</em> -> Dán mã trong file <code class="text-[#e5c07b]">GoogleAppsScript.js</code> -> Bấm <em>Triển khai > Quản lý bản triển khai mới > Ứng dụng web (Ai có quyền truy cập: Bất kỳ ai)</em> -> Copy URL dán vào ô trên!
           </div>
         </div>
 
         <!-- Giải thích vì sao Vercel chưa hiện -->
-        <div class="bg-amber-500/10 border border-amber-500/30 rounded-xl p-3 text-amber-200 space-y-1">
-          <div class="font-bold flex items-center gap-1 text-amber-300">
+        <div class="bg-[#291e12]/60 border border-[#4d3a22] rounded-xl p-3 text-[#f3e5ab] space-y-1">
+          <div class="font-bold flex items-center gap-1 text-[#e5c07b]">
             <span>💡</span> <span>Vì sao chỉnh sửa trên máy tính mà Vercel chưa cập nhật?</span>
           </div>
-          <p class="text-slate-300 leading-relaxed text-[11px]">
+          <p class="text-[#c5baa8] leading-relaxed text-[11px]">
             Khi bạn sửa bàn hoặc thêm khách qua giao diện web, dữ liệu được lưu trong bộ nhớ riêng (LocalStorage) của trình duyệt trên máy tính đó. 
             Để Vercel và điện thoại hiển thị đúng, bạn có thể chọn 1 trong 2 cách đơn giản dưới đây:
           </p>
         </div>
 
         <!-- Cách 1: Xuất / Nhập File JSON (Dành cho điện thoại & Vercel ngay lập tức) -->
-        <div class="bg-slate-950/80 border border-slate-800 rounded-xl p-3.5 space-y-3">
+        <div class="bg-[#120f0d]/90 border border-[#382d22] rounded-xl p-3.5 space-y-3">
           <div class="flex items-center justify-between">
             <span class="font-bold text-emerald-400 text-sm flex items-center gap-1.5">
               <span>Cách 1:</span> <span>Xuất / Nhập File Dữ Liệu (Không cần đụng code)</span>
             </span>
             <span class="text-[10px] bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 px-2 py-0.5 rounded-full font-semibold">Khuyên dùng</span>
           </div>
-          <p class="text-slate-400 text-[11px] leading-relaxed">
+          <p class="text-[#a89f91] text-[11px] leading-relaxed">
             1. Bấm <strong>"📥 Tải File Dữ Liệu"</strong> trên máy tính đang có danh sách chuẩn.<br>
             2. Mở link trang web trên Vercel (hoặc trên điện thoại), vào mục này và bấm <strong>"📤 Nhập File Dữ Liệu"</strong> là toàn bộ sơ đồ sẽ đồng bộ 100%!
           </p>
@@ -466,7 +552,7 @@
             <button onclick="exportDataFile()" class="px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold flex items-center gap-1.5 shadow transition">
               <span>📥</span> <span>Tải File Dữ Liệu (.json)</span>
             </button>
-            <label class="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-bold flex items-center gap-1.5 cursor-pointer shadow transition">
+            <label class="px-3.5 py-2 rounded-xl bg-[#241c16] hover:bg-[#34271d] text-[#e8cf9c] border border-[#382d22] font-bold flex items-center gap-1.5 cursor-pointer shadow transition">
               <span>📤</span> <span>Nhập File Dữ Liệu</span>
               <input type="file" accept=".json" class="hidden" onchange="importDataFile(event)" />
             </label>
@@ -474,34 +560,34 @@
         </div>
 
         <!-- Cách 2: Đồng bộ thẳng vào file index.html để Vercel tự động load vĩnh viễn -->
-        <div class="bg-slate-950/80 border border-slate-800 rounded-xl p-3.5 space-y-3">
+        <div class="bg-[#120f0d]/90 border border-[#382d22] rounded-xl p-3.5 space-y-3">
           <div class="flex items-center justify-between">
-            <span class="font-bold text-amber-400 text-sm flex items-center gap-1.5">
+            <span class="font-bold text-[#e5c07b] text-sm flex items-center gap-1.5">
               <span>Cách 2:</span> <span>Đồng bộ vào mã nguồn để Commit lên GitHub</span>
             </span>
-            <span class="text-[10px] bg-amber-500/20 text-amber-300 border border-amber-500/40 px-2 py-0.5 rounded-full font-semibold">Tự động cho tất cả mọi người</span>
+            <span class="text-[10px] bg-[#d4af37]/20 text-[#e5c07b] border border-[#d4af37]/40 px-2 py-0.5 rounded-full font-semibold">Tự động cho tất cả mọi người</span>
           </div>
-          <p class="text-slate-400 text-[11px] leading-relaxed">
+          <p class="text-[#a89f91] text-[11px] leading-relaxed">
             1. Bấm nút <strong>"📋 Sao Chép Mã allTablesData"</strong> bên dưới.<br>
-            2. Mở file <code class="text-amber-300">index.html</code> trong VS Code, tìm đoạn <code class="text-amber-300">const allTablesData = [ ... ];</code> và Paste đè lên.<br>
+            2. Mở file <code class="text-[#e5c07b]">index.html</code> trong VS Code, tìm đoạn <code class="text-[#e5c07b]">const allTablesData = [ ... ];</code> và Paste đè lên.<br>
             3. Commit & Push lên GitHub. Khi đó Vercel sẽ tự động có dữ liệu này làm mặc định gốc cho mọi thiết bị!
           </p>
           <div>
-            <button onclick="copySourceCodeArray()" class="px-3.5 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold flex items-center gap-1.5 shadow transition">
+            <button onclick="copySourceCodeArray()" class="px-3.5 py-2 rounded-xl bg-gradient-to-r from-[#d4af37] to-[#e5c07b] text-[#18110b] font-bold flex items-center gap-1.5 shadow transition">
               <span>📋</span> <span>Sao Chép Mã allTablesData Hiện Tại</span>
             </button>
           </div>
         </div>
 
         <!-- Dán mã JSON trực tiếp -->
-        <div class="bg-slate-950/80 border border-slate-800 rounded-xl p-3.5 space-y-2">
+        <div class="bg-[#120f0d]/90 border border-[#382d22] rounded-xl p-3.5 space-y-2">
           <div class="flex items-center justify-between">
-            <span class="font-bold text-slate-200 text-xs">Hoặc Dán Chuỗi Dữ Liệu JSON:</span>
-            <button onclick="copyRawJson()" class="text-xs text-amber-400 hover:underline">Sao chép mã JSON</button>
+            <span class="font-bold text-[#f5f2eb] text-xs">Hoặc Dán Chuỗi Dữ Liệu JSON:</span>
+            <button onclick="copyRawJson()" class="text-xs text-[#e5c07b] hover:underline">Sao chép mã JSON</button>
           </div>
-          <textarea id="sync-json-textarea" rows="4" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-[11px] font-mono text-slate-300 focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400 custom-scrollbar" placeholder="Dán mã JSON dữ liệu tại đây..."></textarea>
+          <textarea id="sync-json-textarea" rows="4" class="w-full bg-[#100d0b] border border-[#382d22] rounded-xl p-2.5 text-[11px] font-mono text-[#f5f2eb] focus:outline-none focus:border-[#d4af37] focus:ring-1 focus:ring-[#d4af37] custom-scrollbar" placeholder="Dán mã JSON dữ liệu tại đây..."></textarea>
           <div class="flex justify-end pt-1">
-            <button onclick="applyDataFromTextarea()" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs border border-slate-700 transition">
+            <button onclick="applyDataFromTextarea()" class="px-3 py-1.5 rounded-lg bg-[#241c16] hover:bg-[#34271d] text-[#e8cf9c] font-bold text-xs border border-[#382d22] transition">
               Áp Dụng Dữ Liệu Từ Ô Trên
             </button>
           </div>
@@ -510,8 +596,8 @@
       </div>
 
       <!-- Modal Footer -->
-      <div class="p-3 border-t border-slate-800 bg-slate-900 flex justify-end">
-        <button onclick="closeSyncModal()" class="px-4 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs transition">
+      <div class="p-3 border-t border-[#382d22] bg-[#140f0d] flex justify-end">
+        <button onclick="closeSyncModal()" class="px-4 py-1.5 rounded-lg bg-[#241c16] hover:bg-[#34271d] text-[#c5baa8] border border-[#382d22] font-bold text-xs transition">
           Đóng
         </button>
       </div>
@@ -520,15 +606,15 @@
 
   <!-- MODAL XÁC THỰC MÃ PIN QUẢN TRỊ -->
   <div id="admin-pin-modal" class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/85 backdrop-blur-md hidden transition-opacity duration-200">
-    <div id="admin-pin-container" class="bg-slate-900 border border-slate-700/90 rounded-3xl max-w-sm w-full p-5 sm:p-6 shadow-2xl overflow-hidden text-center space-y-4">
+    <div id="admin-pin-container" class="bg-[#181310] border border-[#382d22] rounded-3xl max-w-sm w-full p-5 sm:p-6 shadow-2xl overflow-hidden text-center space-y-4">
       
       <!-- Icon & Title -->
       <div class="space-y-1.5">
-        <div class="w-12 h-12 rounded-2xl bg-amber-500/20 border border-amber-500/40 text-amber-400 flex items-center justify-center text-2xl mx-auto shadow-inner">
+        <div class="w-12 h-12 rounded-2xl bg-[#d4af37]/20 border border-[#d4af37]/40 text-[#e5c07b] flex items-center justify-center text-2xl mx-auto shadow-inner">
           🔐
         </div>
         <h3 class="text-base font-black text-white">Xác Thực Quản Trị Viên</h3>
-        <p class="text-xs text-slate-400">Vui lòng nhập mã PIN để chỉnh sửa sơ đồ bàn & danh sách khách</p>
+        <p class="text-xs text-[#a89f91]">Vui lòng nhập mã PIN để chỉnh sửa sơ đồ bàn & danh sách khách</p>
       </div>
 
       <!-- PIN Input Display -->
@@ -539,7 +625,7 @@
             type="password" 
             maxlength="10" 
             placeholder="•••••" 
-            class="w-full bg-slate-950 border-2 border-slate-700 focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20 rounded-2xl py-3 px-4 text-center text-2xl font-mono tracking-widest text-amber-300 placeholder-slate-600 focus:outline-none transition shadow-inner"
+            class="w-full bg-[#100d0b] border-2 border-[#382d22] focus:border-[#d4af37] focus:ring-2 focus:ring-[#d4af37]/20 rounded-2xl py-3 px-4 text-center text-2xl font-mono tracking-widest text-[#f3e5ab] placeholder-[#8c7f72] focus:outline-none transition shadow-inner"
             onkeydown="if(event.key === 'Enter') submitAdminPin()"
           />
         </div>
@@ -549,59 +635,59 @@
       <!-- Quick Numeric Keypad for Mobile -->
       <div class="grid grid-cols-3 gap-2 pt-1 select-none">
         
-          <button type="button" onclick="keypadPress('1')" class="py-2.5 rounded-xl bg-slate-800/80 hover:bg-slate-700 active:bg-amber-500 active:text-slate-950 text-white font-bold text-base transition shadow-sm">
+          <button type="button" onclick="keypadPress('1')" class="py-2.5 rounded-xl bg-[#241c16] hover:bg-[#34271d] active:bg-[#d4af37] active:text-[#18110b] text-[#f5f2eb] border border-[#382d22] font-bold text-base transition shadow-sm">
             1
           </button>
         
-          <button type="button" onclick="keypadPress('2')" class="py-2.5 rounded-xl bg-slate-800/80 hover:bg-slate-700 active:bg-amber-500 active:text-slate-950 text-white font-bold text-base transition shadow-sm">
+          <button type="button" onclick="keypadPress('2')" class="py-2.5 rounded-xl bg-[#241c16] hover:bg-[#34271d] active:bg-[#d4af37] active:text-[#18110b] text-[#f5f2eb] border border-[#382d22] font-bold text-base transition shadow-sm">
             2
           </button>
         
-          <button type="button" onclick="keypadPress('3')" class="py-2.5 rounded-xl bg-slate-800/80 hover:bg-slate-700 active:bg-amber-500 active:text-slate-950 text-white font-bold text-base transition shadow-sm">
+          <button type="button" onclick="keypadPress('3')" class="py-2.5 rounded-xl bg-[#241c16] hover:bg-[#34271d] active:bg-[#d4af37] active:text-[#18110b] text-[#f5f2eb] border border-[#382d22] font-bold text-base transition shadow-sm">
             3
           </button>
         
-          <button type="button" onclick="keypadPress('4')" class="py-2.5 rounded-xl bg-slate-800/80 hover:bg-slate-700 active:bg-amber-500 active:text-slate-950 text-white font-bold text-base transition shadow-sm">
+          <button type="button" onclick="keypadPress('4')" class="py-2.5 rounded-xl bg-[#241c16] hover:bg-[#34271d] active:bg-[#d4af37] active:text-[#18110b] text-[#f5f2eb] border border-[#382d22] font-bold text-base transition shadow-sm">
             4
           </button>
         
-          <button type="button" onclick="keypadPress('5')" class="py-2.5 rounded-xl bg-slate-800/80 hover:bg-slate-700 active:bg-amber-500 active:text-slate-950 text-white font-bold text-base transition shadow-sm">
+          <button type="button" onclick="keypadPress('5')" class="py-2.5 rounded-xl bg-[#241c16] hover:bg-[#34271d] active:bg-[#d4af37] active:text-[#18110b] text-[#f5f2eb] border border-[#382d22] font-bold text-base transition shadow-sm">
             5
           </button>
         
-          <button type="button" onclick="keypadPress('6')" class="py-2.5 rounded-xl bg-slate-800/80 hover:bg-slate-700 active:bg-amber-500 active:text-slate-950 text-white font-bold text-base transition shadow-sm">
+          <button type="button" onclick="keypadPress('6')" class="py-2.5 rounded-xl bg-[#241c16] hover:bg-[#34271d] active:bg-[#d4af37] active:text-[#18110b] text-[#f5f2eb] border border-[#382d22] font-bold text-base transition shadow-sm">
             6
           </button>
         
-          <button type="button" onclick="keypadPress('7')" class="py-2.5 rounded-xl bg-slate-800/80 hover:bg-slate-700 active:bg-amber-500 active:text-slate-950 text-white font-bold text-base transition shadow-sm">
+          <button type="button" onclick="keypadPress('7')" class="py-2.5 rounded-xl bg-[#241c16] hover:bg-[#34271d] active:bg-[#d4af37] active:text-[#18110b] text-[#f5f2eb] border border-[#382d22] font-bold text-base transition shadow-sm">
             7
           </button>
         
-          <button type="button" onclick="keypadPress('8')" class="py-2.5 rounded-xl bg-slate-800/80 hover:bg-slate-700 active:bg-amber-500 active:text-slate-950 text-white font-bold text-base transition shadow-sm">
+          <button type="button" onclick="keypadPress('8')" class="py-2.5 rounded-xl bg-[#241c16] hover:bg-[#34271d] active:bg-[#d4af37] active:text-[#18110b] text-[#f5f2eb] border border-[#382d22] font-bold text-base transition shadow-sm">
             8
           </button>
         
-          <button type="button" onclick="keypadPress('9')" class="py-2.5 rounded-xl bg-slate-800/80 hover:bg-slate-700 active:bg-amber-500 active:text-slate-950 text-white font-bold text-base transition shadow-sm">
+          <button type="button" onclick="keypadPress('9')" class="py-2.5 rounded-xl bg-[#241c16] hover:bg-[#34271d] active:bg-[#d4af37] active:text-[#18110b] text-[#f5f2eb] border border-[#382d22] font-bold text-base transition shadow-sm">
             9
           </button>
         
-        <button type="button" onclick="keypadClear()" class="py-2.5 rounded-xl bg-slate-800/60 hover:bg-rose-950/40 text-slate-400 hover:text-rose-300 font-bold text-xs transition">
+        <button type="button" onclick="keypadClear()" class="py-2.5 rounded-xl bg-[#241c16]/60 hover:bg-rose-950/40 text-[#c5baa8] hover:text-rose-300 border border-[#382d22] font-bold text-xs transition">
           Xóa
         </button>
-        <button type="button" onclick="keypadPress('0')" class="py-2.5 rounded-xl bg-slate-800/80 hover:bg-slate-700 active:bg-amber-500 active:text-slate-950 text-white font-bold text-base transition shadow-sm">
+        <button type="button" onclick="keypadPress('0')" class="py-2.5 rounded-xl bg-[#241c16] hover:bg-[#34271d] active:bg-[#d4af37] active:text-[#18110b] text-[#f5f2eb] border border-[#382d22] font-bold text-base transition shadow-sm">
           0
         </button>
-        <button type="button" onclick="keypadBackspace()" class="py-2.5 rounded-xl bg-slate-800/60 hover:bg-slate-700 text-slate-300 font-bold text-sm transition">
+        <button type="button" onclick="keypadBackspace()" class="py-2.5 rounded-xl bg-[#241c16]/60 hover:bg-[#34271d] text-[#c5baa8] border border-[#382d22] font-bold text-sm transition">
           ⌫
         </button>
       </div>
 
       <!-- Action Buttons -->
       <div class="flex items-center gap-2 pt-2">
-        <button type="button" onclick="closePinModal()" class="flex-1 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs transition">
+        <button type="button" onclick="closePinModal()" class="flex-1 py-2.5 rounded-xl bg-[#241c16] hover:bg-[#34271d] text-[#c5baa8] border border-[#382d22] font-bold text-xs transition">
           Hủy Bỏ
         </button>
-        <button type="button" onclick="submitAdminPin()" class="flex-1 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs transition shadow-lg shadow-amber-500/20">
+        <button type="button" onclick="submitAdminPin()" class="flex-1 py-2.5 rounded-xl bg-gradient-to-r from-[#d4af37] to-[#e5c07b] text-[#18110b] font-bold text-xs transition shadow-lg shadow-[#d4af37]/20">
           Xác Nhận PIN
         </button>
       </div>
@@ -609,53 +695,43 @@
   </div>
 
   <!-- MOBILE POPUP MODAL (Popup danh sách khách & chế độ chỉnh sửa trên điện thoại) -->
-  <div id="mobile-table-modal" class="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/80 backdrop-blur-sm hidden transition-opacity duration-200">
-    <div id="mobile-modal-container" class="bg-slate-900 border border-slate-700/80 rounded-t-3xl sm:rounded-2xl max-w-lg w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
+  <div id="mobile-table-modal" class="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/85 backdrop-blur-sm hidden transition-opacity duration-200">
+    <div id="mobile-modal-container" class="bg-[#181310] border border-[#423427] rounded-t-3xl sm:rounded-2xl max-w-lg w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
       <!-- Header -->
-      <div class="p-3.5 sm:p-4 border-b border-slate-800 flex items-start justify-between bg-slate-900 sticky top-0 z-10">
+      <div class="p-3.5 sm:p-4 border-b border-[#382d22] flex items-start justify-between bg-[#181310] sticky top-0 z-10">
         <div id="mobile-modal-header" class="flex-1 pr-2">
           <!-- Rendered by JS -->
         </div>
-        <button onclick="closeMobileModal()" class="w-8 h-8 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-300 flex items-center justify-center text-sm font-bold transition focus:outline-none flex-shrink-0">
+        <button onclick="closeMobileModal()" class="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-[#241c16] hover:bg-[#34271d] active:scale-95 text-[#f5f2eb] hover:text-white flex items-center justify-center text-base font-bold transition focus:outline-none flex-shrink-0 border border-[#423427] cursor-pointer shadow" title="Đóng">
           ✕
         </button>
       </div>
 
       <!-- Scrollable Body (View or Edit Form) -->
-      <div id="mobile-modal-body" class="p-3.5 sm:p-4 overflow-y-auto custom-scrollbar flex-1 space-y-3">
+      <div id="mobile-modal-body" class="p-3.5 sm:p-4 overflow-y-auto custom-scrollbar flex-1 space-y-3 pb-6">
         <!-- Rendered by JS -->
-      </div>
-
-      <!-- Footer -->
-      <div class="p-3 border-t border-slate-800 bg-slate-950 flex justify-between items-center text-xs">
-        <div id="mobile-modal-footer-info" class="text-slate-400">
-          Tiêu chuẩn: <strong class="text-amber-400">1 bàn 10 khách</strong>
-        </div>
-        <button onclick="closeMobileModal()" class="px-5 py-2 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-xl transition shadow">
-          Đóng
-        </button>
       </div>
     </div>
   </div>
 
   <!-- TOAST ALERT NOTIFICATION -->
-  <div id="toast-message" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 bg-slate-900 border border-emerald-500 text-emerald-300 text-xs font-bold px-4 py-2.5 rounded-full shadow-2xl transition-all duration-300 opacity-0 pointer-events-none transform translate-y-4 flex items-center gap-2">
-    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+  <div id="toast-message" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 bg-[#181310] border border-[#d4af37] text-[#f3e5ab] text-xs font-bold px-4 py-2.5 rounded-full shadow-2xl transition-all duration-300 opacity-0 pointer-events-none transform translate-y-4 flex items-center gap-2">
+    <span class="w-2 h-2 rounded-full bg-[#d4af37] animate-pulse"></span>
     <span id="toast-text">Thông báo</span>
   </div>
 
   <script>
-    // Color presets for tables management
+    // Color presets for tables management (Luxury Wedding Palette)
     const COLOR_PRESETS = [
-      { hex: '#f59e0b', name: 'Vàng Amber (Họ Nội / VIP)' },
-      { hex: '#10b981', name: 'Xanh Ngọc (Họ Ngoại)' },
-      { hex: '#3b82f6', name: 'Xanh Lam (Bạn Má / Vin)' },
-      { hex: '#f43f5e', name: 'Đỏ Hồng (Nhà Gái / Thủy)' },
-      { hex: '#8b5cf6', name: 'Tím Violet (Cen / VIP)' },
-      { hex: '#f97316', name: 'Cam Coral (Bạn Thân)' },
-      { hex: '#06b6d4', name: 'Xanh Cyan (Cấp 2 / Cấp 3)' },
-      { hex: '#eab308', name: 'Vàng Chanh (Họ Hàng)' },
-      { hex: '#64748b', name: 'Xám Bạc (Bàn Dự Bị)' }
+      { hex: '#c5a059', name: 'Vàng Champagne (Nhà Trai Chuẩn)' },
+      { hex: '#d4af37', name: 'Vàng Kim Hoàng Gia (VIP)' },
+      { hex: '#d97d8f', name: 'Hồng Rose Gold (Nhà Gái Chuẩn)' },
+      { hex: '#9e2a2b', name: 'Đỏ Rượu Vang Burgundy (Trưởng Bối)' },
+      { hex: '#2d6a4f', name: 'Xanh Emerald Quý Phái (Họ Ngoại)' },
+      { hex: '#1d3557', name: 'Xanh Sapphire Sang Trọng (Bạn Má / Vin)' },
+      { hex: '#6b4c7d', name: 'Tím Thạch Anh Quý Tộc (Cen / VIP)' },
+      { hex: '#c47d48', name: 'Đồng Ánh Kim Bronze (Bạn Thân)' },
+      { hex: '#9c8e82', name: 'Bạc Ngọc Trai (Bàn Dự Bị)' }
     ];
 
     // ALL 34 TABLES DEFINITIONS: 17 Groom (Left side) + 17 Bride (Right side)
@@ -670,7 +746,7 @@
         tableNo: 1,
         side: "groom",
         sideName: "Nhà Trai",
-        cx: 400, cy: 445,
+        cx: 400, cy: 295,
         cadId: "L_INNER_1",
         displayCategory: "VIP 1",
         customColor: "#f59e0b",
@@ -694,7 +770,7 @@
         tableNo: 2,
         side: "groom",
         sideName: "Nhà Trai",
-        cx: 275, cy: 350,
+        cx: 275, cy: 200,
         cadId: "L_MID_1",
         displayCategory: "VIP 2",
         customColor: "#10b981",
@@ -721,7 +797,7 @@
         tableNo: 3,
         side: "groom",
         sideName: "Nhà Trai",
-        cx: 150, cy: 265,
+        cx: 150, cy: 115,
         cadId: "L_OUTER_1",
         displayCategory: "VIP 3",
         customColor: "#10b981",
@@ -745,7 +821,7 @@
         tableNo: 4,
         side: "groom",
         sideName: "Nhà Trai",
-        cx: 400, cy: 580,
+        cx: 400, cy: 430,
         cadId: "L_INNER_2",
         displayCategory: "Bên Nội",
         customColor: "#f59e0b",
@@ -769,7 +845,7 @@
         tableNo: 5,
         side: "groom",
         sideName: "Nhà Trai",
-        cx: 275, cy: 500,
+        cx: 275, cy: 350,
         cadId: "L_MID_2",
         displayCategory: "Bên Ngoại",
         customColor: "#10b981",
@@ -791,7 +867,7 @@
         tableNo: 6,
         side: "groom",
         sideName: "Nhà Trai",
-        cx: 150, cy: 420,
+        cx: 150, cy: 270,
         cadId: "L_OUTER_2",
         displayCategory: "Bên Ngoại",
         customColor: "#10b981",
@@ -815,7 +891,7 @@
         tableNo: 7,
         side: "groom",
         sideName: "Nhà Trai",
-        cx: 400, cy: 725,
+        cx: 400, cy: 575,
         cadId: "L_INNER_3",
         displayCategory: "Thanh Niên",
         customColor: "#f59e0b",
@@ -841,7 +917,7 @@
         tableNo: 8,
         side: "groom",
         sideName: "Nhà Trai",
-        cx: 275, cy: 650,
+        cx: 275, cy: 500,
         cadId: "L_MID_3",
         displayCategory: "Bên Ngoại",
         customColor: "#10b981",
@@ -865,7 +941,7 @@
         tableNo: 9,
         side: "groom",
         sideName: "Nhà Trai",
-        cx: 150, cy: 575,
+        cx: 150, cy: 425,
         cadId: "L_OUTER_3",
         displayCategory: "Bên Ngoại",
         customColor: "#10b981",
@@ -887,7 +963,7 @@
         tableNo: 10,
         side: "groom",
         sideName: "Nhà Trai",
-        cx: 400, cy: 875,
+        cx: 400, cy: 725,
         cadId: "L_INNER_4",
         displayCategory: "Bên Ngoại",
         customColor: "#10b981",
@@ -909,7 +985,7 @@
         tableNo: 11,
         side: "groom",
         sideName: "Nhà Trai",
-        cx: 275, cy: 800,
+        cx: 275, cy: 650,
         cadId: "L_MID_4",
         displayCategory: "Bạn Má",
         customColor: "#3b82f6",
@@ -933,7 +1009,7 @@
         tableNo: 12,
         side: "groom",
         sideName: "Nhà Trai",
-        cx: 150, cy: 730,
+        cx: 150, cy: 580,
         cadId: "L_OUTER_4",
         displayCategory: "Bạn Má",
         customColor: "#3b82f6",
@@ -962,7 +1038,7 @@
         tableNo: 13,
         side: "groom",
         sideName: "Nhà Trai",
-        cx: 275, cy: 955,
+        cx: 275, cy: 805,
         cadId: "L_MID_5",
         displayCategory: "Bàn 13",
         customColor: "#f97316",
@@ -984,7 +1060,7 @@
         tableNo: 14,
         side: "groom",
         sideName: "Nhà Trai",
-        cx: 150, cy: 880,
+        cx: 150, cy: 730,
         cadId: "L_OUTER_5",
         displayCategory: "A Vĩ",
         customColor: "#3b82f6",
@@ -1008,7 +1084,7 @@
         tableNo: 15,
         side: "groom",
         sideName: "Nhà Trai",
-        cx: 400, cy: 1025,
+        cx: 400, cy: 875,
         cadId: "L_INNER_5",
         displayCategory: "Khách Mời",
         customColor: "#8b5cf6",
@@ -1030,7 +1106,7 @@
         tableNo: 16,
         side: "groom",
         sideName: "Nhà Trai",
-        cx: 150, cy: 1030,
+        cx: 150, cy: 880,
         cadId: "L_OUTER_6",
         displayCategory: "Đồng Nghiệp",
         customColor: "#06b6d4",
@@ -1052,7 +1128,7 @@
         tableNo: 17,
         side: "groom",
         sideName: "Nhà Trai",
-        cx: 275, cy: 1110,
+        cx: 275, cy: 960,
         cadId: "L_MID_6",
         displayCategory: "DỰ BỊ",
         customColor: "#64748b",
@@ -1075,7 +1151,7 @@
         tableNo: 1,
         side: "bride",
         sideName: "Nhà Gái",
-        cx: 600, cy: 445,
+        cx: 600, cy: 295,
         cadId: "R_INNER_1",
         displayCategory: "VIP 1 GĐ",
         customColor: "#f43f5e",
@@ -1104,7 +1180,7 @@
         tableNo: 2,
         side: "bride",
         sideName: "Nhà Gái",
-        cx: 725, cy: 350,
+        cx: 725, cy: 200,
         cadId: "R_MID_1",
         displayCategory: "VIP 2 GĐ",
         customColor: "#f43f5e",
@@ -1133,7 +1209,7 @@
         tableNo: 3,
         side: "bride",
         sideName: "Nhà Gái",
-        cx: 850, cy: 265,
+        cx: 850, cy: 115,
         cadId: "R_OUTER_1",
         displayCategory: "VIP 3",
         customColor: "#f59e0b",
@@ -1162,7 +1238,7 @@
         tableNo: 4,
         side: "bride",
         sideName: "Nhà Gái",
-        cx: 600, cy: 580,
+        cx: 600, cy: 430,
         cadId: "R_INNER_2",
         displayCategory: "Lìn Có",
         customColor: "#f43f5e",
@@ -1184,7 +1260,7 @@
         tableNo: 5,
         side: "bride",
         sideName: "Nhà Gái",
-        cx: 725, cy: 500,
+        cx: 725, cy: 350,
         cadId: "R_MID_2",
         displayCategory: "VIP 4",
         customColor: "#f59e0b",
@@ -1205,7 +1281,7 @@
         tableNo: 6,
         side: "bride",
         sideName: "Nhà Gái",
-        cx: 850, cy: 420,
+        cx: 850, cy: 270,
         cadId: "R_OUTER_2",
         displayCategory: "VIP 5 GĐ",
         customColor: "#f59e0b",
@@ -1234,7 +1310,7 @@
         tableNo: 7,
         side: "bride",
         sideName: "Nhà Gái",
-        cx: 600, cy: 725,
+        cx: 600, cy: 575,
         cadId: "R_INNER_3",
         displayCategory: "Cấp 3",
         customColor: "#06b6d4",
@@ -1263,7 +1339,7 @@
         tableNo: 8,
         side: "bride",
         sideName: "Nhà Gái",
-        cx: 725, cy: 650,
+        cx: 725, cy: 500,
         cadId: "R_MID_3",
         displayCategory: "Cấp 2",
         customColor: "#06b6d4",
@@ -1292,7 +1368,7 @@
         tableNo: 9,
         side: "bride",
         sideName: "Nhà Gái",
-        cx: 850, cy: 575,
+        cx: 850, cy: 425,
         cadId: "R_OUTER_3",
         displayCategory: "Ngoại",
         customColor: "#10b981",
@@ -1321,7 +1397,7 @@
         tableNo: 10,
         side: "bride",
         sideName: "Nhà Gái",
-        cx: 600, cy: 875,
+        cx: 600, cy: 725,
         cadId: "R_INNER_4",
         displayCategory: "Vin 1",
         customColor: "#3b82f6",
@@ -1350,7 +1426,7 @@
         tableNo: 11,
         side: "bride",
         sideName: "Nhà Gái",
-        cx: 725, cy: 800,
+        cx: 725, cy: 650,
         cadId: "R_MID_4",
         displayCategory: "Vin 2",
         customColor: "#3b82f6",
@@ -1379,7 +1455,7 @@
         tableNo: 12,
         side: "bride",
         sideName: "Nhà Gái",
-        cx: 850, cy: 730,
+        cx: 850, cy: 580,
         cadId: "R_OUTER_4",
         displayCategory: "NVL",
         customColor: "#8b5cf6",
@@ -1408,7 +1484,7 @@
         tableNo: 13,
         side: "bride",
         sideName: "Nhà Gái",
-        cx: 725, cy: 955,
+        cx: 725, cy: 805,
         cadId: "R_MID_5",
         displayCategory: "Cen",
         customColor: "#8b5cf6",
@@ -1437,7 +1513,7 @@
         tableNo: 14,
         side: "bride",
         sideName: "Nhà Gái",
-        cx: 850, cy: 880,
+        cx: 850, cy: 730,
         cadId: "R_OUTER_5",
         displayCategory: "Vin 3",
         customColor: "#3b82f6",
@@ -1466,7 +1542,7 @@
         tableNo: 15,
         side: "bride",
         sideName: "Nhà Gái",
-        cx: 600, cy: 1025,
+        cx: 600, cy: 875,
         cadId: "R_INNER_5",
         displayCategory: "Khách Iu",
         customColor: "#f43f5e",
@@ -1495,7 +1571,7 @@
         tableNo: 16,
         side: "bride",
         sideName: "Nhà Gái",
-        cx: 850, cy: 1030,
+        cx: 850, cy: 880,
         cadId: "R_OUTER_6",
         displayCategory: "Nail Thủy",
         customColor: "#f43f5e",
@@ -1525,7 +1601,7 @@
         tableNo: 17,
         side: "bride",
         sideName: "Nhà Gái",
-        cx: 725, cy: 1110,
+        cx: 725, cy: 960,
         cadId: "R_MID_6",
         displayCategory: "DỰ BỊ",
         customColor: "#64748b",
@@ -1656,21 +1732,47 @@
       }, 2500);
     }
 
-    // Generate exactly 10 banquet chairs around circle table
-    function generateChairPath(cx, cy, radius, numChairs = 10, chairFill = "#475569") {
+    // Table Color Style Mode: 'colored_palace' (Default: White/Ivory Banquet Tablecloth + Group Colors) vs 'monochrome_palace' (Ivory with Groom/Bride Only)
+    let tableStyleMode = localStorage.getItem('sodo_table_style') || 'colored_palace';
+    if (tableStyleMode === 'palace' || tableStyleMode === 'groups') {
+      tableStyleMode = 'colored_palace';
+      localStorage.setItem('sodo_table_style', 'colored_palace');
+    }
+
+    function toggleTableStyleMode() {
+      tableStyleMode = (tableStyleMode === 'colored_palace') ? 'monochrome_palace' : 'colored_palace';
+      localStorage.setItem('sodo_table_style', tableStyleMode);
+      updateStyleModeButtonLabel();
+      renderHallPlan();
+      if (currentSelectedId) renderTableInspector(currentSelectedId);
+      showToast(tableStyleMode === 'colored_palace' ? 'Đã đổi: Phối Màu Tinh Tế (Khăn Trắng + Ánh Màu Nhóm)' : 'Đã đổi: Trắng Ngà Đơn Sắc (Chỉ Phân Trai/Gái)');
+    }
+
+    function updateStyleModeButtonLabel() {
+      const label = document.getElementById('style-mode-label');
+      if (label) {
+        label.textContent = (tableStyleMode === 'colored_palace') ? 'Ánh Sắc Nhóm' : 'Đơn Sắc Trai/Gái';
+      }
+    }
+
+    // Generate exactly 10 banquet chairs around circle table (Riverside Palace ivory cover + satin ribbon bow)
+    function generateChairPath(cx, cy, radius, numChairs = 10, chairFill = "#c5a059") {
       let chairsSvg = "";
       const chairW = 18;
       const chairH = 10;
       for (let i = 0; i < numChairs; i++) {
         const angle = (i * 2 * Math.PI) / numChairs;
-        const chairDistance = radius + 11;
+        const chairDistance = radius + 11.5;
         const x = cx + chairDistance * Math.cos(angle);
         const y = cy + chairDistance * Math.sin(angle);
         const deg = (angle * 180) / Math.PI + 90;
 
         chairsSvg += `
           <g transform="translate(${x.toFixed(1)}, ${y.toFixed(1)}) rotate(${deg.toFixed(1)})">
-            <rect x="${(-chairW / 2).toFixed(1)}" y="${(-chairH / 2).toFixed(1)}" width="${chairW}" height="${chairH}" rx="4" fill="${chairFill}" stroke="#0f172a" stroke-width="1.5" />
+            <!-- White/Ivory Banquet Chair Cover (Riverside Palace photo) -->
+            <rect x="${(-chairW / 2).toFixed(1)}" y="${(-chairH / 2).toFixed(1)}" width="${chairW}" height="${chairH}" rx="4" fill="#ffffff" stroke="#d5cebf" stroke-width="0.9" filter="url(#chair-shadow)" />
+            <!-- Satin Ribbon Sash across back of chair in group color -->
+            <rect x="${(-chairW / 2 + 2).toFixed(1)}" y="${(-chairH / 2 + 3).toFixed(1)}" width="${chairW - 4}" height="3.5" rx="1.5" fill="${chairFill}" opacity="0.95" />
           </g>
         `;
       }
@@ -1678,33 +1780,63 @@
     }
 
     function getTableColor(t) {
-      if (t.customColor) return t.customColor;
-      if (t.group === 'spare') return '#64748b';
-      if (t.side === 'groom') {
-        if (t.group === 'noi') return '#f59e0b';
-        if (t.group === 'ngoai') return '#10b981';
-        if (t.group === 'banma') return '#3b82f6';
-        return '#f97316';
-      } else {
-        if (t.group === 'bride_vip') return '#f59e0b';
-        if (t.group === 'bride_colleagues') return '#3b82f6';
-        return '#f43f5e';
+      if (t.group === 'spare' || t.displayCategory === 'DỰ BỊ') return '#9c8e82'; // Pearl Silver for Spare table
+      if (tableStyleMode === 'monochrome_palace') {
+        const isVIP = (t.displayCategory && t.displayCategory.includes('VIP')) || (t.groupName && t.groupName.includes('VIP'));
+        return t.side === 'groom' ? (isVIP ? '#d4af37' : '#c5a059') : (isVIP ? '#d4af37' : '#d97d8f');
       }
+      if (t.customColor) return t.customColor;
+      const isVIP = (t.displayCategory && t.displayCategory.includes('VIP')) || (t.groupName && t.groupName.includes('VIP'));
+      return t.side === 'groom' ? (isVIP ? '#d4af37' : '#c5a059') : (isVIP ? '#d4af37' : '#d97d8f');
     }
 
     // Helper to get bright, high-contrast, theme-matching text color
     function getThemeTextColor(color) {
-      if (!color) return '#ffffff';
+      if (!color) return '#18110b';
       const c = color.toLowerCase();
-      if (c === '#f59e0b' || c === '#eab308') return '#fbbf24'; // Amber Gold
-      if (c === '#10b981' || c === '#059669') return '#34d399'; // Emerald Mint
-      if (c === '#3b82f6' || c === '#2563eb') return '#60a5fa'; // Sky Blue
-      if (c === '#f43f5e' || c === '#e11d48') return '#fb7185'; // Rose Pink
-      if (c === '#8b5cf6' || c === '#7c3aed') return '#c084fc'; // Violet Purple
-      if (c === '#f97316') return '#fb923c'; // Coral Orange
-      if (c === '#06b6d4') return '#38bdf8'; // Cyan
-      if (c === '#64748b') return '#94a3b8'; // Slate Silver
+      if (c === '#f59e0b' || c === '#eab308' || c === '#d4af37' || c === '#e5c07b' || c === '#c5a059') return '#735218'; // Deep Champagne Gold
+      if (c === '#10b981' || c === '#059669' || c === '#2d6a4f') return '#165b37'; // Deep Emerald Mint
+      if (c === '#3b82f6' || c === '#2563eb' || c === '#1d3557') return '#1e40af'; // Deep Sapphire Blue
+      if (c === '#f43f5e' || c === '#e11d48' || c === '#d97d8f' || c === '#e08d99' || c === '#9e2a2b') return '#8c3b4a'; // Deep Rose Pink
+      if (c === '#8b5cf6' || c === '#7c3aed' || c === '#6b4c7d') return '#581c87'; // Deep Violet Purple
+      if (c === '#f97316' || c === '#e5a93c' || c === '#c47d48') return '#9a3412'; // Deep Coral Bronze
+      if (c === '#06b6d4') return '#0e7490'; // Deep Cyan
+      if (c === '#64748b' || c === '#786b5f' || c === '#9c8e82') return '#5a524a'; // Deep Warm Stone
       return color;
+    }
+
+    // SEARCH & ACCENT MATCHING ENGINE
+    let currentSearchQuery = '';
+
+    function removeAccents(str) {
+      if (!str) return '';
+      return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/đ/g, 'd').replace(/Đ/g, 'D');
+    }
+
+    function matchQuery(text, query) {
+      if (!text || !query) return false;
+      const t = text.toLowerCase();
+      const q = query.toLowerCase();
+      if (t.includes(q)) return true;
+      return removeAccents(t).includes(removeAccents(q));
+    }
+
+    function isTableSearchMatch(t, query) {
+      if (!query) return true;
+      const q = query.trim();
+      if (!q) return true;
+
+      const tableMatch = matchQuery(t.displayCategory, q) || 
+                         matchQuery(t.groupName, q) || 
+                         matchQuery(t.customLabel, q) || 
+                         matchQuery(`bàn ${t.tableNo}`, q) || 
+                         matchQuery(`${t.tableNo}`, q);
+
+      const guestMatch = t.guests && t.guests.some(g => 
+        matchQuery(g.name, q) || matchQuery(g.note, q)
+      );
+
+      return Boolean(tableMatch || guestMatch);
     }
 
     // RENDER A SINGLE TABLE NODE ON SVG
@@ -1712,17 +1844,29 @@
       const isSenior = (userMode === 'senior');
       const isSelected = t.id === currentSelectedId;
       const isSpare = t.group === 'spare';
-      const mainColor = getTableColor(t);
-      const chairColor = mainColor;
-      const themeTextColor = getThemeTextColor(mainColor);
+      const isVIP = (t.displayCategory && t.displayCategory.includes('VIP')) || (t.groupName && t.groupName.includes('VIP'));
+
+      // Harmonious Palace Color Scheme: Distinct group colors while keeping white banquet elegance
+      const tableColor = getTableColor(t);
+      const textAccentColor = getThemeTextColor(tableColor);
+      const chairRibbonColor = tableColor;
+
       const tableRadius = isSenior ? 40 : 38;
 
-      // Filter dimming
+      // Search matching & illumination
+      const isSearchActive = Boolean(currentSearchQuery && currentSearchQuery.trim());
+      const isSearchMatch = isSearchActive && isTableSearchMatch(t, currentSearchQuery.trim());
+
+      // Filter & Search dimming
       let opacity = '1';
-      if (currentFilter === 'groom' && t.side !== 'groom') opacity = '0.2';
-      else if (currentFilter === 'bride' && t.side !== 'bride') opacity = '0.2';
-      else if (currentFilter === 'vip' && !t.displayCategory.includes('VIP')) opacity = '0.2';
-      else if (currentFilter === 'available' && t.guestCount >= 10) opacity = '0.2';
+      if (isSearchActive) {
+        opacity = isSearchMatch ? '1' : '0.2';
+      } else {
+        if (currentFilter === 'groom' && t.side !== 'groom') opacity = '0.2';
+        else if (currentFilter === 'bride' && t.side !== 'bride') opacity = '0.2';
+        else if (currentFilter === 'vip' && !isVIP) opacity = '0.2';
+        else if (currentFilter === 'available' && t.guestCount >= 10) opacity = '0.2';
+      }
 
       // 3 Info Lines on Table:
       // Line 1: Table Number ("BÀN 1" ...)
@@ -1730,8 +1874,8 @@
       // Line 3: Số khách ("10 khách", "10 chỗ"...)
       const categoryStr = (t.customLabel || t.displayCategory || 'Chính thức').trim();
       const catLen = categoryStr.length;
-      const defaultFontSize = catLen > 11 ? 7.5 : (catLen > 7 ? 9 : 10.5);
-      const seniorFontSize = catLen > 11 ? 9.5 : (catLen > 7 ? 11 : 12.5);
+      const defaultFontSize = catLen > 11 ? 7.5 : (catLen > 7 ? 8.5 : 10);
+      const seniorFontSize = catLen > 11 ? 9.5 : (catLen > 7 ? 10.5 : 12);
 
       const tableLabel = `BÀN ${t.tableNo}`;
       
@@ -1750,67 +1894,102 @@
            class="cursor-pointer table-hover transition-opacity duration-200" 
            style="opacity: ${opacity}">
           
-          <!-- Chairs: Only rendered in Admin Mode; in Senior Mode, chairs are hidden to keep tables clean & huge -->
-          ${isSenior ? '' : generateChairPath(t.cx, t.cy, tableRadius, 10, isSelected ? '#ffffff' : chairColor)}
+          <!-- Chairs: 10 White Banquet Chairs with delicate Satin Ribbons in group color -->
+          ${generateChairPath(t.cx, t.cy, tableRadius, 10, isSearchMatch ? '#f59e0b' : (isSelected ? '#d4af37' : chairRibbonColor))}
 
-          <!-- Glow effect if selected (Luminous White Glow) or if matching available filter -->
-          ${isSelected ? `
-            <circle cx="${t.cx}" cy="${t.cy}" r="${tableRadius + 6}" fill="none" stroke="#ffffff" stroke-width="3.5" filter="url(#glow-white)" opacity="1" />
+          <!-- Glow effect: Search highlight (Intense Golden Glow) or Selected table or Available filter -->
+          ${isSearchMatch ? `
+            <circle cx="${t.cx}" cy="${t.cy}" r="${tableRadius + 12}" fill="none" stroke="#f59e0b" stroke-width="2.5" stroke-dasharray="6 3" opacity="0.9" />
+            <circle cx="${t.cx}" cy="${t.cy}" r="${tableRadius + 6}" fill="none" stroke="#fbbf24" stroke-width="4.5" filter="url(#glow-search)" opacity="1" />
+          ` : (isSelected ? `
+            <circle cx="${t.cx}" cy="${t.cy}" r="${tableRadius + 7}" fill="none" stroke="#d4af37" stroke-width="3" filter="url(#glow-white)" opacity="0.95" />
           ` : (currentFilter === 'available' && t.guestCount < 10 ? `
-            <circle cx="${t.cx}" cy="${t.cy}" r="${tableRadius + 5}" fill="none" stroke="#34d399" stroke-width="2.5" stroke-dasharray="4 2" opacity="0.95" />
-          ` : '')}
+            <circle cx="${t.cx}" cy="${t.cy}" r="${tableRadius + 5}" fill="none" stroke="#10b981" stroke-width="2" stroke-dasharray="4 2" opacity="0.9" />
+          ` : ''))}
 
-          <!-- Round Table Body -->
+          <!-- Round Banquet Table Body: Elegant Ivory White Linen Tablecloth with soft shadow -->
           <circle 
             cx="${t.cx}" 
             cy="${t.cy}" 
             r="${tableRadius}" 
-            fill="${isSelected ? 'url(#selected-table-fill)' : '#0b1120'}" 
-            stroke="${isSelected ? '#ffffff' : mainColor}" 
-            stroke-width="${isSelected ? 3.5 : (isSenior ? 3 : 2.5)}" 
+            fill="${isSearchMatch ? 'url(#tablecloth-search)' : (isSelected ? 'url(#tablecloth-selected)' : 'url(#tablecloth-white)')}" 
+            stroke="${isSearchMatch ? '#f59e0b' : (isSelected ? '#d4af37' : tableColor)}" 
+            stroke-width="${(isSearchMatch || isSelected) ? 3.8 : 3.2}" 
             stroke-dasharray="${isSpare ? '4 3' : 'none'}"
+            filter="url(#table-shadow)"
           />
 
-          <!-- 1. SỐ BÀN: Màu sắc đồng bộ theo tông màu riêng của bàn (Theme Color), không bị chọi màu vàng với xanh/hồng -->
+          <!-- Soft Silk Color Wash Overlay: Ánh lụa ngọc tôn sắc màu nhóm, giữ trọn vẻ sang trọng vải trắng -->
+          ${(!isSearchMatch && !isSelected) ? `
+            <circle 
+              cx="${t.cx}" 
+              cy="${t.cy}" 
+              r="${tableRadius - 1.2}" 
+              fill="${tableColor}" 
+              fill-opacity="0.14" 
+              pointer-events="none"
+            />
+          ` : ''}
+
+          <!-- Concentric Charger Plate Rim: Luxury Banquet Detail -->
+          <circle 
+            cx="${t.cx}" 
+            cy="${t.cy}" 
+            r="${tableRadius - 5.5}" 
+            fill="none" 
+            stroke="${isSearchMatch ? '#fbbf24' : (isSelected ? '#d4af37' : tableColor)}" 
+            stroke-width="1.2" 
+            stroke-opacity="${isVIP ? '0.75' : '0.45'}" 
+            stroke-dasharray="${isVIP ? '2 2' : 'none'}"
+          />
+
+          ${isVIP ? `
+            <!-- VIP Crown/Star emblem atop table -->
+            <text x="${t.cx}" y="${t.cy - tableRadius + 11.5}" fill="#b8860b" font-size="8.5" font-weight="bold" text-anchor="middle">👑</text>
+          ` : ''}
+
+          <!-- 1. SỐ BÀN: Chữ màu sẫm quý phái theo sắc tố nhóm -->
           <text 
             x="${t.cx}" 
-            y="${isSenior ? t.cy - 12 : t.cy - 12}" 
-            fill="${isSelected ? '#ffffff' : themeTextColor}" 
-            font-size="${isSenior ? 12.5 : 9}" 
+            y="${isSenior ? t.cy - 12 : t.cy - 11.5}" 
+            fill="${isSearchMatch ? '#78350f' : (isSelected ? '#78350f' : textAccentColor)}" 
+            font-size="${isSenior ? 12 : 9.5}" 
             font-weight="900" 
+            font-family="'Cinzel', 'Plus Jakarta Sans', sans-serif"
             text-anchor="middle"
-            letter-spacing="${isSenior ? '0.6' : '0.4'}">
+            letter-spacing="${isSenior ? '0.8' : '0.6'}">
             ${tableLabel}
           </text>
 
-          <!-- 2. PHÂN LOẠI BÀN: Chữ trắng tinh (#ffffff) nổi bật, sắc nét, tương phản tối đa -->
+          <!-- 2. PHÂN LOẠI BÀN: Chữ sẫm màu espresso sang trọng, cực nét trên nền khăn trắng -->
           <text 
             x="${t.cx}" 
-            y="${isSenior ? t.cy + 4.5 : t.cy + 1.5}" 
-            fill="#ffffff" 
+            y="${isSenior ? t.cy + 3.5 : t.cy + 1.5}" 
+            fill="#18110b" 
             font-size="${isSenior ? seniorFontSize : defaultFontSize}" 
             font-weight="900" 
             text-anchor="middle"
-            letter-spacing="0.3">
+            letter-spacing="0.4">
             ${escapeXml(categoryStr.toUpperCase())}
           </text>
 
-          <!-- 3. SỐ KHÁCH / TIÊU CHUẨN: Pill thanh thoát, nền tối, viền dịu nhẹ -->
+          <!-- 3. SỐ KHÁCH / TIÊU CHUẨN: Pill thanh lịch, tinh tế -->
           <rect 
             x="${isSenior ? t.cx - 26 : t.cx - 24}" 
-            y="${isSenior ? t.cy + 14 : t.cy + 9}" 
+            y="${isSenior ? t.cy + 13.5 : t.cy + 9.5}" 
             width="${isSenior ? 52 : 48}" 
-            height="${isSenior ? 16 : 14}" 
-            rx="${isSenior ? 8 : 7}" 
-            fill="${isSelected ? 'rgba(255,255,255,0.15)' : '#1e293b'}" 
-            stroke="${isSelected ? '#ffffff' : mainColor}" 
-            stroke-width="${isSelected ? 1.5 : 1}"
-            stroke-opacity="${isSenior ? '0.7' : '1'}"
+            height="${isSenior ? 15 : 13.5}" 
+            rx="${isSenior ? 7.5 : 6.5}" 
+            fill="${isSelected ? '#d4af37' : (isSearchMatch ? '#f59e0b' : tableColor)}" 
+            fill-opacity="${(isSelected || isSearchMatch) ? '0.25' : '0.12'}"
+            stroke="${isSearchMatch ? '#f59e0b' : (isSelected ? '#d4af37' : tableColor)}" 
+            stroke-width="0.9"
+            stroke-opacity="0.8"
           />
           <text 
             x="${t.cx}" 
-            y="${isSenior ? t.cy + 25.5 : t.cy + 19.5}" 
-            fill="${isSelected ? '#ffffff' : '#cbd5e1'}" 
+            y="${isSenior ? t.cy + 24.5 : t.cy + 19.5}" 
+            fill="${isSearchMatch ? '#78350f' : (isSelected ? '#78350f' : textAccentColor)}" 
             font-size="${isSenior ? 9.5 : 8.5}" 
             font-weight="800" 
             text-anchor="middle">
@@ -1839,6 +2018,11 @@
       const rightContainer = document.getElementById('interactive-tables-right');
       const stageMain = document.getElementById('stage-main-text');
       const stageSub = document.getElementById('stage-sub-text');
+      const stageBrand = document.getElementById('stage-brand-text');
+      const ledScreenRect = document.getElementById('led-screen-rect');
+      const ledScreenInner = document.getElementById('led-screen-inner');
+      const stageWingLeft = document.getElementById('stage-wing-left');
+      const stageWingRight = document.getElementById('stage-wing-right');
       const runwayMain = document.getElementById('runway-main-text');
       const runwaySub = document.getElementById('runway-sub-text');
       const groomDoor = document.getElementById('groom-door-indicator');
@@ -1847,102 +2031,147 @@
       // 1. Dynamic ViewBox & Element layout switching for Single-Side Focus (Nhà Trai vs Nhà Gái vs Toàn Sảnh)
       if (currentFilter === 'groom') {
         // Focus on Groom (Left) Side: tables enlarged ~2.02x naturally
-        if (svg) svg.setAttribute('viewBox', '35 40 495 1320');
+        if (svg) svg.setAttribute('viewBox', '15 10 500 1150');
         if (leftContainer) leftContainer.style.display = '';
         if (rightContainer) rightContainer.style.display = 'none';
 
+        if (stageBrand) {
+          stageBrand.setAttribute('x', '390');
+          stageBrand.setAttribute('y', '34');
+        }
         if (stageMain) {
-          stageMain.setAttribute('x', '410');
-          stageMain.setAttribute('y', '96');
-          stageMain.setAttribute('letter-spacing', '1.5');
+          stageMain.setAttribute('x', '390');
+          stageMain.setAttribute('y', '48');
+          stageMain.setAttribute('letter-spacing', '1.2');
           stageMain.innerHTML = `
-            <tspan x="410" dy="0" font-size="14" font-weight="900" fill="#fbbf24">SÂN KHẤU</tspan>
-            <tspan x="410" dy="20" font-size="11" font-weight="700" fill="#cbd5e1">(Khu Vực Nhà Trai)</tspan>
+            <tspan x="390" dy="0" font-size="12" font-weight="900" fill="#e5c07b">MÀN HÌNH LED SÂN KHẤU</tspan>
+            <tspan x="390" dy="14" font-size="9" font-weight="700" fill="#c5baa8">(Khu Vực Nhà Trai)</tspan>
           `;
         }
         if (stageSub) {
-          stageSub.setAttribute('x', '410');
-          stageSub.setAttribute('y', '150');
-          stageSub.setAttribute('font-size', '12');
+          stageSub.setAttribute('x', '390');
+          stageSub.setAttribute('y', '60');
+          stageSub.setAttribute('font-size', '8.5');
           stageSub.textContent = '7,2 x 3,6 (m)';
         }
+        if (ledScreenRect) {
+          ledScreenRect.setAttribute('x', '290');
+          ledScreenRect.setAttribute('width', '205');
+        }
+        if (ledScreenInner) {
+          ledScreenInner.setAttribute('x', '293');
+          ledScreenInner.setAttribute('width', '199');
+        }
+        if (stageWingLeft) stageWingLeft.style.display = '';
+        if (stageWingRight) stageWingRight.style.display = 'none';
+
         if (runwayMain) {
           runwayMain.setAttribute('x', '455');
-          runwayMain.setAttribute('y', '245');
+          runwayMain.setAttribute('y', '102');
           runwayMain.setAttribute('font-size', '10');
-          runwayMain.setAttribute('font-weight', '800');
+          runwayMain.setAttribute('font-weight', '900');
           runwayMain.textContent = 'CATWALK';
         }
         if (runwaySub) {
           runwaySub.setAttribute('x', '455');
-          runwaySub.setAttribute('font-size', '11');
+          runwaySub.setAttribute('font-size', '10');
         }
         if (groomDoor) groomDoor.style.display = '';
         if (brideDoor) brideDoor.style.display = 'none';
 
       } else if (currentFilter === 'bride') {
         // Focus on Bride (Right) Side: tables enlarged ~2.02x naturally
-        if (svg) svg.setAttribute('viewBox', '470 40 495 1320');
+        if (svg) svg.setAttribute('viewBox', '485 10 500 1150');
         if (leftContainer) leftContainer.style.display = 'none';
         if (rightContainer) rightContainer.style.display = '';
 
+        if (stageBrand) {
+          stageBrand.setAttribute('x', '610');
+          stageBrand.setAttribute('y', '34');
+        }
         if (stageMain) {
-          stageMain.setAttribute('x', '590');
-          stageMain.setAttribute('y', '96');
-          stageMain.setAttribute('letter-spacing', '1.5');
+          stageMain.setAttribute('x', '610');
+          stageMain.setAttribute('y', '48');
+          stageMain.setAttribute('letter-spacing', '1.2');
           stageMain.innerHTML = `
-            <tspan x="590" dy="0" font-size="14" font-weight="900" fill="#fda4af">SÂN KHẤU</tspan>
-            <tspan x="590" dy="20" font-size="11" font-weight="700" fill="#cbd5e1">(Khu Vực Nhà Gái)</tspan>
+            <tspan x="610" dy="0" font-size="12" font-weight="900" fill="#e08d99">MÀN HÌNH LED SÂN KHẤU</tspan>
+            <tspan x="610" dy="14" font-size="9" font-weight="700" fill="#c5baa8">(Khu Vực Nhà Gái)</tspan>
           `;
         }
         if (stageSub) {
-          stageSub.setAttribute('x', '590');
-          stageSub.setAttribute('y', '150');
-          stageSub.setAttribute('font-size', '12');
+          stageSub.setAttribute('x', '610');
+          stageSub.setAttribute('y', '60');
+          stageSub.setAttribute('font-size', '8.5');
           stageSub.textContent = '7,2 x 3,6 (m)';
         }
+        if (ledScreenRect) {
+          ledScreenRect.setAttribute('x', '505');
+          ledScreenRect.setAttribute('width', '205');
+        }
+        if (ledScreenInner) {
+          ledScreenInner.setAttribute('x', '508');
+          ledScreenInner.setAttribute('width', '199');
+        }
+        if (stageWingLeft) stageWingLeft.style.display = 'none';
+        if (stageWingRight) stageWingRight.style.display = '';
+
         if (runwayMain) {
           runwayMain.setAttribute('x', '545');
-          runwayMain.setAttribute('y', '245');
+          runwayMain.setAttribute('y', '102');
           runwayMain.setAttribute('font-size', '10');
-          runwayMain.setAttribute('font-weight', '800');
+          runwayMain.setAttribute('font-weight', '900');
           runwayMain.textContent = 'CATWALK';
         }
         if (runwaySub) {
           runwaySub.setAttribute('x', '545');
-          runwaySub.setAttribute('font-size', '11');
+          runwaySub.setAttribute('font-size', '10');
         }
         if (groomDoor) groomDoor.style.display = 'none';
         if (brideDoor) brideDoor.style.display = '';
 
       } else {
         // Full Hall View (all, vip, available)
-        if (svg) svg.setAttribute('viewBox', '0 0 1000 1380');
+        if (svg) svg.setAttribute('viewBox', '15 10 970 1150');
         if (leftContainer) leftContainer.style.display = '';
         if (rightContainer) rightContainer.style.display = '';
 
+        if (stageBrand) {
+          stageBrand.setAttribute('x', '500');
+          stageBrand.setAttribute('y', '34');
+        }
         if (stageMain) {
           stageMain.setAttribute('x', '500');
-          stageMain.setAttribute('y', '105');
-          stageMain.setAttribute('letter-spacing', '2');
-          stageMain.innerHTML = `<tspan x="500" dy="0" font-size="14" font-weight="800" fill="#fbbf24">SÂN KHẤU CHÍNH</tspan>`;
+          stageMain.setAttribute('y', '49');
+          stageMain.setAttribute('letter-spacing', '1.5');
+          stageMain.innerHTML = `<tspan x="500" dy="0" font-size="13" font-weight="900" fill="#f3e5ab">MÀN HÌNH LED SÂN KHẤU</tspan>`;
         }
         if (stageSub) {
           stageSub.setAttribute('x', '500');
-          stageSub.setAttribute('y', '140');
-          stageSub.setAttribute('font-size', '22');
+          stageSub.setAttribute('y', '61');
+          stageSub.setAttribute('font-size', '8.5');
           stageSub.textContent = '7,2 x 3,6 (m)';
         }
+        if (ledScreenRect) {
+          ledScreenRect.setAttribute('x', '310');
+          ledScreenRect.setAttribute('width', '380');
+        }
+        if (ledScreenInner) {
+          ledScreenInner.setAttribute('x', '313');
+          ledScreenInner.setAttribute('width', '374');
+        }
+        if (stageWingLeft) stageWingLeft.style.display = '';
+        if (stageWingRight) stageWingRight.style.display = '';
+
         if (runwayMain) {
           runwayMain.setAttribute('x', '500');
-          runwayMain.setAttribute('y', '240');
+          runwayMain.setAttribute('y', '102');
           runwayMain.setAttribute('font-size', '11');
-          runwayMain.setAttribute('font-weight', '700');
-          runwayMain.textContent = 'RUNWAY CATWALK';
+          runwayMain.setAttribute('font-weight', '900');
+          runwayMain.textContent = 'CATWALK';
         }
         if (runwaySub) {
           runwaySub.setAttribute('x', '500');
-          runwaySub.setAttribute('font-size', '19');
+          runwaySub.setAttribute('font-size', '10');
         }
         if (groomDoor) groomDoor.style.display = '';
         if (brideDoor) brideDoor.style.display = '';
@@ -1977,21 +2206,21 @@
       const otherTables = allTablesData.filter(item => item.id !== t.id);
 
       return `
-        <div class="bg-slate-950/90 border border-amber-500/40 rounded-2xl p-3.5 sm:p-4 space-y-3.5">
-          <div class="flex items-center justify-between border-b border-slate-800 pb-2.5">
+        <div class="bg-[#140f0c] border border-[#d4af37]/50 rounded-2xl p-3.5 sm:p-4 space-y-3.5 shadow-2xl">
+          <div class="flex items-center justify-between border-b border-[#382d22] pb-2.5">
             <div class="flex items-center gap-2">
-              <span class="text-amber-400 font-bold text-sm">✏️ Chỉnh Sửa Bàn & Danh Sách Khách</span>
-              <span class="text-xs text-slate-400 font-normal">(${t.sideName} - Bàn ${t.tableNo})</span>
+              <span class="text-[#e5c07b] font-bold text-sm">✏️ Chỉnh Sửa Bàn & Danh Sách Khách</span>
+              <span class="text-xs text-[#a89f91] font-normal">(${t.sideName} - Bàn ${t.tableNo})</span>
             </div>
-            <button type="button" onclick="cancelTableEdit('${target}')" class="text-slate-400 hover:text-white text-xs px-2.5 py-1 rounded-lg bg-slate-800 transition">
+            <button type="button" onclick="cancelTableEdit('${target}')" class="text-[#c5baa8] hover:text-white text-xs px-2.5 py-1 rounded-lg bg-[#241c16] hover:bg-[#34271d] border border-[#382d22] transition">
               ✕ Hủy
             </button>
           </div>
 
           <!-- 1. Tên phân loại đại diện hiển thị trên bàn -->
           <div>
-            <label class="block text-xs font-bold text-slate-200 mb-1">
-              🏷️ Phân loại / Tên đại diện <span class="text-[11px] font-normal text-amber-300">(Hiển thị trực tiếp trên bàn & tiêu đề)</span>:
+            <label class="block text-xs font-bold text-[#f5f2eb] mb-1">
+              🏷️ Phân loại / Tên đại diện <span class="text-[11px] font-normal text-[#e5c07b]">(Hiển thị trực tiếp trên bàn & tiêu đề)</span>:
             </label>
             <input 
               id="input-edit-label-${target}" 
@@ -1999,14 +2228,14 @@
               value="${escapeXml(currentLabel)}" 
               placeholder="Vd: VIP, Bạn Má, Chú Rể, Vin 1, Cấp 3..." 
               maxlength="20"
-              class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400 transition"
+              class="w-full bg-[#100d0b] border border-[#3a2e22] rounded-xl px-3 py-2 text-xs text-[#f5f2eb] placeholder-[#8c7f72] focus:outline-none focus:border-[#d4af37] focus:ring-1 focus:ring-[#d4af37] transition"
               oninput="onEditLabelInput('${target}', this.value)"
             />
             <!-- Quick Chips -->
             <div class="flex flex-wrap gap-1.5 mt-2">
-              <span class="text-[10px] text-slate-400 self-center">Gợi ý nhanh:</span>
+              <span class="text-[10px] text-[#a89f91] self-center">Gợi ý nhanh:</span>
               ${['VIP 1', 'VIP 2', 'Họ Nội', 'Họ Ngoại', 'Bạn Má', 'Chú Rể', 'Cô Dâu', 'Cấp 3', 'Cấp 2', 'Vin 1', 'Vin 2', 'Cen', 'NVL', 'Nail Thủy', 'DỰ BỊ'].map(tag => `
-                <button type="button" onclick="setLabelTag('${target}', '${tag}')" class="px-2 py-0.5 rounded-md bg-slate-800 hover:bg-slate-700 text-[10px] text-slate-300 hover:text-amber-300 border border-slate-700 transition">
+                <button type="button" onclick="setLabelTag('${target}', '${tag}')" class="px-2 py-0.5 rounded-md bg-[#241c16] hover:bg-[#34271d] text-[10px] text-[#c5baa8] hover:text-[#e5c07b] border border-[#382d22] transition">
                   ${tag}
                 </button>
               `).join('')}
@@ -2015,8 +2244,8 @@
 
           <!-- 2. Chọn màu sắc của bàn -->
           <div>
-            <label class="block text-xs font-bold text-slate-200 mb-1.5">
-              🎨 Màu sắc bàn <span class="text-[11px] font-normal text-slate-400">(Quản lý phân nhóm trực quan)</span>:
+            <label class="block text-xs font-bold text-[#f5f2eb] mb-1.5">
+              🎨 Màu sắc bàn <span class="text-[11px] font-normal text-[#a89f91]">(Quản lý phân nhóm trực quan)</span>:
             </label>
             <div class="flex flex-wrap items-center gap-2">
               ${COLOR_PRESETS.map(c => `
@@ -2031,7 +2260,7 @@
               `).join('')}
               
               <!-- Custom Color Picker -->
-              <label class="relative w-7 h-7 rounded-full overflow-hidden border-2 border-slate-600 hover:border-amber-400 cursor-pointer flex items-center justify-center bg-gradient-to-tr from-pink-500 via-amber-400 to-cyan-400 transition" title="Tùy chọn màu bất kỳ">
+              <label class="relative w-7 h-7 rounded-full overflow-hidden border-2 border-[#382d22] hover:border-[#d4af37] cursor-pointer flex items-center justify-center bg-gradient-to-tr from-pink-500 via-amber-400 to-cyan-400 transition" title="Tùy chọn màu bất kỳ">
                 <input 
                   id="input-edit-color-custom-${target}" 
                   type="color" 
@@ -2047,7 +2276,7 @@
           <!-- 3. Tên phân nhóm chi tiết & Ghi chú đặc điểm -->
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
             <div>
-              <label class="block text-xs font-bold text-slate-200 mb-1">
+              <label class="block text-xs font-bold text-[#f5f2eb] mb-1">
                 👥 Tên phân nhóm chi tiết:
               </label>
               <input 
@@ -2055,12 +2284,12 @@
                 type="text" 
                 value="${escapeXml(currentGroup)}" 
                 placeholder="Vd: Bạn Má (Nhóm bạn thân), Cấp 3..." 
-                class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400 transition"
+                class="w-full bg-[#100d0b] border border-[#3a2e22] rounded-xl px-3 py-2 text-xs text-[#f5f2eb] placeholder-[#8c7f72] focus:outline-none focus:border-[#d4af37] focus:ring-1 focus:ring-[#d4af37] transition"
                 oninput="syncCurrentFormInputs('${target}')"
               />
             </div>
             <div>
-              <label class="block text-xs font-bold text-slate-200 mb-1">
+              <label class="block text-xs font-bold text-[#f5f2eb] mb-1">
                 ★ Ghi chú đặc điểm bàn:
               </label>
               <input 
@@ -2068,34 +2297,34 @@
                 type="text" 
                 value="${escapeXml((session.tempHighlight !== undefined) ? session.tempHighlight : (t.highlight || ''))}" 
                 placeholder="Vd: Bạn thân của Má, cạnh lối đi..." 
-                class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400 transition"
+                class="w-full bg-[#100d0b] border border-[#3a2e22] rounded-xl px-3 py-2 text-xs text-[#f5f2eb] placeholder-[#8c7f72] focus:outline-none focus:border-[#d4af37] focus:ring-1 focus:ring-[#d4af37] transition"
                 oninput="syncCurrentFormInputs('${target}')"
               />
             </div>
           </div>
 
           <!-- 4. CHỈNH SỬA DANH SÁCH KHÁCH MỜI TRONG BÀN -->
-          <div class="pt-3 border-t border-slate-800">
+          <div class="pt-3 border-t border-[#382d22]">
             <div class="flex items-center justify-between mb-2">
               <div class="flex items-center gap-1.5 flex-wrap">
-                <span class="text-xs font-bold text-amber-300">👥 Khách Mời:</span>
-                <span id="edit-guest-total-badge-${target}" class="text-[11px] font-bold px-2 py-0.5 rounded-full border ${totalGuests === 10 ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40' : (totalGuests > 10 ? 'bg-amber-500/20 text-amber-300 border-amber-500/40' : 'bg-blue-500/20 text-blue-300 border-blue-500/40')}">
+                <span class="text-xs font-bold text-[#e5c07b]">👥 Khách Mời:</span>
+                <span id="edit-guest-total-badge-${target}" class="text-[11px] font-bold px-2 py-0.5 rounded-full border ${totalGuests === 10 ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40' : (totalGuests > 10 ? 'bg-amber-500/20 text-amber-300 border-amber-500/40' : 'bg-[#241c16] text-[#c5baa8] border-[#382d22]')}">
                   ${totalGuests} / 10 khách ${totalGuests === 10 ? '(Đủ chuẩn ✓)' : (totalGuests > 10 ? '(Vượt chuẩn ⚠)' : '(Còn trống)')}
                 </span>
               </div>
-              <button type="button" onclick="addGuestRow('${target}')" class="px-2.5 py-1 bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 hover:text-amber-200 border border-amber-500/40 font-bold text-xs rounded-lg transition flex items-center gap-1 shadow-sm">
+              <button type="button" onclick="addGuestRow('${target}')" class="px-2.5 py-1 bg-[#241c16] hover:bg-[#34271d] text-[#e5c07b] border border-[#d4af37]/50 font-bold text-xs rounded-lg transition flex items-center gap-1 shadow-sm">
                 <span>➕</span> <span>Thêm Khách</span>
               </button>
             </div>
 
             <div class="space-y-2 max-h-[260px] sm:max-h-[300px] overflow-y-auto custom-scrollbar pr-1" id="edit-guest-list-${target}">
               ${tempGuests.length === 0 ? `
-                <div class="py-4 text-center text-slate-500 text-xs italic bg-slate-900/60 rounded-xl border border-dashed border-slate-800">
+                <div class="py-4 text-center text-[#a89f91] text-xs italic bg-[#100d0b] rounded-xl border border-dashed border-[#382d22]">
                   Chưa có khách mời trong bàn này.<br>Nhấn nút <strong>"➕ Thêm Khách"</strong> ở trên để thêm người!
                 </div>
               ` : tempGuests.map((g, idx) => `
-                <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-2 sm:p-2.5 flex items-start gap-2 hover:border-slate-700 transition">
-                  <span class="w-5 h-5 rounded-full bg-slate-800 text-[10px] font-bold text-amber-400 flex items-center justify-center border border-slate-700 flex-shrink-0 mt-1">
+                <div class="bg-[#1b1511] border border-[#33261b] rounded-xl p-2 sm:p-2.5 flex items-start gap-2 hover:border-[#4a3928] transition">
+                  <span class="w-5 h-5 rounded-full bg-[#241c16] text-[10px] font-bold text-[#e5c07b] flex items-center justify-center border border-[#382d22] flex-shrink-0 mt-1">
                     ${idx + 1}
                   </span>
                   <div class="flex-1 space-y-1.5 min-w-0">
@@ -2104,19 +2333,19 @@
                         type="text" 
                         value="${escapeXml(g.name)}" 
                         placeholder="Tên khách mời / gia đình..." 
-                        class="flex-1 min-w-0 bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-400"
+                        class="flex-1 min-w-0 bg-[#100d0b] border border-[#3a2e22] rounded-lg px-2.5 py-1.5 text-xs text-[#f5f2eb] placeholder-[#8c7f72] focus:outline-none focus:border-[#d4af37]"
                         oninput="updateGuestRowField('${target}', ${idx}, 'name', this.value)"
                       />
-                      <div class="flex items-center gap-1 bg-slate-950 border border-slate-700 rounded-lg px-1.5 py-1 flex-shrink-0">
+                      <div class="flex items-center gap-1 bg-[#100d0b] border border-[#3a2e22] rounded-lg px-1.5 py-1 flex-shrink-0">
                         <input 
                           type="number" 
                           min="0" 
                           max="20" 
                           value="${g.count !== undefined ? g.count : 1}" 
-                          class="w-8 bg-transparent text-center text-xs font-bold text-amber-300 focus:outline-none"
+                          class="w-8 bg-transparent text-center text-xs font-bold text-[#e5c07b] focus:outline-none"
                           oninput="updateGuestRowField('${target}', ${idx}, 'count', this.value)"
                         />
-                        <span class="text-[10px] text-slate-400 pr-1">người</span>
+                        <span class="text-[10px] text-[#a89f91] pr-1">người</span>
                       </div>
                     </div>
                     <div>
@@ -2124,7 +2353,7 @@
                         type="text" 
                         value="${escapeXml(g.note || '')}" 
                         placeholder="Ghi chú (vd: 2 lớn 1 bé, bạn thân, Vincom...)" 
-                        class="w-full bg-slate-950/70 border border-slate-800/80 rounded-lg px-2.5 py-1 text-[11px] text-slate-300 placeholder-slate-500 focus:outline-none focus:border-slate-600"
+                        class="w-full bg-[#100d0b]/80 border border-[#2e241b] rounded-lg px-2.5 py-1 text-[11px] text-[#c5baa8] placeholder-[#8c7f72] focus:outline-none focus:border-[#3a2e22]"
                         oninput="updateGuestRowField('${target}', ${idx}, 'note', this.value)"
                       />
                     </div>
@@ -2132,7 +2361,7 @@
                   <button 
                     type="button" 
                     onclick="removeGuestRow('${target}', ${idx})" 
-                    class="text-slate-500 hover:text-rose-400 hover:bg-rose-500/10 p-1.5 rounded-lg transition mt-0.5 flex-shrink-0" 
+                    class="text-[#a89f91] hover:text-rose-400 hover:bg-rose-500/10 p-1.5 rounded-lg transition mt-0.5 flex-shrink-0" 
                     title="Xóa khách này">
                     ✕
                   </button>
@@ -2141,11 +2370,11 @@
             </div>
 
             <div class="flex items-center justify-between pt-1.5">
-              <button type="button" onclick="addGuestRow('${target}')" class="text-xs text-amber-400 hover:text-amber-300 font-semibold flex items-center gap-1 hover:underline">
+              <button type="button" onclick="addGuestRow('${target}')" class="text-xs text-[#e5c07b] hover:text-[#f3e5ab] font-semibold flex items-center gap-1 hover:underline">
                 <span>➕ Thêm người tiếp theo</span>
               </button>
               ${tempGuests.length > 0 ? `
-                <button type="button" onclick="clearAllGuests('${target}')" class="text-[10px] text-slate-500 hover:text-rose-400 transition hover:underline">
+                <button type="button" onclick="clearAllGuests('${target}')" class="text-[10px] text-[#a89f91] hover:text-rose-400 transition hover:underline">
                   Dọn trống bàn (0 khách)
                 </button>
               ` : ''}
@@ -2153,13 +2382,13 @@
           </div>
 
           <!-- 5. TÍNH NĂNG ĐỔI BÀN (HOÁN ĐỔI VỊ TRÍ VỚI BÀN KHÁC) -->
-          <div class="pt-3 border-t border-slate-800">
-            <label class="block text-xs font-bold text-amber-300 mb-1.5 flex items-center justify-between">
+          <div class="pt-3 border-t border-[#382d22]">
+            <label class="block text-xs font-bold text-[#e5c07b] mb-1.5 flex items-center justify-between">
               <span>🔄 Hoán đổi vị trí (Đổi bàn):</span>
-              <span class="text-[10px] text-slate-400 font-normal">Chuyển toàn bộ sang vị trí bàn khác</span>
+              <span class="text-[10px] text-[#a89f91] font-normal">Chuyển toàn bộ sang vị trí bàn khác</span>
             </label>
             <div class="flex items-center gap-2">
-              <select id="select-swap-table-${target}" class="flex-1 min-w-0 bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-400">
+              <select id="select-swap-table-${target}" class="flex-1 min-w-0 bg-[#100d0b] border border-[#3a2e22] rounded-xl px-3 py-2 text-xs text-[#f5f2eb] focus:outline-none focus:border-[#d4af37]">
                 <option value="">-- Chọn bàn muốn đổi vị trí --</option>
                 ${otherTables.map(o => `
                   <option value="${o.id}">
@@ -2167,15 +2396,15 @@
                   </option>
                 `).join('')}
               </select>
-              <button type="button" onclick="swapTables('${t.id}', '${target}')" class="px-3 py-2 bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs rounded-xl transition flex items-center gap-1 shadow flex-shrink-0">
+              <button type="button" onclick="swapTables('${t.id}', '${target}')" class="px-3 py-2 bg-[#2a1f14] hover:bg-[#38291b] text-[#e5c07b] border border-[#523d24] font-bold text-xs rounded-xl transition flex items-center gap-1 shadow flex-shrink-0">
                 <span>⇄</span> <span>Đổi bàn</span>
               </button>
             </div>
           </div>
 
           <!-- Live Preview -->
-          <div class="bg-slate-900/90 p-2.5 rounded-xl border border-slate-800 flex items-center justify-between">
-            <div class="text-[11px] text-slate-400">Xem trước 3 thông tin:</div>
+          <div class="bg-[#100d0b] p-2.5 rounded-xl border border-[#2e241b] flex items-center justify-between">
+            <div class="text-[11px] text-[#a89f91]">Xem trước 3 thông tin:</div>
             <div id="preview-badge-${target}" class="flex items-center gap-2 px-3 py-1 rounded-full border transition-all" style="background-color: ${currentColor}22; border-color: ${currentColor};">
               <span class="w-3 h-3 rounded-full" style="background-color: ${currentColor};"></span>
               <span class="text-xs font-bold text-white" id="preview-label-${target}">
@@ -2185,15 +2414,15 @@
           </div>
 
           <!-- Action Buttons -->
-          <div class="flex items-center justify-between pt-2 border-t border-slate-800">
+          <div class="flex items-center justify-between pt-2 border-t border-[#382d22]">
             <button type="button" onclick="resetTableCustomization('${t.id}', '${target}')" class="text-[11px] text-rose-400 hover:text-rose-300 hover:underline">
               Khôi phục gốc
             </button>
             <div class="flex items-center gap-2">
-              <button type="button" onclick="cancelTableEdit('${target}')" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold rounded-lg transition">
+              <button type="button" onclick="cancelTableEdit('${target}')" class="px-3 py-1.5 bg-[#241c16] hover:bg-[#34271d] text-[#c5baa8] border border-[#382d22] text-xs font-bold rounded-lg transition">
                 Hủy
               </button>
-              <button type="button" onclick="saveTableEdit('${t.id}', '${target}')" class="px-4 py-1.5 bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-bold rounded-lg transition shadow-md shadow-amber-500/20">
+              <button type="button" onclick="saveTableEdit('${t.id}', '${target}')" class="px-4 py-1.5 bg-gradient-to-r from-[#d4af37] to-[#e5c07b] hover:brightness-110 text-[#18110b] text-xs font-bold rounded-lg transition shadow-md shadow-[#d4af37]/20">
                 💾 Lưu Thay Đổi
               </button>
             </div>
@@ -2221,12 +2450,12 @@
       if (isAdminAuthenticated()) {
         dot.className = 'w-2 h-2 rounded-full bg-emerald-400 animate-pulse';
         text.textContent = 'Quản Trị (Mở)';
-        btn.className = 'px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-bold bg-amber-500/20 text-amber-300 border border-amber-500/50 hover:bg-rose-950/40 hover:text-rose-300 hover:border-rose-500/50 transition flex items-center shadow';
+        btn.className = 'px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-bold bg-[#d4af37]/20 text-[#e5c07b] border border-[#d4af37]/50 hover:bg-rose-950/40 hover:text-rose-300 hover:border-rose-500/50 transition flex items-center shadow';
         btn.title = 'Bạn đang là Quản Trị Viên. Nhấn để khóa lại.';
       } else {
-        dot.className = 'w-2 h-2 rounded-full bg-slate-500';
+        dot.className = 'w-2 h-2 rounded-full bg-[#786b5f]';
         text.textContent = 'Đăng Nhập PIN';
-        btn.className = 'px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition flex items-center shadow';
+        btn.className = 'px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-semibold bg-[#241c16] hover:bg-[#34271d] text-[#c5baa8] border border-[#3e2f22] transition flex items-center shadow';
         btn.title = 'Đăng nhập mã PIN (12345) để chỉnh sửa sơ đồ & danh sách khách';
       }
     }
@@ -2345,7 +2574,7 @@
         badge.className = 'px-2.5 py-0.5 rounded-full text-[10px] font-bold border bg-emerald-500/20 text-emerald-300 border-emerald-500/40 flex items-center gap-1';
         badge.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> Đã kết nối Google Sheet';
       } else {
-        badge.className = 'px-2.5 py-0.5 rounded-full text-[10px] font-bold border bg-slate-800 text-slate-400 border-slate-700';
+        badge.className = 'px-2.5 py-0.5 rounded-full text-[10px] font-bold border bg-[#241c16] text-[#c5baa8] border-[#382d22]';
         badge.textContent = 'Chưa kết nối';
       }
     }
@@ -2832,9 +3061,9 @@
 
       // SENIOR MODE INSPECTOR VIEW (To, rõ ràng, không có nút sửa kỹ thuật)
       if (userMode === 'senior') {
-        const sideBadgeColor = t.side === 'groom' ? 'border-amber-500/50 bg-amber-500/20 text-amber-300' : 'border-rose-500/50 bg-rose-500/20 text-rose-300';
+        const sideBadgeColor = t.side === 'groom' ? 'border-[#c5a059]/60 bg-[#d4af37]/20 text-[#e5c07b]' : 'border-[#d97d8f]/60 bg-[#d97d8f]/20 text-[#fda4af]';
         container.innerHTML = `
-          <div class="border-b border-slate-800 pb-3">
+          <div class="border-b border-[#382d22] pb-3">
             <div class="flex items-center gap-2 flex-wrap mb-2">
               <span class="text-xs font-black px-2.5 py-1 rounded-full border ${sideBadgeColor}">
                 ${t.sideName.toUpperCase()}
@@ -2847,41 +3076,45 @@
               <span>BÀN ${t.tableNo}:</span>
               <span style="color: ${mainColor};">${escapeXml(t.customLabel || t.groupName || t.displayCategory)}</span>
             </h3>
-            <p class="text-xs text-slate-300 mt-1.5 flex items-center gap-1 font-medium">
+            <p class="text-xs text-[#c5baa8] mt-1.5 flex items-center gap-1 font-medium">
               <span>📍 Vị trí:</span> <span>${t.position}</span>
             </p>
           </div>
 
           <div class="my-3 space-y-2">
-            <div class="text-xs font-bold text-amber-300 uppercase tracking-wider flex items-center justify-between">
-              <span class="flex items-center gap-1.5">👥 <span>Danh Sách Khách Ngồi Cùng Bàn</span></span>
-              <span class="text-slate-400 font-normal">(${t.guestCount} khách)</span>
+            <div class="text-xs font-bold text-[#e5c07b] uppercase tracking-wider flex items-center justify-between">
+              <span class="text-[#a89f91] font-normal">(${t.guestCount} khách)</span>
             </div>
-            <ul class="divide-y divide-slate-800/80 bg-slate-950/80 rounded-2xl border border-slate-800 p-2">
+            <ul class="divide-y divide-[#2a221a] bg-[#100d0b] rounded-2xl border border-[#2e241b] p-2">
               ${t.guests.length === 0 ? `
-                <li class="py-6 text-center text-slate-400 text-xs italic">
+                <li class="py-6 text-center text-[#a89f91] text-xs italic">
                   Bàn dự bị gồm 10 chỗ ngồi tiếp đón khách thân tình.
                 </li>
-              ` : t.guests.map((g, idx) => `
-                <li class="flex items-center justify-between py-2.5 px-3 hover:bg-slate-800/40 rounded-xl transition">
+              ` : t.guests.map((g, idx) => {
+                const isGuestMatch = Boolean(currentSearchQuery && (matchQuery(g.name, currentSearchQuery) || matchQuery(g.note, currentSearchQuery)));
+                return `
+                <li class="flex items-center justify-between py-2.5 px-3 rounded-xl transition ${isGuestMatch ? 'bg-[#d4af37]/25 border border-[#d4af37]/80 shadow-md ring-1 ring-[#d4af37]/40' : 'hover:bg-[#1c1511]'}">
                   <div class="flex items-center gap-3">
-                    <span class="w-6 h-6 rounded-full bg-slate-800 text-xs font-black text-amber-400 flex items-center justify-center border border-slate-700 shadow-sm flex-shrink-0">
+                    <span class="w-6 h-6 rounded-full ${isGuestMatch ? 'bg-[#d4af37] text-[#18110b] font-black' : 'bg-[#241c16] text-[#e5c07b] font-black border border-[#382d22]'} text-xs flex items-center justify-center shadow-sm flex-shrink-0">
                       ${idx + 1}
                     </span>
                     <div>
-                      <div class="text-sm font-bold text-white">${g.name}</div>
-                      ${g.note ? `<div class="text-xs text-amber-300/80 font-medium">${g.note}</div>` : ''}
+                      <div class="text-sm font-bold ${isGuestMatch ? 'text-[#f3e5ab]' : 'text-white'} flex items-center gap-2">
+                        <span>${g.name}</span>
+                        ${isGuestMatch ? '<span class="text-[10px] px-1.5 py-0.2 rounded bg-[#d4af37] text-[#18110b] font-black">Khách tìm kiếm</span>' : ''}
+                      </div>
+                      ${g.note ? `<div class="text-xs ${isGuestMatch ? 'text-[#f3e5ab]' : 'text-[#e5c07b]/80'} font-medium">${g.note}</div>` : ''}
                     </div>
                   </div>
-                  <span class="px-2 py-0.5 rounded text-xs font-bold ${g.count > 0 ? 'bg-amber-500/15 text-amber-300 border border-amber-500/30' : 'bg-slate-800 text-slate-400'}">
+                  <span class="px-2 py-0.5 rounded text-xs font-bold ${g.count > 0 ? (isGuestMatch ? 'bg-[#d4af37] text-[#18110b] font-black' : 'bg-[#241c16] text-[#e5c07b] border border-[#382d22]') : 'bg-[#241c16] text-[#a89f91]'}">
                     ${g.count > 0 ? g.count + ' người' : 'Dự bị'}
                   </span>
                 </li>
-              `).join('')}
+              `;}).join('')}
             </ul>
           </div>
 
-          <div class="bg-amber-950/30 border border-amber-800/40 rounded-xl p-3 text-xs text-amber-200/90 flex items-center gap-2">
+          <div class="bg-[#291e12]/60 border border-[#4d3a22] rounded-xl p-3 text-xs text-[#f3e5ab] flex items-center gap-2">
             <span>💡</span>
             <span>Quý Khách vui lòng đến đúng số bàn để buổi tiệc được đón tiếp chu đáo nhất!</span>
           </div>
@@ -2892,10 +3125,10 @@
       let guestListHtml = '';
       if (isSpare && t.guestCount === 0) {
         guestListHtml = `
-          <div class="py-8 text-center text-slate-500 text-xs italic bg-slate-950/40 rounded-xl border border-dashed border-slate-800 p-4">
+          <div class="py-8 text-center text-[#a89f91] text-xs italic bg-[#100d0b] rounded-xl border border-dashed border-[#382d22] p-4">
             Bàn dự bị duy nhất (${t.sideName}).<br>Kê sẵn 10 chén đũa dự phòng tiếp đón khách phát sinh.
             <div class="mt-2.5">
-              <button onclick="startEditMode('desktop', '${t.id}')" class="px-3 py-1 bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 rounded-lg text-xs font-bold border border-amber-500/40 transition">
+              <button onclick="startEditMode('desktop', '${t.id}')" class="px-3 py-1 bg-[#241c16] hover:bg-[#34271d] text-[#e5c07b] rounded-lg text-xs font-bold border border-[#d4af37]/40 transition">
                 ➕ Thêm khách vào bàn
               </button>
             </div>
@@ -2903,38 +3136,44 @@
         `;
       } else if (t.guests.length === 0) {
         guestListHtml = `
-          <div class="py-8 text-center text-slate-500 text-xs italic bg-slate-950/40 rounded-xl border border-dashed border-slate-800 p-4">
+          <div class="py-8 text-center text-[#a89f91] text-xs italic bg-[#100d0b] rounded-xl border border-dashed border-[#382d22] p-4">
             Bàn hiện chưa có khách nào.
             <div class="mt-2.5">
-              <button onclick="startEditMode('desktop', '${t.id}')" class="px-3 py-1 bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 rounded-lg text-xs font-bold border border-amber-500/40 transition">
+              <button onclick="startEditMode('desktop', '${t.id}')" class="px-3 py-1 bg-[#241c16] hover:bg-[#34271d] text-[#e5c07b] rounded-lg text-xs font-bold border border-[#d4af37]/40 transition">
                 ➕ Thêm khách vào bàn
               </button>
             </div>
           </div>
         `;
       } else {
-        guestListHtml = t.guests.map((g, idx) => `
-          <li class="flex items-center justify-between py-2 border-b border-slate-800/80 last:border-0 hover:bg-slate-800/40 px-2 rounded-lg transition">
+        guestListHtml = t.guests.map((g, idx) => {
+          const isGuestMatch = Boolean(currentSearchQuery && (matchQuery(g.name, currentSearchQuery) || matchQuery(g.note, currentSearchQuery)));
+          return `
+          <li class="flex items-center justify-between py-2 border-b border-[#2a221a] last:border-0 px-2 rounded-lg transition ${isGuestMatch ? 'bg-[#d4af37]/25 border border-[#d4af37]/80 shadow-md ring-1 ring-[#d4af37]/40' : 'hover:bg-[#1c1511]'}">
             <div class="flex items-center gap-2.5">
-              <span class="w-5 h-5 rounded-full bg-slate-800 text-[10px] font-bold text-slate-400 flex items-center justify-center border border-slate-700">
+              <span class="w-5 h-5 rounded-full ${isGuestMatch ? 'bg-[#d4af37] text-[#18110b] font-black' : 'bg-[#241c16] text-[#c5baa8] font-bold border border-[#382d22]'} text-[10px] flex items-center justify-center">
                 ${idx + 1}
               </span>
               <div>
-                <div class="text-xs font-bold text-slate-100">${g.name}</div>
-                <div class="text-[10px] text-slate-400">${g.note}</div>
+                <div class="text-xs font-bold ${isGuestMatch ? 'text-[#f3e5ab]' : 'text-[#f5f2eb]'} flex items-center gap-1.5">
+                  <span>${g.name}</span>
+                  ${isGuestMatch ? '<span class="text-[9px] px-1 py-0.2 rounded bg-[#d4af37] text-[#18110b] font-black">Khách tìm kiếm</span>' : ''}
+                </div>
+                <div class="text-[10px] text-[#a89f91]">${g.note}</div>
               </div>
             </div>
-            <span class="px-2 py-0.5 rounded text-xs font-bold ${g.count > 0 ? 'bg-amber-500/10 text-amber-300 border border-amber-500/30' : 'bg-slate-800 text-slate-500'}">
+            <span class="px-2 py-0.5 rounded text-xs font-bold ${g.count > 0 ? (isGuestMatch ? 'bg-[#d4af37] text-[#18110b] font-bold' : 'bg-[#241c16] text-[#e5c07b] border border-[#382d22]') : 'bg-[#241c16] text-[#a89f91]'}">
               ${g.count > 0 ? g.count + ' người' : 'Dự bị'}
             </span>
           </li>
-        `).join('');
+          `;
+        }).join('');
       }
 
-      const badgeSideColor = t.side === 'groom' ? 'border-amber-500/50 bg-amber-500/20 text-amber-300' : 'border-rose-500/50 bg-rose-500/20 text-rose-300';
+      const badgeSideColor = t.side === 'groom' ? 'border-[#c5a059]/60 bg-[#d4af37]/20 text-[#e5c07b]' : 'border-[#d97d8f]/60 bg-[#d97d8f]/20 text-[#fda4af]';
 
       container.innerHTML = `
-        <div class="flex items-start justify-between border-b border-slate-800 pb-3">
+        <div class="flex items-start justify-between border-b border-[#382d22] pb-3">
           <div>
             <div class="flex items-center gap-2 flex-wrap">
               <span class="text-xs font-bold px-2 py-0.5 rounded border ${badgeSideColor}">
@@ -2943,50 +3182,50 @@
               <span class="text-xs font-black px-2 py-0.5 rounded shadow-sm" style="background-color: ${mainColor}25; color: ${mainColor}; border: 1px solid ${mainColor}60;">
                 🏷️ ${escapeXml(t.customLabel || t.displayCategory)}
               </span>
-              <span class="text-[11px] text-slate-400 font-medium">${t.status}</span>
+              <span class="text-[11px] text-[#a89f91] font-medium">${t.status}</span>
             </div>
             <h3 class="text-xl font-black text-white mt-1.5 flex items-center gap-1.5 flex-wrap">
               <span>BÀN ${t.tableNo}:</span>
               <span style="color: ${mainColor};">${escapeXml(t.customLabel || t.groupName || t.displayCategory)}</span>
             </h3>
-            <p class="text-xs text-slate-400 mt-1 flex items-center gap-1">
+            <p class="text-xs text-[#a89f91] mt-1 flex items-center gap-1">
               <span>📍</span> <span>${t.position}</span>
             </p>
           </div>
 
           <div class="flex flex-col items-end gap-2">
-            <button onclick="startEditMode('desktop', '${t.id}')" class="px-2.5 py-1.5 rounded-lg bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/40 text-amber-300 font-bold text-xs flex items-center gap-1 transition shadow" title="Đặt tên, chọn màu, sửa khách & đổi bàn">
+            <button onclick="startEditMode('desktop', '${t.id}')" class="px-2.5 py-1.5 rounded-lg bg-[#241c16] hover:bg-[#34271d] border border-[#d4af37]/50 text-[#e5c07b] font-bold text-xs flex items-center gap-1 transition shadow" title="Đặt tên, chọn màu, sửa khách & đổi bàn">
               <span>✏️</span> <span>Sửa Bàn & Khách</span>
             </button>
             <div class="text-right">
-              <div class="text-2xl font-black text-amber-400 leading-none">${t.guestCount}</div>
-              <div class="text-[10px] text-slate-400 uppercase font-semibold">Khách / 10</div>
+              <div class="text-2xl font-black text-[#e5c07b] leading-none">${t.guestCount}</div>
+              <div class="text-[10px] text-[#a89f91] uppercase font-semibold">Khách / 10</div>
             </div>
           </div>
         </div>
 
-        <div class="bg-slate-950/70 rounded-xl p-3 my-3 border border-slate-800/80 text-xs text-slate-300 leading-relaxed">
-          <span class="text-amber-400 font-bold">★ Vị trí & Đặc điểm:</span> ${t.customLabel && t.highlight.includes('Ngoại') && !t.customLabel.toLowerCase().includes('ngoại') ? `Bàn ${t.customLabel} • ${t.position}` : t.highlight}
+        <div class="bg-[#100d0b] rounded-xl p-3 my-3 border border-[#2e241b] text-xs text-[#c5baa8] leading-relaxed">
+          <span class="text-[#e5c07b] font-bold">★ Vị trí & Đặc điểm:</span> ${t.customLabel && t.highlight.includes('Ngoại') && !t.customLabel.toLowerCase().includes('ngoại') ? `Bàn ${t.customLabel} • ${t.position}` : t.highlight}
         </div>
 
         <div class="flex-1 flex flex-col">
-          <div class="flex items-center justify-between text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2">
+          <div class="flex items-center justify-between text-[11px] font-bold text-[#a89f91] uppercase tracking-wider mb-2">
             <div class="flex items-center gap-2">
               <span>Danh sách thành viên (${t.guests.length} nhóm)</span>
-              <button onclick="startEditMode('desktop', '${t.id}')" class="text-[10px] text-amber-400 hover:text-amber-300 font-bold px-2 py-0.5 rounded bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 transition lowercase" title="Sửa danh sách khách mời">
+              <button onclick="startEditMode('desktop', '${t.id}')" class="text-[10px] text-[#e5c07b] hover:text-[#f3e5ab] font-bold px-2 py-0.5 rounded bg-[#241c16] hover:bg-[#34271d] border border-[#382d22] transition lowercase" title="Sửa danh sách khách mời">
                 ✏️ sửa khách
               </button>
             </div>
             <span>Số lượng</span>
           </div>
 
-          <ul class="divide-y divide-slate-800/60 overflow-y-auto max-h-[280px] custom-scrollbar pr-1">
+          <ul class="divide-y divide-[#2a221a] bg-[#100d0b] rounded-xl border border-[#2e241b] p-1 overflow-y-auto max-h-[280px] custom-scrollbar pr-1">
             ${guestListHtml}
           </ul>
         </div>
 
-        <div class="mt-4 pt-3 border-t border-slate-800 flex items-center justify-between text-xs">
-          <span class="text-slate-400">Tiêu chuẩn: <strong class="text-amber-300">1 bàn 10 khách</strong></span>
+        <div class="mt-4 pt-3 border-t border-[#382d22] flex items-center justify-between text-xs">
+          <span class="text-[#a89f91]">Tiêu chuẩn: <strong class="text-[#e5c07b]">1 bàn 10 khách</strong></span>
           <span class="${t.guestCount === 10 ? 'text-emerald-400' : (t.guestCount > 10 ? 'text-amber-400' : 'text-blue-400')} font-bold">
             ${isSpare ? 'Bàn Dự Bị (Còn 10 chỗ)' : (t.guestCount === 10 ? '✓ Đủ 10 khách' : (t.guestCount > 10 ? '⚠ Vượt tiêu chuẩn' : `Còn trống ${10 - t.guestCount} chỗ`))}
           </span>
@@ -3002,13 +3241,12 @@
       const modal = document.getElementById('mobile-table-modal');
       const modalHeader = document.getElementById('mobile-modal-header');
       const modalBody = document.getElementById('mobile-modal-body');
-      const modalFooterInfo = document.getElementById('mobile-modal-footer-info');
 
       // Check if in edit mode
       if (activeEditSession.mobile.isEditing && activeEditSession.mobile.tableId === tableId) {
         modalHeader.innerHTML = `
           <div class="flex items-center gap-2">
-            <span class="text-xs font-bold px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/40">CHẾ ĐỘ CHỈNH SỬA & ĐỔI BÀN</span>
+            <span class="text-xs font-bold px-2 py-0.5 rounded bg-[#d4af37]/20 text-[#e5c07b] border border-[#d4af37]/40">CHẾ ĐỘ CHỈNH SỬA & ĐỔI BÀN</span>
           </div>
           <h3 class="text-base font-black text-white mt-1">${t.sideName} - Bàn ${t.tableNo}</h3>
         `;
@@ -3022,14 +3260,14 @@
       if (userMode === 'senior') {
         const isSpare = t.group === 'spare';
         const mainColor = getTableColor(t);
-        const sideBadgeClass = t.side === 'groom' ? 'bg-amber-500/20 text-amber-300 border-amber-500/50' : 'bg-rose-500/20 text-rose-300 border-rose-500/50';
+        const sideBadgeClass = t.side === 'groom' ? 'bg-[#d4af37]/20 text-[#e5c07b] border-[#c5a059]/60' : 'bg-[#d97d8f]/20 text-[#fda4af] border-[#d97d8f]/60';
         
         modalHeader.innerHTML = `
           <div class="flex items-center justify-between w-full">
             <span class="text-xs font-black px-3 py-1 rounded-full border ${sideBadgeClass}">
               ${t.sideName.toUpperCase()}
             </span>
-            <span class="text-xs text-slate-300 font-bold">📍 ${t.position}</span>
+            <span class="text-xs text-[#c5baa8] font-bold">📍 ${t.position}</span>
           </div>
           <h3 class="text-2xl font-black text-white mt-1.5 flex items-center gap-2 flex-wrap">
             <span>BÀN ${t.tableNo}:</span>
@@ -3039,28 +3277,28 @@
 
         modalBody.innerHTML = `
           <div class="space-y-3">
-            <div class="text-xs font-bold text-amber-300 uppercase tracking-wider flex items-center justify-between">
-              <span class="flex items-center gap-1.5">👥 <span>Danh Sách Khách Ngồi Cùng Bàn</span></span>
-              <span class="text-slate-400 font-medium">(${t.guestCount} người)</span>
+            <div class="text-xs font-bold text-[#e5c07b] uppercase tracking-wider flex items-center justify-between">
+              <span class="flex items-center gap-1.5">👥 <span></span></span>
+              <span class="text-[#a89f91] font-medium">(${t.guestCount} người)</span>
             </div>
 
-            <ul class="divide-y divide-slate-800/80 bg-slate-950/80 rounded-2xl border border-slate-800 p-2">
+            <ul class="divide-y divide-[#2a221a] bg-[#100d0b] rounded-2xl border border-[#2e241b] p-2">
               ${t.guests.length === 0 ? `
-                <li class="py-6 text-center text-slate-400 text-sm italic">
+                <li class="py-6 text-center text-[#a89f91] text-sm italic">
                   Bàn dự bị gồm 10 chỗ ngồi tiếp đón khách thân tình.
                 </li>
               ` : t.guests.map((g, idx) => `
-                <li class="flex items-center justify-between py-2.5 px-3 hover:bg-slate-800/40 rounded-xl transition">
+                <li class="flex items-center justify-between py-2.5 px-3 hover:bg-[#1c1511] rounded-xl transition">
                   <div class="flex items-center gap-3">
-                    <span class="w-7 h-7 rounded-full bg-slate-800 text-xs font-black text-amber-400 flex items-center justify-center border border-slate-700 shadow-sm flex-shrink-0">
+                    <span class="w-7 h-7 rounded-full bg-[#241c16] text-xs font-black text-[#e5c07b] flex items-center justify-center border border-[#382d22] shadow-sm flex-shrink-0">
                       ${idx + 1}
                     </span>
                     <div>
                       <div class="text-sm sm:text-base font-bold text-white">${g.name}</div>
-                      ${g.note ? `<div class="text-xs text-amber-300/80 font-medium">${g.note}</div>` : ''}
+                      ${g.note ? `<div class="text-xs text-[#e5c07b]/80 font-medium">${g.note}</div>` : ''}
                     </div>
                   </div>
-                  <span class="px-2.5 py-1 rounded-lg text-xs font-black ${g.count > 0 ? 'bg-amber-500/15 text-amber-300 border border-amber-500/30' : 'bg-slate-800 text-slate-400'}">
+                  <span class="px-2.5 py-1 rounded-lg text-xs font-black ${g.count > 0 ? 'bg-[#241c16] text-[#e5c07b] border border-[#382d22]' : 'bg-[#241c16] text-[#a89f91]'}">
                     ${g.count > 0 ? g.count + ' người' : 'Dự bị'}
                   </span>
                 </li>
@@ -3069,11 +3307,6 @@
           </div>
         `;
 
-        modalFooterInfo.innerHTML = `
-          <button onclick="closeMobileModal()" class="w-full py-3 bg-slate-800 hover:bg-slate-700 text-white font-black text-sm rounded-xl transition cursor-pointer shadow">
-            ✕ ĐÓNG LẠI (XEM BẢN ĐỒ)
-          </button>
-        `;
         modal.classList.remove('hidden');
         document.body.classList.add('overflow-hidden');
         return;
@@ -3081,7 +3314,7 @@
 
       const isSpare = t.group === 'spare';
       const mainColor = getTableColor(t);
-      const badgeSideColor = t.side === 'groom' ? 'border-amber-500/50 bg-amber-500/20 text-amber-300' : 'border-rose-500/50 bg-rose-500/20 text-rose-300';
+      const badgeSideColor = t.side === 'groom' ? 'border-[#c5a059]/60 bg-[#d4af37]/20 text-[#e5c07b]' : 'border-[#d97d8f]/60 bg-[#d97d8f]/20 text-[#fda4af]';
 
       modalHeader.innerHTML = `
         <div class="flex items-center gap-1.5 flex-wrap">
@@ -3089,22 +3322,22 @@
           <span class="text-[11px] font-black px-2 py-0.5 rounded shadow-sm" style="background-color: ${mainColor}25; color: ${mainColor}; border: 1px solid ${mainColor}60;">
             🏷️ ${escapeXml(t.customLabel || t.displayCategory)}
           </span>
-          <span class="text-xs text-slate-400">${t.status}</span>
+          <span class="text-xs text-[#a89f91]">${t.status}</span>
         </div>
         <h3 class="text-lg font-black text-white mt-1 flex items-center gap-1.5 flex-wrap">
           <span>BÀN ${t.tableNo}:</span>
           <span style="color: ${mainColor};">${escapeXml(t.customLabel || t.groupName || t.displayCategory)}</span>
         </h3>
-        <p class="text-[11px] text-slate-400 mt-0.5">📍 ${t.position}</p>
+        <p class="text-[11px] text-[#a89f91] mt-0.5">📍 ${t.position}</p>
       `;
 
       let guestsHtml = '';
       if (isSpare && t.guestCount === 0) {
         guestsHtml = `
-          <div class="py-6 text-center text-slate-500 text-xs italic bg-slate-950/40 rounded-xl border border-dashed border-slate-800 p-3">
+          <div class="py-6 text-center text-[#a89f91] text-xs italic bg-[#100d0b] rounded-xl border border-dashed border-[#382d22] p-3">
             Bàn dự bị duy nhất (${t.sideName}).<br>Kê sẵn 10 chén đũa dự phòng tiếp đón khách phát sinh.
             <div class="mt-2.5">
-              <button onclick="startEditMode('mobile', '${t.id}')" class="px-3 py-1.5 bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 rounded-lg text-xs font-bold border border-amber-500/40 transition">
+              <button onclick="startEditMode('mobile', '${t.id}')" class="px-3 py-1.5 bg-[#241c16] hover:bg-[#34271d] text-[#e5c07b] rounded-lg text-xs font-bold border border-[#d4af37]/40 transition">
                 ➕ Thêm khách vào bàn
               </button>
             </div>
@@ -3112,10 +3345,10 @@
         `;
       } else if (t.guests.length === 0) {
         guestsHtml = `
-          <div class="py-6 text-center text-slate-500 text-xs italic bg-slate-950/40 rounded-xl border border-dashed border-slate-800 p-3">
+          <div class="py-6 text-center text-[#a89f91] text-xs italic bg-[#100d0b] rounded-xl border border-dashed border-[#382d22] p-3">
             Bàn hiện chưa có khách nào.
             <div class="mt-2.5">
-              <button onclick="startEditMode('mobile', '${t.id}')" class="px-3 py-1.5 bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 rounded-lg text-xs font-bold border border-amber-500/40 transition">
+              <button onclick="startEditMode('mobile', '${t.id}')" class="px-3 py-1.5 bg-[#241c16] hover:bg-[#34271d] text-[#e5c07b] rounded-lg text-xs font-bold border border-[#d4af37]/40 transition">
                 ➕ Thêm khách vào bàn
               </button>
             </div>
@@ -3123,32 +3356,38 @@
         `;
       } else {
         guestsHtml = `
-          <div class="flex items-center justify-between text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1 px-1">
+          <div class="flex items-center justify-between text-[11px] font-bold text-[#a89f91] uppercase tracking-wider mb-1 px-1">
             <div class="flex items-center gap-2">
               <span>Danh sách khách (${t.guests.length} nhóm)</span>
-              <button onclick="startEditMode('mobile', '${t.id}')" class="text-[10px] text-amber-400 hover:text-amber-300 font-bold px-1.5 py-0.5 rounded bg-amber-500/10 border border-amber-500/30 lowercase">
+              <button onclick="startEditMode('mobile', '${t.id}')" class="text-[10px] text-[#e5c07b] hover:text-[#f3e5ab] font-bold px-1.5 py-0.5 rounded bg-[#241c16] border border-[#382d22] lowercase">
                 ✏️ sửa
               </button>
             </div>
             <span>Số lượng</span>
           </div>
-          <ul class="divide-y divide-slate-800/80 bg-slate-950/70 rounded-xl border border-slate-800/80 p-1">
-            ${t.guests.map((g, idx) => `
-              <li class="flex items-center justify-between py-2 px-2.5 hover:bg-slate-800/40 rounded-lg">
+          <ul class="divide-y divide-[#2a221a] bg-[#100d0b] rounded-xl border border-[#2e241b] p-1">
+            ${t.guests.map((g, idx) => {
+              const isGuestMatch = Boolean(currentSearchQuery && (matchQuery(g.name, currentSearchQuery) || matchQuery(g.note, currentSearchQuery)));
+              return `
+              <li class="flex items-center justify-between py-2 px-2.5 rounded-lg transition ${isGuestMatch ? 'bg-[#d4af37]/25 border border-[#d4af37]/80 shadow-md ring-1 ring-[#d4af37]/40' : 'hover:bg-[#1c1511]'}">
                 <div class="flex items-center gap-2">
-                  <span class="w-5 h-5 rounded-full bg-slate-800 text-[10px] font-bold text-amber-300 flex items-center justify-center border border-slate-700">
+                  <span class="w-5 h-5 rounded-full ${isGuestMatch ? 'bg-[#d4af37] text-[#18110b] font-black' : 'bg-[#241c16] text-[#e5c07b] font-bold border border-[#382d22]'} text-[10px] flex items-center justify-center">
                     ${idx + 1}
                   </span>
                   <div>
-                    <div class="text-xs font-bold text-slate-100">${g.name}</div>
-                    <div class="text-[10px] text-slate-400">${g.note}</div>
+                    <div class="text-xs font-bold ${isGuestMatch ? 'text-[#f3e5ab]' : 'text-[#f5f2eb]'} flex items-center gap-1.5">
+                      <span>${g.name}</span>
+                      ${isGuestMatch ? '<span class="text-[9px] px-1 py-0.2 rounded bg-[#d4af37] text-[#18110b] font-black">Khách tìm kiếm</span>' : ''}
+                    </div>
+                    <div class="text-[10px] text-[#a89f91]">${g.note}</div>
                   </div>
                 </div>
-                <span class="px-2 py-0.5 rounded text-xs font-bold ${g.count > 0 ? 'bg-amber-500/10 text-amber-300 border border-amber-500/30' : 'bg-slate-800 text-slate-500'}">
+                <span class="px-2 py-0.5 rounded text-xs font-bold ${g.count > 0 ? (isGuestMatch ? 'bg-[#d4af37] text-[#18110b] font-bold' : 'bg-[#241c16] text-[#e5c07b] border border-[#382d22]') : 'bg-[#241c16] text-[#a89f91]'}">
                   ${g.count > 0 ? g.count + ' người' : 'Dự bị'}
                 </span>
               </li>
-            `).join('')}
+              `;
+            }).join('')}
           </ul>
         `;
       }
@@ -3156,33 +3395,29 @@
       modalBody.innerHTML = `
         <!-- Edit Mode Trigger Button -->
         <div class="flex items-center gap-2">
-          <button onclick="startEditMode('mobile', '${t.id}')" class="flex-1 py-2.5 px-3 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 border border-amber-500/50 text-amber-300 font-bold text-xs flex items-center justify-center gap-1.5 transition shadow">
+          <button onclick="startEditMode('mobile', '${t.id}')" class="flex-1 py-2.5 px-3 rounded-xl bg-[#241c16] hover:bg-[#34271d] border border-[#d4af37]/50 text-[#e5c07b] font-bold text-xs flex items-center justify-center gap-1.5 transition shadow">
             <span>✏️</span> <span>Chỉnh Sửa Bàn, Danh Sách Khách & Đổi Bàn</span>
           </button>
         </div>
 
-        <div class="flex items-center justify-between bg-slate-950/80 rounded-xl p-3 border border-slate-800">
+        <div class="flex items-center justify-between bg-[#100d0b] rounded-xl p-3 border border-[#2e241b]">
           <div>
-            <div class="text-[10px] text-slate-400 uppercase font-semibold">Khách đang xếp</div>
-            <div class="text-2xl font-black text-amber-400">${t.guestCount} <span class="text-xs font-normal text-slate-400">/ 10 khách</span></div>
+            <div class="text-[10px] text-[#a89f91] uppercase font-semibold">Khách đang xếp</div>
+            <div class="text-2xl font-black text-[#e5c07b]">${t.guestCount} <span class="text-xs font-normal text-[#a89f91]">/ 10 khách</span></div>
           </div>
           <div class="text-right">
-            <div class="text-[10px] text-slate-400 uppercase font-semibold">Tiêu chuẩn bàn</div>
+            <div class="text-[10px] text-[#a89f91] uppercase font-semibold">Tiêu chuẩn bàn</div>
             <div class="text-xs font-bold ${t.guestCount === 10 ? 'text-emerald-400' : (t.guestCount > 10 ? 'text-amber-400' : 'text-blue-400')}">
               ${isSpare ? 'Bàn Dự Bị (Còn 10 chỗ)' : (t.guestCount === 10 ? '✓ Đủ 10 khách' : (t.guestCount > 10 ? '⚠ Vượt tiêu chuẩn' : `Còn trống ${10 - t.guestCount} chỗ`))}
             </div>
           </div>
         </div>
 
-        <div class="bg-slate-950/70 rounded-xl p-2.5 border border-slate-800/80 text-xs text-slate-300">
-          <span class="text-amber-400 font-bold">★ Vị trí:</span> ${t.highlight}
+        <div class="bg-[#100d0b] rounded-xl p-2.5 border border-[#2e241b] text-xs text-[#c5baa8]">
+          <span class="text-[#e5c07b] font-bold">★ Vị trí:</span> ${t.highlight}
         </div>
 
         ${guestsHtml}
-      `;
-
-      modalFooterInfo.innerHTML = `
-        <span>Tiêu chuẩn: <strong class="text-amber-400">1 bàn 10 khách</strong></span>
       `;
 
       modal.classList.remove('hidden');
@@ -3258,7 +3493,10 @@
         }
       });
 
-      // 2. Touch Drag-to-Pan & Swipe (Mobile / Tablet)
+      // 2. Touch Drag-to-Pan, Swipe & Pinch-to-Zoom (Mobile / Tablet)
+      let initialPinchDist = 0;
+      let initialZoomOnPinch = 1;
+
       scrollArea.addEventListener('touchstart', (e) => {
         if (e.touches.length === 1) {
           const t = e.touches[0];
@@ -3266,10 +3504,28 @@
           touchStartY = t.clientY;
           isTouchPanning = true;
           window._hasDraggedMap = false;
+        } else if (e.touches.length === 2) {
+          isTouchPanning = false;
+          initialPinchDist = Math.hypot(
+            e.touches[0].clientX - e.touches[1].clientX,
+            e.touches[0].clientY - e.touches[1].clientY
+          );
+          initialZoomOnPinch = currentZoom;
         }
       }, { passive: true });
 
       scrollArea.addEventListener('touchmove', (e) => {
+        if (e.touches.length === 2 && initialPinchDist > 0) {
+          const dist = Math.hypot(
+            e.touches[0].clientX - e.touches[1].clientX,
+            e.touches[0].clientY - e.touches[1].clientY
+          );
+          const factor = dist / initialPinchDist;
+          const newZoom = Math.min(Math.max(initialZoomOnPinch * factor, 0.5), 3.0);
+          currentZoom = Math.round(newZoom * 100) / 100;
+          applyZoom();
+          return;
+        }
         if (!isTouchPanning || e.touches.length !== 1) return;
         const t = e.touches[0];
         const dx = t.clientX - touchStartX;
@@ -3280,12 +3536,17 @@
         }
       }, { passive: true });
 
-      scrollArea.addEventListener('touchend', () => {
-        isTouchPanning = false;
-        if (window._hasDraggedMap) {
-          setTimeout(() => {
-            window._hasDraggedMap = false;
-          }, 120);
+      scrollArea.addEventListener('touchend', (e) => {
+        if (e.touches.length < 2) {
+          initialPinchDist = 0;
+        }
+        if (e.touches.length === 0) {
+          isTouchPanning = false;
+          if (window._hasDraggedMap) {
+            setTimeout(() => {
+              window._hasDraggedMap = false;
+            }, 120);
+          }
         }
       }, { passive: true });
 
@@ -3341,12 +3602,12 @@
       const centerX = scrollArea.scrollLeft + scrollArea.clientWidth / 2;
       const centerY = scrollArea.scrollTop + scrollArea.clientHeight / 2;
 
-      const baseW = Math.min(Math.max(scrollArea.clientWidth - 20, 320), 720);
+      const baseW = Math.min(Math.max(scrollArea.clientWidth - 16, 320), 940);
 
       if (Math.abs(currentZoom - 1) < 0.05) {
         currentZoom = 1;
         container.style.width = '100%';
-        container.style.maxWidth = '720px';
+        container.style.maxWidth = '940px';
         container.style.transform = 'none';
         if (panHint && currentFilter === 'all') {
           panHint.classList.add('hidden');
@@ -3417,11 +3678,11 @@
       const btnAdmin = document.getElementById('btn-mode-admin');
       if (btnSenior && btnAdmin) {
         if (isSenior) {
-          btnSenior.className = 'px-3 sm:px-3.5 py-1.5 rounded-lg text-xs font-black transition cursor-pointer bg-gradient-to-r from-amber-500 to-yellow-400 text-slate-950 shadow';
-          btnAdmin.className = 'px-3 sm:px-3.5 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition cursor-pointer';
+          btnSenior.className = 'px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg text-xs font-black transition cursor-pointer bg-gradient-to-r from-[#d4af37] to-[#e5c07b] text-[#18110b] shadow';
+          btnAdmin.className = 'px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg text-xs font-semibold text-[#a89f91] hover:text-white transition cursor-pointer';
         } else {
-          btnSenior.className = 'px-3 sm:px-3.5 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition cursor-pointer';
-          btnAdmin.className = 'px-3 sm:px-3.5 py-1.5 rounded-lg text-xs font-black transition cursor-pointer bg-slate-800 text-amber-300 border border-amber-500/50 shadow';
+          btnSenior.className = 'px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg text-xs font-semibold text-[#a89f91] hover:text-white transition cursor-pointer';
+          btnAdmin.className = 'px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg text-xs font-black transition cursor-pointer bg-[#3a2e22] text-[#e5c07b] border border-[#c5a059]/60 shadow';
         }
       }
 
@@ -3495,32 +3756,32 @@
         }
       });
 
-      // Update senior giant side buttons (clean single-row layout on mobile)
+      // Update senior side buttons (clean segmented control on mobile)
       const sGroom = document.getElementById('senior-btn-groom');
       const sBride = document.getElementById('senior-btn-bride');
       const sAll = document.getElementById('senior-btn-all');
 
       if (sGroom) {
         if (currentFilter === 'groom') {
-          sGroom.className = 'p-2 sm:p-3 rounded-xl sm:rounded-2xl bg-gradient-to-r from-amber-500 to-yellow-400 text-slate-950 font-black shadow-lg shadow-amber-500/30 transition transform scale-[1.02] cursor-pointer ring-2 ring-white';
+          sGroom.className = 'py-1.5 sm:py-2 px-1 rounded-lg bg-gradient-to-r from-[#d4af37] via-[#e5c07b] to-[#c5a059] text-[#18110b] font-black shadow transition transform active:scale-95 cursor-pointer text-center text-xs sm:text-sm uppercase tracking-wide leading-tight';
         } else {
-          sGroom.className = 'p-2 sm:p-3 rounded-xl sm:rounded-2xl bg-amber-950/50 hover:bg-amber-900/60 text-amber-200 border border-amber-600/50 transition cursor-pointer';
+          sGroom.className = 'py-1.5 sm:py-2 px-1 rounded-lg bg-transparent hover:bg-[#251e18] text-[#c5baa8] hover:text-white font-semibold transition cursor-pointer text-center text-xs sm:text-sm uppercase tracking-wide leading-tight';
         }
       }
 
       if (sBride) {
         if (currentFilter === 'bride') {
-          sBride.className = 'p-2 sm:p-3 rounded-xl sm:rounded-2xl bg-gradient-to-r from-rose-500 to-pink-500 text-white font-black shadow-lg shadow-rose-500/30 transition transform scale-[1.02] cursor-pointer ring-2 ring-white';
+          sBride.className = 'py-1.5 sm:py-2 px-1 rounded-lg bg-gradient-to-r from-[#d97d8f] via-[#e8a598] to-[#d97d8f] text-[#18110b] font-black shadow transition transform active:scale-95 cursor-pointer text-center text-xs sm:text-sm uppercase tracking-wide leading-tight';
         } else {
-          sBride.className = 'p-2 sm:p-3 rounded-xl sm:rounded-2xl bg-rose-950/50 hover:bg-rose-900/60 text-rose-200 border border-rose-600/50 transition cursor-pointer';
+          sBride.className = 'py-1.5 sm:py-2 px-1 rounded-lg bg-transparent hover:bg-[#251e18] text-[#c5baa8] hover:text-white font-semibold transition cursor-pointer text-center text-xs sm:text-sm uppercase tracking-wide leading-tight';
         }
       }
 
       if (sAll) {
         if (currentFilter === 'all') {
-          sAll.className = 'p-2 sm:p-3 rounded-xl sm:rounded-2xl bg-slate-700 text-white font-bold border border-slate-500 transition cursor-pointer ring-2 ring-slate-300';
+          sAll.className = 'py-1.5 sm:py-2 px-1 rounded-lg bg-[#3a2e22] text-[#f5f2eb] font-bold shadow border border-[#c5a059]/60 transition transform active:scale-95 cursor-pointer text-center text-xs sm:text-sm uppercase tracking-wide leading-tight';
         } else {
-          sAll.className = 'p-2 sm:p-3 rounded-xl sm:rounded-2xl bg-slate-800/90 hover:bg-slate-700 text-slate-200 font-bold border border-slate-700 transition cursor-pointer';
+          sAll.className = 'py-1.5 sm:py-2 px-1 rounded-lg bg-transparent hover:bg-[#251e18] text-[#c5baa8] hover:text-white font-semibold transition cursor-pointer text-center text-xs sm:text-sm uppercase tracking-wide leading-tight';
         }
       }
 
@@ -3544,7 +3805,12 @@
     }
 
     function handleSearch(query) {
-      const q = query.trim().toLowerCase();
+      const q = (query || '').trim();
+      currentSearchQuery = q;
+
+      // Close mobile modal if open so the floor plan and illuminated tables are clearly visible
+      closeMobileModal();
+
       const badge = document.getElementById('search-badge');
       const badgeAdmin = document.getElementById('search-badge-admin');
 
@@ -3552,51 +3818,68 @@
         if (badge) badge.classList.add('hidden');
         if (badgeAdmin) badgeAdmin.classList.add('hidden');
         renderHallPlan();
+        if (document.getElementById('list-container') && !document.getElementById('list-container').classList.contains('hidden')) {
+          renderListGrid();
+        }
         return;
       }
 
-      let matches = [];
-      allTablesData.forEach(t => {
-        const tableMatch = t.displayCategory.toLowerCase().includes(q) || 
-                           t.groupName.toLowerCase().includes(q) ||
-                           (t.customLabel && t.customLabel.toLowerCase().includes(q)) ||
-                           `bàn ${t.tableNo}`.includes(q);
-        const guestMatch = t.guests.some(g => g.name.toLowerCase().includes(q) || g.note.toLowerCase().includes(q));
-
-        const node = document.getElementById(`svg-table-${t.id}`);
-        if (!node) return;
-
-        if (tableMatch || guestMatch) {
-          matches.push(t);
-          node.style.opacity = '1';
-        } else {
-          node.style.opacity = '0.15';
-        }
-      });
+      const matches = allTablesData.filter(t => isTableSearchMatch(t, q));
 
       if (badge) {
-        badge.textContent = `${matches.length} bàn`;
+        badge.innerHTML = `<span>${matches.length} bàn</span> <button onclick="clearSearch()" class="ml-1 text-[#18110b] hover:text-black font-black" title="Xóa tìm kiếm">✕</button>`;
         badge.classList.remove('hidden');
       }
       if (badgeAdmin) {
-        badgeAdmin.textContent = `${matches.length} bàn`;
+        badgeAdmin.innerHTML = `<span>${matches.length} bàn</span> <button onclick="clearSearch()" class="ml-1 text-[#e5c07b] hover:text-white font-black" title="Xóa tìm kiếm">✕</button>`;
         badgeAdmin.classList.remove('hidden');
       }
 
       if (matches.length > 0) {
-        const first = matches[0];
-        // If current filter isolates to one side and searched table is on the other, switch view
-        if (currentFilter === 'groom' && first.side === 'bride') {
+        const hasGroom = matches.some(m => m.side === 'groom');
+        const hasBride = matches.some(m => m.side === 'bride');
+
+        // If user is locked to one side but matches only exist on other side, switch view
+        if (currentFilter === 'groom' && !hasGroom && hasBride) {
           filterGroup('bride');
-        } else if (currentFilter === 'bride' && first.side === 'groom') {
+        } else if (currentFilter === 'bride' && !hasBride && hasGroom) {
           filterGroup('groom');
+        } else if ((currentFilter === 'groom' || currentFilter === 'bride') && hasGroom && hasBride) {
+          filterGroup('all');
+        } else {
+          renderHallPlan();
         }
-        currentSelectedId = first.id;
+
+        // On desktop sidebar only (>= 1024px), inspect the first match
+        if (window.innerWidth >= 1024) {
+          currentSelectedId = matches[0].id;
+          renderHallPlan();
+          renderTableInspector(matches[0].id);
+        }
+        // IMPORTANT: On mobile (< 1024px), DO NOT open popup modal automatically!
+        // Only illuminate the matching tables. User taps a table to view guest list modal.
+      } else {
         renderHallPlan();
-        renderTableInspector(first.id);
-        if (window.innerWidth < 1024) {
-          openMobileModal(first.id);
-        }
+      }
+
+      if (document.getElementById('list-container') && !document.getElementById('list-container').classList.contains('hidden')) {
+        renderListGrid();
+      }
+    }
+
+    function clearSearch() {
+      currentSearchQuery = '';
+      const sInput = document.getElementById('search-input');
+      const sInputAdmin = document.getElementById('search-input-admin');
+      if (sInput) sInput.value = '';
+      if (sInputAdmin) sInputAdmin.value = '';
+      const badge = document.getElementById('search-badge');
+      const badgeAdmin = document.getElementById('search-badge-admin');
+      if (badge) badge.classList.add('hidden');
+      if (badgeAdmin) badgeAdmin.classList.add('hidden');
+      renderHallPlan();
+      if (document.getElementById('list-container') && !document.getElementById('list-container').classList.contains('hidden')) {
+        renderListGrid();
       }
     }
 
@@ -3606,9 +3889,9 @@
         const btn = document.getElementById('btn-list-filter-' + f);
         if (btn) {
           if (f === filter) {
-            btn.className = 'px-2.5 py-1 rounded bg-amber-500 text-slate-950 font-bold';
+            btn.className = 'px-2.5 py-1 rounded bg-[#d4af37] text-[#18110b] font-bold';
           } else {
-            btn.className = 'px-2.5 py-1 rounded text-slate-300 hover:text-white font-bold';
+            btn.className = 'px-2.5 py-1 rounded text-[#c5baa8] hover:text-white font-bold';
           }
         }
       });
@@ -3628,7 +3911,7 @@
         const isAvailable = t.guestCount < 10;
         const emptyCount = Math.max(0, 10 - t.guestCount);
         return `
-          <div onclick="jumpFromListToTable('${t.id}')" class="bg-slate-950 border ${isAvailable && listViewFilter === 'available' ? 'border-emerald-500/80 shadow-md shadow-emerald-950/40' : 'border-slate-800'} hover:border-amber-400/80 rounded-xl p-3.5 flex flex-col justify-between cursor-pointer transition">
+          <div onclick="jumpFromListToTable('${t.id}')" class="bg-[#15110e] border ${isAvailable && listViewFilter === 'available' ? 'border-emerald-500/80 shadow-md shadow-emerald-950/40' : 'border-[#382d22]'} hover:border-[#d4af37]/80 rounded-xl p-3.5 flex flex-col justify-between cursor-pointer transition shadow-md">
             <div>
               <div class="flex items-center justify-between mb-2">
                 <span class="text-xs font-bold px-2 py-0.5 rounded border" style="border-color: ${mainColor}60; background-color: ${mainColor}20; color: ${mainColor};">
@@ -3636,21 +3919,21 @@
                 </span>
                 ${isAvailable 
                   ? `<span class="text-xs font-bold text-emerald-400 bg-emerald-950/60 border border-emerald-800/80 px-2 py-0.5 rounded">${t.guestCount}/10 khách (${emptyCount} chỗ trống)</span>` 
-                  : `<span class="text-xs font-bold text-amber-400">${t.guestCount} / 10 khách</span>`}
+                  : `<span class="text-xs font-bold text-[#e5c07b]">${t.guestCount} / 10 khách</span>`}
               </div>
               <h4 class="font-bold text-sm text-white">${t.groupName}</h4>
-              <p class="text-[11px] text-slate-400 mb-2">${t.position}</p>
+              <p class="text-[11px] text-[#a89f91] mb-2">${t.position}</p>
 
-              <div class="space-y-1 text-xs border-t border-slate-800/80 pt-2">
+              <div class="space-y-1 text-xs border-t border-[#2a221a] pt-2">
                 ${t.guests.length === 0 ? `<div class="text-emerald-400 font-semibold text-[11px] italic">★ Bàn dự bị sẵn sàng (Trống 10 chỗ)</div>` : t.guests.map(g => `
-                  <div class="flex items-center justify-between text-slate-300 text-[11px]">
+                  <div class="flex items-center justify-between text-[#c5baa8] text-[11px]">
                     <span class="truncate">${g.name}</span>
-                    <span class="text-amber-300/90 font-semibold">${g.count > 0 ? g.count + ' ng' : 'Dự bị'}</span>
+                    <span class="text-[#e5c07b] font-semibold">${g.count > 0 ? g.count + ' ng' : 'Dự bị'}</span>
                   </div>
                 `).join('')}
               </div>
             </div>
-            <div class="mt-3 pt-2 border-t border-slate-800 text-[11px] text-amber-400 font-semibold text-right">
+            <div class="mt-3 pt-2 border-t border-[#2a221a] text-[11px] text-[#e5c07b] font-semibold text-right">
               Xem vị trí trên sơ đồ →
             </div>
           </div>
