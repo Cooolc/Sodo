@@ -73,51 +73,34 @@
 <body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col selection:bg-amber-500 selection:text-black">
 
   <header class="border-b border-slate-800 bg-slate-900/90 backdrop-blur sticky top-0 z-40">
-    <div class="max-w-7xl mx-auto px-3 sm:px-4 py-3 flex flex-wrap items-center justify-between gap-3">
-      <div class="flex items-center space-x-3">
-        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-500 via-rose-500 to-yellow-300 flex items-center justify-center text-slate-950 font-black text-lg shadow-lg shadow-amber-500/20 flex-shrink-0">
-          TG
-        </div>
-        <div>
-          <h1 class="text-base sm:text-lg md:text-xl font-bold bg-gradient-to-r from-amber-200 via-rose-300 to-yellow-400 bg-clip-text text-transparent">
-            Sơ Đồ Phân Bổ Chỗ Ngồi Sảnh Tiệc Cưới - Nhà Trai & Nhà Gái
-          </h1>
-          <p id="header-subtitle" class="text-xs text-slate-400 flex items-center gap-1.5 sm:gap-2 flex-wrap">
-            <span class="text-amber-300 font-bold text-xs sm:text-sm">❤️ Kính chúc Quý Khách & Người Thân một buổi tiệc vui vẻ, ấm cúng!</span>
-          </p>
-        </div>
-      </div>
-
+    <div class="max-w-7xl mx-auto px-3 sm:px-4 py-2 flex items-center justify-between gap-3">
       <!-- Mode Switcher Pill & Action buttons -->
-      <div class="flex items-center gap-2 sm:gap-3 flex-wrap no-print">
-        <!-- MODE TOGGLE PILL: DỄ DÙNG (CHỮ TO) vs QUẢN TRỊ -->
+      <div class="flex items-center gap-2 sm:gap-3 flex-wrap no-print w-full justify-between sm:justify-start">
+        <!-- MODE TOGGLE PILL: DỄ DÙNG vs QUẢN TRỊ -->
         <div class="flex items-center bg-slate-950 p-1 rounded-xl border border-slate-700 shadow-inner">
-          <button id="btn-mode-senior" onclick="setUserMode('senior')" class="px-2.5 sm:px-3 py-1 rounded-lg text-xs font-black transition flex items-center gap-1.5 cursor-pointer bg-gradient-to-r from-amber-500 to-yellow-400 text-slate-950 shadow" title="Giao diện tối giản, chữ to, siêu nét cho người lớn tuổi">
-            <span>👓 Chế Độ Dễ Dùng (Chữ To)</span>
+          <button id="btn-mode-senior" onclick="setUserMode('senior')" class="px-3 sm:px-3.5 py-1.5 rounded-lg text-xs font-black transition flex items-center cursor-pointer bg-gradient-to-r from-amber-500 to-yellow-400 text-slate-950 shadow" title="Giao diện tối giản, chữ to, siêu nét cho người lớn tuổi">
+            <span>Chế Độ Dễ Dùng</span>
           </button>
-          <button id="btn-mode-admin" onclick="setUserMode('admin')" class="px-2.5 sm:px-3 py-1 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition flex items-center gap-1.5 cursor-pointer" title="Giao diện đầy đủ công cụ quản lý, đổi bàn, đổi màu, Google Sheets">
-            <span>⚙️ Chế Độ Quản Trị</span>
+          <button id="btn-mode-admin" onclick="requestAdminMode()" class="px-3 sm:px-3.5 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition flex items-center cursor-pointer" title="Giao diện đầy đủ công cụ quản lý, đổi bàn, đổi màu, Google Sheets">
+            <span>Chế Độ Quản Trị</span>
           </button>
         </div>
 
         <!-- ADMIN ONLY HEADER ACTIONS (Hidden in Senior Mode) -->
-        <div id="admin-header-actions" class="hidden flex items-center gap-2">
-          <button onclick="window.print()" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition flex items-center gap-1.5 shadow">
-            <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
-            <span class="hidden sm:inline">In Sơ Đồ</span>
+        <div id="admin-header-actions" class="hidden flex items-center gap-2 flex-wrap">
+          <button onclick="window.print()" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition flex items-center shadow">
+            <span>In Sơ Đồ</span>
           </button>
           <div id="admin-status-badge">
-            <button onclick="handleAdminBadgeClick()" id="btn-admin-auth" class="px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition flex items-center gap-1.5 shadow" title="Đăng nhập mã PIN để có quyền chỉnh sửa">
-              <span id="admin-auth-dot" class="w-2 h-2 rounded-full bg-slate-500"></span>
-              <span id="admin-auth-text">🔒 Đăng Nhập PIN</span>
+            <button onclick="handleAdminBadgeClick()" id="btn-admin-auth" class="px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition flex items-center shadow" title="Đăng nhập mã PIN để có quyền chỉnh sửa">
+              <span id="admin-auth-dot" class="w-2 h-2 rounded-full bg-slate-500 mr-1.5"></span>
+              <span id="admin-auth-text">Đăng Nhập PIN</span>
             </button>
           </div>
-          <button onclick="openSyncModal()" class="px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-950/70 hover:bg-emerald-900 text-emerald-300 border border-emerald-700/80 transition flex items-center gap-1.5 shadow" title="Xuất / Nhập dữ liệu hoặc đồng bộ lên Vercel & Điện thoại">
-            <span>🔄</span>
-            <span class="hidden sm:inline">Đồng Bộ Dữ Liệu</span>
+          <button onclick="openSyncModal()" class="px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-950/70 hover:bg-emerald-900 text-emerald-300 border border-emerald-700/80 transition flex items-center shadow" title="Xuất / Nhập dữ liệu hoặc đồng bộ lên Vercel & Điện thoại">
+            <span>Đồng Bộ Dữ Liệu</span>
           </button>
-          <button id="btn-view-toggle" onclick="toggleListView()" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 transition flex items-center gap-1.5 shadow-lg shadow-amber-500/20">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"></path></svg>
+          <button id="btn-view-toggle" onclick="toggleListView()" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 transition flex items-center shadow-lg shadow-amber-500/20">
             <span id="btn-toggle-label">Xem Dạng Bảng</span>
           </button>
         </div>
@@ -131,36 +114,21 @@
       
       <!-- 1. SENIOR / GUEST QUICK BAR (Dành cho Người Lớn Tuổi & Khách Mời - Mặc định) -->
       <div id="senior-quick-bar" class="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
-        <!-- 2 Giant Side Buttons -->
-        <div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5 flex-1">
-          <button id="senior-btn-groom" onclick="filterGroup('groom')" class="p-3 sm:p-3.5 rounded-2xl bg-gradient-to-r from-amber-500 to-yellow-400 text-slate-950 font-black shadow-lg shadow-amber-500/25 text-left transition transform active:scale-95 cursor-pointer ring-2 ring-white">
-            <div class="flex items-center gap-2.5">
-              <span class="text-2xl sm:text-3xl">🏠</span>
-              <div>
-                <div class="text-xs sm:text-sm font-black uppercase tracking-wider">BÊN NHÀ TRAI</div>
-                <div class="text-[11px] font-bold text-amber-950/80">Bên Trái Sảnh (Phóng To)</div>
-              </div>
-            </div>
+        <!-- 3 Side Navigation Buttons (Neatly aligned on 1 row even on mobile, no logos) -->
+        <div class="grid grid-cols-3 gap-1.5 sm:gap-2.5 flex-1">
+          <button id="senior-btn-groom" onclick="filterGroup('groom')" class="p-2 sm:p-2.5 rounded-xl sm:rounded-2xl bg-gradient-to-r from-amber-500 to-yellow-400 text-slate-950 font-black shadow-lg shadow-amber-500/25 transition transform active:scale-95 cursor-pointer ring-2 ring-white text-center flex flex-col items-center justify-center">
+            <div class="text-xs sm:text-sm font-black uppercase tracking-wider leading-tight">NHÀ TRAI</div>
+            <div class="text-[10px] font-bold text-amber-950/80 hidden sm:block">Bên Trái (Phóng to)</div>
           </button>
 
-          <button id="senior-btn-bride" onclick="filterGroup('bride')" class="p-3 sm:p-3.5 rounded-2xl bg-rose-950/60 hover:bg-rose-900/80 text-rose-200 font-bold border border-rose-600/60 text-left transition transform active:scale-95 cursor-pointer">
-            <div class="flex items-center gap-2.5">
-              <span class="text-2xl sm:text-3xl">🌸</span>
-              <div>
-                <div class="text-xs sm:text-sm font-black uppercase tracking-wider">BÊN NHÀ GÁI</div>
-                <div class="text-[11px] font-semibold text-rose-300/80">Bên Phải Sảnh (Phóng To)</div>
-              </div>
-            </div>
+          <button id="senior-btn-bride" onclick="filterGroup('bride')" class="p-2 sm:p-2.5 rounded-xl sm:rounded-2xl bg-rose-950/60 hover:bg-rose-900/80 text-rose-200 font-bold border border-rose-600/60 transition transform active:scale-95 cursor-pointer text-center flex flex-col items-center justify-center">
+            <div class="text-xs sm:text-sm font-black uppercase tracking-wider leading-tight">NHÀ GÁI</div>
+            <div class="text-[10px] font-semibold text-rose-300/80 hidden sm:block">Bên Phải (Phóng to)</div>
           </button>
 
-          <button id="senior-btn-all" onclick="filterGroup('all')" class="col-span-2 sm:col-span-1 p-3 sm:p-3.5 rounded-2xl bg-slate-800/90 hover:bg-slate-700 text-slate-200 font-bold border border-slate-700 text-left transition cursor-pointer flex items-center justify-between sm:justify-start gap-2">
-            <div class="flex items-center gap-2.5">
-              <span class="text-xl sm:text-2xl">🏛️</span>
-              <div>
-                <div class="text-xs sm:text-sm font-bold uppercase">Toàn Bộ Sảnh</div>
-                <div class="text-[11px] text-slate-400 font-normal">Xem cả 2 bên</div>
-              </div>
-            </div>
+          <button id="senior-btn-all" onclick="filterGroup('all')" class="p-2 sm:p-2.5 rounded-xl sm:rounded-2xl bg-slate-800/90 hover:bg-slate-700 text-slate-200 font-bold border border-slate-700 transition cursor-pointer text-center flex flex-col items-center justify-center">
+            <div class="text-xs sm:text-sm font-bold uppercase tracking-wider leading-tight">TOÀN SẢNH</div>
+            <div class="text-[10px] text-slate-400 font-normal hidden sm:block">Xem cả 2 bên</div>
           </button>
         </div>
 
@@ -169,8 +137,8 @@
           <input 
             id="search-input" 
             type="text" 
-            placeholder="🔍 Tìm tên bạn hoặc số bàn..." 
-            class="w-full bg-slate-950 border-2 border-amber-500/60 focus:border-amber-400 rounded-2xl px-4 py-2.5 sm:py-3 text-sm sm:text-base text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-400/50 transition font-medium shadow-inner"
+            placeholder="Tìm tên khách hoặc số bàn..." 
+            class="w-full bg-slate-950 border-2 border-amber-500/60 focus:border-amber-400 rounded-xl sm:rounded-2xl px-3.5 sm:px-4 py-2 sm:py-2.5 text-xs sm:text-base text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-400/50 transition font-medium shadow-inner"
             oninput="handleSearch(this.value)"
           />
           <div id="search-badge" class="absolute right-3.5 top-2.5 sm:top-3 text-[11px] px-2 py-0.5 rounded-full bg-amber-500 text-slate-950 font-black hidden"></div>
@@ -242,18 +210,8 @@
       
       <!-- Top banner & zoom controls -->
       <div class="flex items-center justify-between text-xs text-slate-300 mb-2 sm:mb-3 border-b border-slate-800 pb-2 sm:pb-2.5 gap-2">
-        <div class="flex items-center gap-1.5 sm:gap-2 flex-wrap">
-          <button id="banner-btn-groom" onclick="filterGroup('groom')" class="px-2.5 sm:px-3 py-1 rounded-lg bg-amber-950/60 hover:bg-amber-900/80 border border-amber-500/80 text-amber-300 font-bold text-[11px] sm:text-xs shadow-sm transition flex items-center gap-1.5 cursor-pointer active:scale-95" title="Chỉ hiển thị và phóng to bàn Bên Nhà Trai cho người lớn tuổi dễ nhìn">
-            <span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span>
-            <span>← BÊN TRÁI: NHÀ TRAI (PHÓNG TO)</span>
-          </button>
-          <button id="banner-btn-bride" onclick="filterGroup('bride')" class="px-2.5 sm:px-3 py-1 rounded-lg bg-rose-950/60 hover:bg-rose-900/80 border border-rose-500/80 text-rose-300 font-bold text-[11px] sm:text-xs shadow-sm transition flex items-center gap-1.5 cursor-pointer active:scale-95" title="Chỉ hiển thị và phóng to bàn Bên Nhà Gái cho người lớn tuổi dễ nhìn">
-            <span class="w-2.5 h-2.5 rounded-full bg-rose-400"></span>
-            <span>BÊN PHẢI: NHÀ GÁI (PHÓNG TO) →</span>
-          </button>
-          <button id="banner-btn-all" onclick="filterGroup('all')" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-600 text-slate-300 font-bold text-[11px] sm:text-xs shadow-sm transition flex items-center gap-1 cursor-pointer hidden" title="Quay lại xem toàn bộ 2 bên sảnh tiệc">
-            <span>↺ Toàn Sảnh</span>
-          </button>
+        <div class="flex items-center gap-1.5 sm:gap-2">
+          <span class="font-bold text-amber-300 text-xs sm:text-sm">Sơ Đồ Mặt Bằng Sảnh Tiệc</span>
         </div>
 
         <div class="flex items-center gap-1.5 no-print flex-shrink-0">
@@ -351,26 +309,6 @@
         </div>
       </div>
 
-      <!-- 1. SENIOR LEGEND (Hiển thị to, rõ ràng cho Người Lớn Tuổi) -->
-      <div id="senior-legend" class="mt-2.5 sm:mt-3 pt-2.5 sm:pt-3 border-t border-slate-800 flex flex-wrap items-center justify-between gap-2.5 text-xs text-slate-300">
-        <div class="flex flex-wrap items-center gap-3 sm:gap-4 font-semibold">
-          <div class="flex items-center gap-1.5">
-            <span class="w-3.5 h-3.5 rounded-full bg-amber-500 shadow-sm"></span>
-            <span class="text-amber-300 font-bold">Bàn Nhà Trai</span>
-          </div>
-          <div class="flex items-center gap-1.5">
-            <span class="w-3.5 h-3.5 rounded-full bg-rose-500 shadow-sm"></span>
-            <span class="text-rose-300 font-bold">Bàn Nhà Gái</span>
-          </div>
-          <div class="flex items-center gap-1.5">
-            <span class="w-3.5 h-3.5 rounded-full bg-white shadow-sm ring-2 ring-white/50"></span>
-            <span class="text-white font-bold">Bàn Đang Chọn</span>
-          </div>
-        </div>
-        <div class="text-amber-300 font-bold text-xs sm:text-sm">
-          💡 Chạm vào bàn bất kỳ để xem danh sách khách ngồi cùng bàn
-        </div>
-      </div>
 
       <!-- 2. ADMIN LEGEND (Hiển thị chi tiết trong Chế Độ Quản Trị) -->
       <div id="admin-legend" class="hidden mt-2.5 sm:mt-3 pt-2.5 sm:pt-3 border-t border-slate-800 flex flex-wrap items-center justify-between gap-2.5 text-[11px] text-slate-400">
@@ -436,13 +374,6 @@
 
   </main>
 
-  <!-- Switch to Admin prompt at footer for Wedding organizers -->
-  <div id="senior-footer-prompt" class="text-center py-4 px-3 text-xs text-slate-500 no-print">
-    <span>Quý Khách đang ở <strong>Chế Độ Dễ Dùng (Chữ To)</strong>.</span>
-    <button onclick="setUserMode('admin')" class="ml-1 text-slate-400 hover:text-amber-400 underline font-semibold transition cursor-pointer">
-      ⚙️ Dành cho Ban Tổ Chức: Chuyển sang Chế Độ Quản Trị & Sửa Bàn
-    </button>
-  </div>
   <div id="sync-data-modal" class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-sm hidden transition-opacity duration-200">
     <div class="bg-slate-900 border border-slate-700 rounded-2xl max-w-2xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
       <!-- Modal Header -->
@@ -673,10 +604,6 @@
         <button type="button" onclick="submitAdminPin()" class="flex-1 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs transition shadow-lg shadow-amber-500/20">
           Xác Nhận PIN
         </button>
-      </div>
-
-      <div class="text-[11px] text-slate-500 pt-1">
-        💡 Mã PIN quản trị mặc định: <strong class="text-amber-400 font-mono">12345</strong>
       </div>
     </div>
   </div>
@@ -1617,7 +1544,7 @@
     let currentFilter = 'all';
     let currentZoom = 1;
     let listViewFilter = 'all';
-    let userMode = localStorage.getItem('sodo_user_mode') || 'senior';
+    let userMode = (sessionStorage.getItem('sodo_admin_authed') === 'true') ? (localStorage.getItem('sodo_user_mode') || 'senior') : 'senior';
 
     let activeEditSession = {
       mobile: { isEditing: false, tableId: null, selectedColor: '', tempLabel: '', tempGroup: '', tempGuests: [] },
@@ -2293,13 +2220,13 @@
 
       if (isAdminAuthenticated()) {
         dot.className = 'w-2 h-2 rounded-full bg-emerald-400 animate-pulse';
-        text.textContent = '🔓 Quản Trị (Mở)';
-        btn.className = 'px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-bold bg-amber-500/20 text-amber-300 border border-amber-500/50 hover:bg-rose-950/40 hover:text-rose-300 hover:border-rose-500/50 transition flex items-center gap-1.5 shadow';
+        text.textContent = 'Quản Trị (Mở)';
+        btn.className = 'px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-bold bg-amber-500/20 text-amber-300 border border-amber-500/50 hover:bg-rose-950/40 hover:text-rose-300 hover:border-rose-500/50 transition flex items-center shadow';
         btn.title = 'Bạn đang là Quản Trị Viên. Nhấn để khóa lại.';
       } else {
         dot.className = 'w-2 h-2 rounded-full bg-slate-500';
-        text.textContent = '🔒 Đăng Nhập PIN';
-        btn.className = 'px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition flex items-center gap-1.5 shadow';
+        text.textContent = 'Đăng Nhập PIN';
+        btn.className = 'px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition flex items-center shadow';
         btn.title = 'Đăng nhập mã PIN (12345) để chỉnh sửa sơ đồ & danh sách khách';
       }
     }
@@ -3461,6 +3388,16 @@
     // ==========================================
     // CHẾ ĐỘ NGƯỜI DÙNG: SENIOR (DỄ DÙNG) vs ADMIN (QUẢN TRỊ)
     // ==========================================
+    function requestAdminMode() {
+      if (isAdminAuthenticated()) {
+        setUserMode('admin');
+      } else {
+        openPinModal(() => {
+          setUserMode('admin');
+        });
+      }
+    }
+
     function setUserMode(mode) {
       userMode = mode;
       localStorage.setItem('sodo_user_mode', mode);
@@ -3469,35 +3406,27 @@
       if (currentSelectedId) {
         renderTableInspector(currentSelectedId);
       }
-      showToast(mode === 'senior' ? '👓 Đã chuyển sang Chế Độ Dễ Dùng (Chữ To)' : '⚙️ Đã chuyển sang Chế Độ Quản Trị Đầy Đủ');
+      showToast(mode === 'senior' ? 'Đã chuyển sang Chế Độ Dễ Dùng' : 'Đã chuyển sang Chế Độ Quản Trị');
     }
 
     function applyUserModeUI() {
       const isSenior = (userMode === 'senior');
 
-      // 1. Update Mode toggle buttons in header
+      // 1. Update Mode toggle buttons in header (No icons/logos)
       const btnSenior = document.getElementById('btn-mode-senior');
       const btnAdmin = document.getElementById('btn-mode-admin');
       if (btnSenior && btnAdmin) {
         if (isSenior) {
-          btnSenior.className = 'px-2.5 sm:px-3 py-1 rounded-lg text-xs font-black transition flex items-center gap-1.5 cursor-pointer bg-gradient-to-r from-amber-500 to-yellow-400 text-slate-950 shadow';
-          btnAdmin.className = 'px-2.5 sm:px-3 py-1 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition flex items-center gap-1.5 cursor-pointer';
+          btnSenior.className = 'px-3 sm:px-3.5 py-1.5 rounded-lg text-xs font-black transition cursor-pointer bg-gradient-to-r from-amber-500 to-yellow-400 text-slate-950 shadow';
+          btnAdmin.className = 'px-3 sm:px-3.5 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition cursor-pointer';
         } else {
-          btnSenior.className = 'px-2.5 sm:px-3 py-1 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition flex items-center gap-1.5 cursor-pointer';
-          btnAdmin.className = 'px-2.5 sm:px-3 py-1 rounded-lg text-xs font-black transition flex items-center gap-1.5 cursor-pointer bg-slate-800 text-amber-300 border border-amber-500/50 shadow';
+          btnSenior.className = 'px-3 sm:px-3.5 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition cursor-pointer';
+          btnAdmin.className = 'px-3 sm:px-3.5 py-1.5 rounded-lg text-xs font-black transition cursor-pointer bg-slate-800 text-amber-300 border border-amber-500/50 shadow';
         }
       }
 
-      // 2. Header subtitle & actions
-      const headerSubtitle = document.getElementById('header-subtitle');
+      // 2. Admin header actions bar
       const adminActions = document.getElementById('admin-header-actions');
-      if (headerSubtitle) {
-        if (isSenior) {
-          headerSubtitle.innerHTML = '<span class="text-amber-300 font-bold text-xs sm:text-sm">❤️ Kính chúc Quý Khách & Người Thân một buổi tiệc vui vẻ, ấm cúng!</span>';
-        } else {
-          headerSubtitle.innerHTML = '<span class="text-amber-300 font-semibold">Bên Trái: Nhà Trai</span><span>•</span><span class="text-rose-300 font-semibold">Bên Phải: Nhà Gái</span><span>•</span><span>Tiêu chuẩn 1 bàn 10 khách (Chỉ Bàn 17 là Dự Bị)</span>';
-        }
-      }
       if (adminActions) {
         if (isSenior) {
           adminActions.classList.add('hidden');
@@ -3520,25 +3449,12 @@
       }
 
       // 4. CAD Legend & Bottom notes
-      const seniorLegend = document.getElementById('senior-legend');
       const adminLegend = document.getElementById('admin-legend');
-      if (seniorLegend && adminLegend) {
+      if (adminLegend) {
         if (isSenior) {
-          seniorLegend.classList.remove('hidden');
           adminLegend.classList.add('hidden');
         } else {
-          seniorLegend.classList.add('hidden');
           adminLegend.classList.remove('hidden');
-        }
-      }
-
-      // 5. Senior Footer Switcher
-      const seniorFooter = document.getElementById('senior-footer-prompt');
-      if (seniorFooter) {
-        if (isSenior) {
-          seniorFooter.classList.remove('hidden');
-        } else {
-          seniorFooter.classList.add('hidden');
         }
       }
 
@@ -3579,65 +3495,36 @@
         }
       });
 
-      // Update senior giant side buttons
+      // Update senior giant side buttons (clean single-row layout on mobile)
       const sGroom = document.getElementById('senior-btn-groom');
       const sBride = document.getElementById('senior-btn-bride');
       const sAll = document.getElementById('senior-btn-all');
 
       if (sGroom) {
         if (currentFilter === 'groom') {
-          sGroom.className = 'p-3 sm:p-3.5 rounded-2xl bg-gradient-to-r from-amber-500 to-yellow-400 text-slate-950 font-black shadow-lg shadow-amber-500/30 text-left transition transform scale-[1.02] cursor-pointer ring-2 ring-white';
+          sGroom.className = 'p-2 sm:p-3 rounded-xl sm:rounded-2xl bg-gradient-to-r from-amber-500 to-yellow-400 text-slate-950 font-black shadow-lg shadow-amber-500/30 transition transform scale-[1.02] cursor-pointer ring-2 ring-white';
         } else {
-          sGroom.className = 'p-3 sm:p-3.5 rounded-2xl bg-amber-950/50 hover:bg-amber-900/60 text-amber-200 border border-amber-600/50 text-left transition cursor-pointer';
+          sGroom.className = 'p-2 sm:p-3 rounded-xl sm:rounded-2xl bg-amber-950/50 hover:bg-amber-900/60 text-amber-200 border border-amber-600/50 transition cursor-pointer';
         }
       }
 
       if (sBride) {
         if (currentFilter === 'bride') {
-          sBride.className = 'p-3 sm:p-3.5 rounded-2xl bg-gradient-to-r from-rose-500 to-pink-500 text-white font-black shadow-lg shadow-rose-500/30 text-left transition transform scale-[1.02] cursor-pointer ring-2 ring-white';
+          sBride.className = 'p-2 sm:p-3 rounded-xl sm:rounded-2xl bg-gradient-to-r from-rose-500 to-pink-500 text-white font-black shadow-lg shadow-rose-500/30 transition transform scale-[1.02] cursor-pointer ring-2 ring-white';
         } else {
-          sBride.className = 'p-3 sm:p-3.5 rounded-2xl bg-rose-950/50 hover:bg-rose-900/60 text-rose-200 border border-rose-600/50 text-left transition cursor-pointer';
+          sBride.className = 'p-2 sm:p-3 rounded-xl sm:rounded-2xl bg-rose-950/50 hover:bg-rose-900/60 text-rose-200 border border-rose-600/50 transition cursor-pointer';
         }
       }
 
       if (sAll) {
         if (currentFilter === 'all') {
-          sAll.className = 'col-span-2 sm:col-span-1 p-3 sm:p-3.5 rounded-2xl bg-slate-700 text-white font-bold border border-slate-500 text-left transition cursor-pointer flex items-center justify-between sm:justify-start gap-2 ring-2 ring-slate-300';
+          sAll.className = 'p-2 sm:p-3 rounded-xl sm:rounded-2xl bg-slate-700 text-white font-bold border border-slate-500 transition cursor-pointer ring-2 ring-slate-300';
         } else {
-          sAll.className = 'col-span-2 sm:col-span-1 p-3 sm:p-3.5 rounded-2xl bg-slate-800/90 hover:bg-slate-700 text-slate-200 font-bold border border-slate-700 text-left transition cursor-pointer flex items-center justify-between sm:justify-start gap-2';
+          sAll.className = 'p-2 sm:p-3 rounded-xl sm:rounded-2xl bg-slate-800/90 hover:bg-slate-700 text-slate-200 font-bold border border-slate-700 transition cursor-pointer';
         }
       }
 
-      // Update top banner buttons
-      const bannerGroom = document.getElementById('banner-btn-groom');
-      const bannerBride = document.getElementById('banner-btn-bride');
-      const bannerAll = document.getElementById('banner-btn-all');
       const panHint = document.getElementById('pan-hint');
-
-      if (bannerGroom) {
-        if (currentFilter === 'groom') {
-          bannerGroom.className = 'px-2.5 sm:px-3 py-1 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-[11px] sm:text-xs shadow-lg transition flex items-center gap-1.5 cursor-pointer ring-2 ring-white';
-        } else {
-          bannerGroom.className = 'px-2.5 sm:px-3 py-1 rounded-lg bg-amber-950/60 hover:bg-amber-900/80 border border-amber-500/80 text-amber-300 font-bold text-[11px] sm:text-xs shadow-sm transition flex items-center gap-1.5 cursor-pointer';
-        }
-      }
-
-      if (bannerBride) {
-        if (currentFilter === 'bride') {
-          bannerBride.className = 'px-2.5 sm:px-3 py-1 rounded-lg bg-rose-500 hover:bg-rose-400 text-slate-950 font-black text-[11px] sm:text-xs shadow-lg transition flex items-center gap-1.5 cursor-pointer ring-2 ring-white';
-        } else {
-          bannerBride.className = 'px-2.5 sm:px-3 py-1 rounded-lg bg-rose-950/60 hover:bg-rose-900/80 border border-rose-500/80 text-rose-300 font-bold text-[11px] sm:text-xs shadow-sm transition flex items-center gap-1.5 cursor-pointer';
-        }
-      }
-
-      if (bannerAll) {
-        if (currentFilter === 'groom' || currentFilter === 'bride') {
-          bannerAll.classList.remove('hidden');
-        } else {
-          bannerAll.classList.add('hidden');
-        }
-      }
-
       if (panHint) {
         if (currentFilter === 'groom' || currentFilter === 'bride' || currentZoom > 1) {
           panHint.classList.remove('hidden');
